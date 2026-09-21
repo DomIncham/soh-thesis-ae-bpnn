@@ -1,0 +1,74 @@
+# =========================
+# Python cache / virtual environments
+# =========================
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# =========================
+# OS / editor noise
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs / temporary files
+# =========================
+*.log
+tmp/
+temp/
+cache/
+.cache/
+
+# =========================
+# Raw datasets and large archives
+# Keep dataset locally; document it in data_manifest.md
+# =========================
+NASA DataSet/
+*.mat
+*.zip
+
+# =========================
+# Model checkpoints / tensors / generated artifacts
+# =========================
+*.pt
+*.pth
+*.ckpt
+*.onnx
+outputs/
+runs/
+wandb/
+mlruns/
+
+# =========================
+# LaTeX examples / scratch templates
+# Keep out of the research Git repo for now because these are practice examples,
+# not the final NTUST thesis source.
+# =========================
+examples/
+
+# =========================
+# Literature policy
+# Ignore most collected papers first, but keep Dom-authored review materials.
+# =========================
+Journal Discovery/*
+!Journal Discovery/literature review by dom/
+!Journal Discovery/literature review by dom/**
+
+# =========================
+# LaTeX build artifacts
+# Keep .tex/.bib sources, ignore generated build files.
+# =========================
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
