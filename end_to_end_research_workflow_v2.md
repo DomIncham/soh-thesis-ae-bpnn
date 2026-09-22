@@ -1,19 +1,19 @@
 # E2E Research Workflow & Budget (v3)
 
 > งบ 500 THB/เดือน บน OpenRouter · ใช้จริง ~76-150 THB (15-30%)
-> ที่มา: `model_eval/run2/report.md` (debate) + `model_eval/run3b/report.md` (coding)
+> ที่มา: `model_eval/run2/` (debate) + `run3b/` (coding) + `run4/` (reasoning A/B)
 
 ---
 
 ## 1. Model Stack
 
-| Phase | โมเดล | slug | $/session |
-| :--- | :--- | :--- | ---: |
-| **P1** Extract | GLM 5.3 | `z-ai/glm-5.3` | ~0.02-0.05 |
-| **P2** Debate | GLM 5.3 | `z-ai/glm-5.3` | 0.0832 |
-| **P3** Coding | DeepSeek V4 Flash 0731 | `deepseek/deepseek-v4-flash-0731` | **0.0024** |
-| **P3F** Fallback | GPT-5.6 Sol | `openai/gpt-5.6-sol` | 0.0900 |
-| **P4** Report | Gemini Plus (browser) | — | ฟรี |
+| Phase | โมเดล | slug | $/session | reasoning |
+| :--- | :--- | :--- | ---: | :--- |
+| **P1** Extract | GLM 5.3 | `z-ai/glm-5.3` | ~0.02-0.05 | medium |
+| **P2** Debate | GLM 5.3 | `z-ai/glm-5.3` | 0.0832 | **medium** (ปิดไม่ได้ · 0 token) |
+| **P3** Coding | DeepSeek V4 Flash 0731 | `deepseek/deepseek-v4-flash-0731` | **0.0024** | **medium — ห้ามปิด** |
+| **P3F** Fallback | GPT-5.6 Sol | `openai/gpt-5.6-sol` | 0.0900 | medium |
+| **P4** Report | Gemini Plus (browser) | — | ฟรี | — |
 
 P1 ใช้ GLM 5.3 ตัวเดียวกับ P2 — context ต่อเนื่อง ไม่ต้องสลับโมเดล
 
@@ -84,10 +84,11 @@ P1 Extract → P2 Debate → [4-Rule Gate] → /new + active_experiment.md
 | 1 | **exit code 0 ≠ ถูก** — เพ่งตัวเลขทุกครั้ง |
 | 2 | **standardize target ก่อน train BPNN** (failure mode อันดับ 1) |
 | 3 | **`list == "str"` ได้ `False` เดี่ยว** ไม่ใช่ mask → `X_all[False]` = array ว่าง → NaN เงียบ |
-| 4 | **`max_tokens ≥ 6000`** เมื่อเปิด reasoning (DeepSeek เผา 83-90% ของ output ไปกับการคิด) |
+| 4 | **`max_tokens ≥ 6000`** เมื่อเปิด reasoning — GLM/v4.1-flash ต้อง **≥16000 ตอนซ่อม** |
 | 5 | **บังคับ loop ซ่อม 1 ครั้งเสมอ** (ผ่านครั้งแรกแค่ 3/12 โมเดล) |
 | 6 | **Leakage probe ทุกครั้ง** — พิสูจน์ ไม่ใช่เชื่อ |
 | 7 | **รายงานแยกต่อ battery + mean ± std** (advisor Part C3) |
+| 8 | **P3 ห้ามปิด reasoning** — ปิดแล้วได้โค้ด exit 0 แต่ R² = -14.9 (T2) หรือไม่ได้โค้ดเลย (T1) |
 
 ---
 
