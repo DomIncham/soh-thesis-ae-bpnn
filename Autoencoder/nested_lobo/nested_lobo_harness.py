@@ -95,6 +95,9 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--full", action="store_true")
     ap.add_argument("--probe", action="store_true")
+    ap.add_argument("--matched", action="store_true",
+                    help="add tolerance '3m': tol3 restricted to the exact sample set tol1 keeps "
+                         "(isolates label quality from sample count)")
     args = ap.parse_args()
     tols = [3] if args.smoke else [1, 2, 3]
     seeds = [42] if args.smoke else [42, 7, 123]
@@ -104,9 +107,20 @@ def main():
     pat = 10 if args.smoke else 30
 
     data = {t: torch.load(os.path.join(HERE, f"Mapped_EIS_SOH_tol{t}.pt"), weights_only=True)
-            for t in tols}
+            for t in [1, 2, 3]}
+    tol_list = list(tols)
+    if args.matched:
+        y1 = data[1]["labels"].numpy()
+        keys1 = set(map(tuple, y1[:, :2].astype(int)))
+        y3 = data[3]["labels"].numpy(); X3 = data[3]["features"].numpy()
+        keep = np.array([tuple(map(int, r[:2])) in keys1 for r in y3])
+        data["3m"] = {"features": torch.tensor(X3[keep], dtype=torch.float32),
+                      "labels": torch.tensor(y3[keep], dtype=torch.float32)}
+        tol_list.append("3m")
+        print(f"matched subset: {int(keep.sum())} of {len(y3)} tol3 rows share tol1's sample set")
+    tol_list = [t for t in tol_list]
     rows = []
-    for tol, seed, test_b in itertools.product(tols, seeds, folds):
+    for tol, seed, test_b in itertools.product(tol_list, seeds, folds):
         y_all = data[tol]["labels"].numpy()
         bids = y_all[:, 0].astype(int)
         soh = y_all[:, 3]

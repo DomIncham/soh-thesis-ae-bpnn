@@ -1,2 +1,3 @@
 tolerance,seed,test_battery,val_battery,train_batteries,bpnn_arch,bpnn_l2,ae_epochs,val_rmse_soh,train_MAE,train_RMSE,train_R2,test_MAE,test_RMSE,test_R2
 3,42,B0005,B0006,"['B0007', 'B0018']",[16],0.0001,25,7.6175,3.2872,4.6964,0.6662,5.1644,6.576,0.5402
+3m,42,B0005,B0006,"['B0007', 'B0018']",[16],0.0,59,7.977,3.3188,4.5362,0.69,4.7368,5.8901,0.6301
