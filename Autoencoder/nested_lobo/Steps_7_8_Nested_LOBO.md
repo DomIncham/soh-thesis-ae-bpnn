@@ -51,6 +51,17 @@
 | B0007 | 4.14 / **+0.72** | 4.45 / +0.67 | 4.85 / +0.62 |
 | B0018 | 13.24 / **−1.00** | 14.27 / −1.57 | 14.34 / −1.36 |
 
+### EIS↔capacity cycle-gap distribution (E2 deliverable)
+
+Real gaps between each matched EIS cycle and its backward capacity cycle:
+
+| Battery | gap=1 | gap=2 | gap=3 |
+|---|---|---|---|
+| B0005, B0006, B0007 | 141 each (31.2% of 452 at tol1) | 2 each (0.4%) | 135 each (15.2% of 886 at tol3) |
+| B0018 | 29 (6.4%) | 19 (4.0%) | 4 (0.5%) |
+
+Interpretation: B0005–07 EIS cycles sit either 1 cycle or 3 cycles behind a capacity measurement (a bimodal gap); B0018 sits almost always at gap 1 but its small capacity-log density is what drops rows at tol≤2. Mean gaps: tol1 = 1.00, tol2 = 1.05, tol3 = 1.95 cycles.
+
 ## 4. Findings
 
 1. **Tolerance 1, 2, 3 are statistically indistinguishable downstream** (RMSE 8.57–8.89 %SOH; all within 1 std of each other; ~0.3 %SOH differences against ±3.8 std). Per the pre-declared rule, the winner is **tolerance 1** (lowest mean RMSE, and lowest in the tie-break). 

@@ -90,6 +90,8 @@ Per-point frequencies are unavailable (A2), so ordering is tested with two physi
 
 No points were removed and no smoothing was applied by us (Part M-F).
 
+**Abnormal-jump check (added after initial audit):** no isolated point was found in any spectrum. 341 of 887 spectra contain one step between consecutive points larger than 50% of that component's range; inspection shows these are (a) the low-frequency first interval of Re(Z) (for example B0005 cycle 43: 0.060 → 0.078 Ohm), the diffusion tail expected at 0.1 Hz, and (b) intermediate -Im(Z) changes of 1–3 mOhm that are large relative to the range only because the whole reactive span of this rectified arc is 2–6 mOhm. The 50%-of-range criterion is therefore not informative at this signal scale; no point is detached from its neighbors in absolute terms. Data kept as measured (Part M-F).
+
 ## A6: Source of the flat arc — Case 2, with quantitative support
 
 The advisor asked to distinguish: (a) wrong ordering, (b) the original measurement, or (c) the specific impedance variable.
