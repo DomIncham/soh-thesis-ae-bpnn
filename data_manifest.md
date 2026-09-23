@@ -1,6 +1,6 @@
 # Data Manifest
 
-This file documents datasets used by the SOH thesis project. Raw datasets are kept locally and are not committed to Git.
+This file documents datasets used by the SOH thesis project. Raw datasets are kept locally; since 2026-09-23 one exception is tracked in Git (see Git Policy).
 
 ## Git Policy
 
@@ -15,6 +15,14 @@ NASA DataSet/
 *.ckpt
 *.onnx
 ```
+
+Exception (tracked since 2026-09-23):
+
+```text
+NASA DataSet/1. BatteryAgingARC-FY08Q4/   (~56 MB, public-domain NASA data)
+```
+
+Reason for the exception: the Round 2 EIS verification (advisor Part A, Steps 1-4) is defined against these exact files; tracking them makes the verification reproducible from a plain clone. Other NASA folders and all archives remain excluded.
 
 Reason:
 
@@ -85,10 +93,10 @@ Impedance raw data and fitting data.zip: ~1.3 MB
 To reproduce the project on another machine:
 
 1. Clone the Git repository.
-2. Place the NASA raw dataset at:
+2. The NASA FY08Q4 dataset is included in the repository at:
 
 ```text
-C:\Master Degree\Thesis\NASA DataSet\1. BatteryAgingARC-FY08Q4
+NASA DataSet/1. BatteryAgingARC-FY08Q4
 ```
 
 3. Run preprocessing scripts from `Autoencoder/` to regenerate intermediate files such as:

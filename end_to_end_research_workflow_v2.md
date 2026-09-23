@@ -13,7 +13,7 @@
 | **P2** Debate | GLM 5.3 | `z-ai/glm-5.3` | 0.0832 | **medium** (ปิดไม่ได้ · 0 token) |
 | **P3** Coding | DeepSeek V4 Flash 0731 | `deepseek/deepseek-v4-flash-0731` | **0.0024** | **medium — ห้ามปิด** |
 | **P3F** Fallback | GPT-5.6 Sol | `openai/gpt-5.6-sol` | 0.0900 | medium |
-| **P4** Report | Gemini Plus (browser) | — | ฟรี | — |
+| **P4** Report | Capi ร่าง report .md + ฝังรูป → Dom review + แปลง Word/PDF | — | ฟรี | — |
 
 P1 ใช้ GLM 5.3 ตัวเดียวกับ P2 — context ต่อเนื่อง ไม่ต้องสลับโมเดล
 

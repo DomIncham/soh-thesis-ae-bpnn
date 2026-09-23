@@ -72,3 +72,16 @@ Journal Discovery/*
 *.toc
 *.lof
 *.lot
+
+# =========================
+# Exception (2026-09-23, R2 Steps 1-4): track the exact NASA FY08Q4 files so
+# the EIS raw verification is reproducible from a plain clone. Public-domain
+# NASA dataset, ~56 MB, stored once by Git. Other dataset folders, archives
+# (.zip), and converted reports stay excluded.
+# =========================
+!NASA DataSet/
+NASA DataSet/*
+!NASA DataSet/1. BatteryAgingARC-FY08Q4/
+!NASA DataSet/1. BatteryAgingARC-FY08Q4/**
+Autoencoder/eis_verify/*.docx
+Autoencoder/eis_verify/*.html
