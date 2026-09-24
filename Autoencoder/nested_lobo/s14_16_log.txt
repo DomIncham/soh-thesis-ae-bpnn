@@ -1,0 +1,39 @@
+seed42 test=B0005 done
+seed42 test=B0006 done
+seed42 test=B0007 done
+seed42 test=B0018 done
+seed7 test=B0005 done
+seed7 test=B0006 done
+seed7 test=B0007 done
+seed7 test=B0018 done
+seed123 test=B0005 done
+seed123 test=B0006 done
+seed123 test=B0007 done
+seed123 test=B0018 done
+
+=== per pipeline (mean +/- std) ===
+            test_MAE        test_RMSE        test_R2         nRMSE       
+                mean    std      mean    std    mean    std   mean    std
+pipeline                                                                 
+B1_mean        9.815  2.414    11.482  2.669  -0.348  0.315  0.359  0.044
+P1_raw_bpnn    6.830  3.217     8.321  3.803   0.096  0.816  0.267  0.142
+P3_ae_bpnn     7.007  3.020     8.566  3.776   0.080  0.719  0.270  0.129
+TD_bpnn        3.013  2.056     3.590  2.325   0.848  0.156  0.106  0.050
+TD_ridge       3.821  2.330     4.350  2.368   0.797  0.144  0.128  0.045
+
+test_RMSE by fold:
+pipeline      B1_mean  P1_raw_bpnn  P3_ae_bpnn  TD_bpnn  TD_ridge
+test_battery                                                     
+B0005          10.338        6.054       6.550    2.279     3.665
+B0006          15.659        8.850      10.337    6.770     7.954
+B0007          11.140        4.547       4.140    1.556     1.699
+B0018           8.789       13.834      13.237    3.755     4.083
+
+test_R2 by fold:
+pipeline      B1_mean  P1_raw_bpnn  P3_ae_bpnn  TD_bpnn  TD_ridge
+test_battery                                                     
+B0005          -0.006        0.609       0.538    0.950     0.874
+B0006          -0.581        0.330       0.064    0.686     0.592
+B0007          -0.708        0.639       0.715    0.967     0.960
+B0018          -0.099       -1.192      -0.996    0.789     0.763
+saved
