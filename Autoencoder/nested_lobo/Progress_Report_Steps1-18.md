@@ -11,9 +11,10 @@
 
 | Step | Task (advisor Part) | Result | Evidence |
 |---|---|---|---|
-| 1–2 | Verify NASA EIS variables and frequency ordering (A1–A2, M-A/B) | CSV = `Rectified_Impedance`, exact on all 34,593 rows (max diff < 1e-15 Ohm); row order consistent with low→high frequency (887/887 spectra, indirect evidence); **no per-point frequency exists in the distributed `.mat`** — any frequency column is a declared assumption | `eis_verify/EIS_Raw_Verification.md` |
+| 1–2 | Verify NASA EIS variables and frequency ordering (A1–A2, M-A/B) | CSV = `Rectified_Impedance`, exact on all 34,593 rows (max diff < 1e-15 Ohm); row order consistent with low→high frequency (887/887 spectra, indirect evidence); **no per-point frequency exists in the distributed `.mat`** — any frequency column is a declared assumption. The flat Nyquist arc is a property of NASA's `Rectified_Impedance` itself (Case 2): max \|Im\| ≈ 2–6 mOhm across all 887 spectra, while the raw `Battery_impedance` differs by 32–68× and contains values that are not physically plausible | `eis_verify/EIS_Raw_Verification.md` |
 | 3–4 | Frequency-ordered table + plots; spectrum integrity (A3–A5, M-C/D) | 39 points × 887 spectra = 34,593 CSV rows; timestamps monotonic; 0 NaN/Inf/duplicates; no isolated outlier points | same + `A3_*_3plots.png`, `A7_*` |
 | 5 | Re-evaluate interpolation with a quantitative measure (A8) | Chord-envelope overshoot: **PCHIP 0 in all 1,774 checks; Cubic 0.25–1.76 mOhm mean, worst 11.2 mOhm** (exceeds the full reactive span 2–6 mOhm); Linear also 0 but not smooth | `Interpolation_Reeval.md` |
+| 6b | Expanded AE reconstruction metrics (D3) | Re(Z) RMSE / Im(Z) RMSE separately + nRMSE + relative error, per battery (table in Section 4); confirms the B0006 Re RMSE anomaly (14.6 mOhm, ~13× the other batteries) | `ae_reconstruction_d3_metrics.csv` |
 | 6 | Recheck Figure 6 (H2) | AE reconstructs the **interpolated input**, not the measurement (recon-vs-measured = recon-vs-input + ~0.1 mOhm); B0006 anomaly is AE-specific | `Step6_Fig6_recheck.png` |
 | 7 | Nested 4-fold LOBO (C1–C3) | Implemented; inner validation selects different configs per fold; leakage probes PASS | `Steps_7_8_Nested_LOBO.md` |
 | 8 | Tolerance 1/2/3 on downstream metrics (E1–E3) | Tolerances indistinguishable downstream (RMSE 8.57–8.89 %SOH, all within 1 std) → pre-declared rule selects **tolerance 1**; gap distribution reported (bimodal: gap 1 or 3 for B0005–07) | same |
@@ -36,6 +37,43 @@
 ![Figure R2](figures/R2_rmse_ranking.png)
 
 *Figure R2. Overall test RMSE (%SOH, mean ± std over 12 runs). Time-domain features halve the best EIS error.*
+
+## 2b. Steps 1–6 evidence (figures reconstructed from verified raw data)
+
+![Figure F1](figures/A7_Raw_Nyquist_4spectra.png)
+
+*Figure F1. Raw measured EIS points (no interpolation) for 4 spectra across 3 batteries, connected in the verified frequency order (Steps 3–4, A7).*
+
+![Figure F2](figures/A3_B0005_cycle41_3plots.png)
+
+*Figure F2. B0005 cycle 41: raw points only / points connected in array order / interpolation overlay (Steps 3–4, A3, M-C).*
+
+![Figure F3](figures/Step5_overshoot_worst_case.png)
+
+*Figure F3. Worst cubic-spline spectrum vs Linear/Cubic/PCHIP (Step 5, A8): cubic overshoots beyond the full reactive signal span; PCHIP stays inside the chord envelope.*
+
+![Figure F4](figures/Step6_Fig6_recheck.png)
+
+*Figure F4. Figure 6 recheck (Step 6, H2): the AE reconstructs the interpolated input target (grey), not the measurement (black markers).*
+
+### Expanded AE reconstruction metrics (Part D3)
+
+| Battery | Re(Z) RMSE (± std, Ohm) | Im(Z) RMSE (± std, Ohm) | nRMSE | Relative error % (± std) |
+|---|---|---|---|---|
+| Train B0005 | 0.00111 ± 0.00028 | 0.00023 ± 0.00007 | 0.064 | 22.2 ± 24.7 |
+| Train B0006 | **0.01461** ± 0.00234 | 0.00090 ± 0.00016 | 0.519 | 58.2 ± 64.4 |
+| Val B0007 | 0.00163 ± 0.00087 | 0.00027 ± 0.00009 | 0.075 | 27.7 ± 41.0 |
+| Test B0018 | 0.00129 ± 0.00030 | 0.00034 ± 0.00009 | 0.144 | 23.3 ± 20.7 |
+
+The B0006 anomaly appears in Re(Z) RMSE (≈13× the other batteries) with identical scaling — consistent with the AE-specific latent degradation reported in Steps 6 and 9–10. High relative error percentages reflect the tiny absolute scale of this rectified arc (denominators of 1–6 mOhm), not large absolute errors.
+
+## 2c. Ablations planned for the final paper (Part F3 / I3) — declared pending
+
+The following ablations are listed by the advisor (F3) for the final paper. They were executed under the old single-split protocol and are scheduled for re-execution under the corrected nested protocol:
+
+1. AE bottleneck-size ablation (old: sizes 1–67; new protocol: pending).
+2. BPNN loss-function comparison MSE/MAE/Huber under the nested protocol (I3; old protocol comparison exists).
+3. Interpolation-method ablation on all 6 grid×method configs under the nested protocol (Steps 7–8 ran tolerance on log_grid+pchip only, to isolate the tolerance variable).
 
 ## 3. Findings for the advisor's decision (B7)
 
