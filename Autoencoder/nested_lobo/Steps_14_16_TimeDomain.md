@@ -84,7 +84,7 @@ With Steps 14–16 complete, the Figure 10 story closes: the old collapse was a 
 
 ## Ablation log
 
-`2026-09-25 | step14_16 | TD_bpnn R2 0.85, positive all 4 folds (B0018 +0.79) | B6 confirmed: EIS representation problem; TD > EIS everywhere`
+`2026-09-25 | step14_16 | TD_bpnn R2 0.85, positive all 4 folds (B0018 +0.79) | B6 pattern: EIS representation problem; TD > EIS everywhere`
 
 ## Artifacts (`Autoencoder/nested_lobo/`)
 

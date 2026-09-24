@@ -76,7 +76,7 @@ Interpretation: B0005–07 EIS cycles sit either 1 cycle or 3 cycles behind a ca
 
 - Q_ref (first-5-cycle mean) makes a few SOH values exceed 100% by up to 0.8% (measurement variability exceeding the early-life reference); values are kept as measured, per the no-massaging rule.
 - B0006 fades to 57% SOH (NASA ran it past the 30% EOL criterion); real data, kept.
-- 3m adds no information (Finding 2); it cost 12 runs and confirmed implementation determinism.
+- 3m adds no information (Finding 2); it cost 12 runs and demonstrated implementation determinism.
 
 ## 6. Next (Steps 9–10)
 
