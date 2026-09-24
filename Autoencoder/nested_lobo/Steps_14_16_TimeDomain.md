@@ -50,7 +50,7 @@
 
 > *Advisor B6: "If under the same LOBO protocol: R²_time-domain ≫ 0 while R²_EIS < 0 → problem is unlikely BPNN architecture → EIS data representation, preprocessing, or cross-battery consistency is problematic."*
 
-The measured pattern is exactly this, and stronger:
+The measured pattern matches this criterion, and is stronger:
 
 1. **Time-domain is positive on all four folds — including B0018** (TD-BPNN R² +0.65…+0.97; TD-Ridge +0.59…+0.96), where **both EIS pipelines are negative** (Raw −1.19, AE −1.00). Under the identical protocol, split, and metrics.
 2. **Time-domain error is less than half of EIS error** overall (RMSE 3.59 vs 8.32/8.57 %SOH; nRMSE 0.106 vs 0.267).
@@ -78,7 +78,7 @@ On this dataset and protocol, the evidence orders them: **time-domain > EIS(raw/
 
 ## 6. Step 12 conclusion (completing `Steps_12_Fig10_Collapse.md`)
 
-With Steps 14–16 complete, the Figure 10 story closes: the old collapse was a **pipeline failure on an EIS representation that does not transfer across batteries** — proven because (a) the corrected protocol removes it on 3 of 4 folds (Step 12), (b) the remaining fold is rescued by time-domain features under the identical protocol (this report), and (c) the model itself is cleared (a linear model on 8 features solves what the AE+BPNN could not).
+With Steps 14–16 complete, the Figure 10 story closes: the old collapse was a **pipeline failure on an EIS representation that does not transfer across batteries** — established by three measurements: (a) the corrected protocol removes it on 3 of 4 folds (Step 12), (b) the remaining fold is rescued by time-domain features under the identical protocol (this report), and (c) the model itself is cleared (a linear model on 8 features solves what the AE+BPNN could not).
 
 ---
 

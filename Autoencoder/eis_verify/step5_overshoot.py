@@ -58,6 +58,8 @@ for gk, gkind in [("linear_grid", "linear"), ("log_grid", "log")]:
                              "data": (x_r, y, x_t, yd, gk)}
 res = pd.DataFrame(rows, columns=["grid", "method", "component", "batt", "cycle", "max_overshoot_pct", "max_overshoot_ohm"])
 agg = res.groupby(["grid", "method", "component"])[["max_overshoot_pct", "max_overshoot_ohm"]].agg(["mean", "std", "max"]).reset_index()
+print("\nspectra with any overshoot (per method, both grids combined):")
+print(res[res.max_overshoot_pct > 0].groupby("method").size().to_string(), "| total spectra per method:", len(res) // 6)
 agg.to_csv(f"{OUT}\\interpolation_overshoot_results.csv", index=False)
 print(agg.to_string(index=False))
 

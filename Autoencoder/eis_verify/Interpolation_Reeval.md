@@ -38,7 +38,7 @@ Aggregated over all 887 spectra × 2 components (Re_Z, Neg_Im_Z). The rebuilt cu
 ### Findings
 
 1. **PCHIP produces zero overshoot in all 1,774 checks** (887 spectra × 2 components × 2 grids). The earlier claim "PCHIP avoids the overshoot observed with Cubic Spline" is now supported by a measured quantity, not by visual inspection.
-2. **Cubic Spline overshoots in essentially every spectrum.** The mean max overshoot is 0.25–1.76 mOhm; the worst case reaches 11.2 mOhm on Re_Z. For scale: the entire reactive part of these spectra spans only ~1–6 mOhm (Steps 1–4), so a cubic overshoot can exceed the full -Im(Z) signal. The large relative percentages come from the small chord heights of this flat-arc data.
+2. **Cubic Spline overshoots in all 3,548 checks** (887 spectra × 2 components × 2 grids). The mean max overshoot is 0.25–1.76 mOhm; the worst case reaches 11.2 mOhm on Re_Z. For scale: the entire reactive part of these spectra spans only ~1–6 mOhm (Steps 1–4), so a cubic overshoot can exceed the full -Im(Z) signal. The large relative percentages come from the small chord heights of this flat-arc data.
 3. **Linear interpolation also shows zero overshoot** (it is the chord itself), but it is not smooth; the choice between Linear and PCHIP is therefore not about overshoot but about smoothness, which downstream metrics (Step 8) should decide.
 4. The linear and log grids behave similarly for overshoot; the method choice dominates the distortion.
 
@@ -73,7 +73,7 @@ ControlledAutoencoder (256→128→17→128→256), trained on `log_grid + pchip
 
 ### Findings
 
-1. **The logic chain of Part H2 is confirmed quantitatively:** AE reconstruction error against the measurement (0.86–10.3 mOhm) ≈ error against the interpolated input + ~0.1 mOhm. The AE reconstructs the interpolation; agreement with the measurement is limited by the reconstruction itself plus the small interpolation offset. A "good" reconstruction number therefore describes agreement with the interpolated input, not with the measured spectrum.
+1. **The logic chain of Part H2 is observed quantitatively:** AE reconstruction error against the measurement (0.86–10.3 mOhm) ≈ error against the interpolated input + ~0.1 mOhm. The AE reconstructs the interpolation; agreement with the measurement is limited by the reconstruction itself plus the small interpolation offset. A "good" reconstruction number therefore describes agreement with the interpolated input, not with the measured spectrum.
 2. **The interpolation offset is small (~0.07–0.1 mOhm)** relative to the reconstruction error. On this dataset, the interpolation step is not the largest error source in Figure 6 — the reconstruction is. (This does not contradict Part H2; it quantifies it.)
 3. **B0006 anomaly:** its reconstruction error (10.3 mOhm) is ~13× B0005's, although both are training batteries. One candidate explanation is the shared MinMaxScaler across the two training batteries: the wider-range battery occupies a larger scaled amplitude, so an equal scaled-space error becomes a larger Ohm error. This may be associated with the scaling scheme, not with the battery. Step 9–10 baselines (Raw EIS → BPNN, PCA → BPNN) will show whether this propagates to SOH prediction.
 

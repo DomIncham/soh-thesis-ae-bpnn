@@ -31,7 +31,7 @@ The old grid search (single split, B0018 as the only test battery, Ah target, 30
 | Test R² | −2.762 … **−0.009** (never positive) |
 | Test RMSE | 0.173 … 0.333 Ah (floor ≈ std(y)) |
 
-Some configurations learned the training batteries well (train R² up to 0.89), yet **no configuration ever reached positive test R²**. A model that fits three batteries and then outputs a near-constant on the fourth is behaving exactly as this table shows.
+Some configurations learned the training batteries well (train R² up to 0.89), yet **no configuration ever reached positive test R²**. A model that fits three batteries and then outputs a near-constant on the fourth is behaving as this table shows.
 
 **The latent-space evidence (R1-C6, `Latent_Correlation_Metrics.csv`) explains the transfer failure.** Latent↔SOH correlations flip sign between the training batteries and the unseen battery:
 
