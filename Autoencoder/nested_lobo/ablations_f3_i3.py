@@ -92,6 +92,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["bottleneck", "loss", "interp"], required=True)
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--full", action="store_true")
     args = ap.parse_args()
     smoke = args.smoke
     seeds = [42] if smoke else [42, 7, 123]
