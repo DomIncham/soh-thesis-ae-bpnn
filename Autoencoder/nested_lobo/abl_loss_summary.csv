@@ -1,0 +1,6 @@
+,test_MAE,test_MAE,test_RMSE,test_RMSE,test_R2,test_R2
+,mean,std,mean,std,mean,std
+value,,,,,,
+huber,6.9835,3.0697,8.479,3.7431,0.0861,0.761
+mae,6.9075,3.0248,8.3156,3.6711,0.1214,0.7341
+mse,6.9922,3.0376,8.5715,3.8137,0.0767,0.7272

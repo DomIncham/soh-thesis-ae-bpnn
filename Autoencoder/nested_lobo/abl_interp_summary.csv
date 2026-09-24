@@ -1,0 +1,9 @@
+,test_MAE,test_MAE,test_RMSE,test_RMSE,test_R2,test_R2
+,mean,std,mean,std,mean,std
+value,,,,,,
+linear_grid_cubic,6.7279,2.9378,7.9946,3.4143,0.1914,0.6783
+linear_grid_linear,6.86,3.1847,8.3108,3.7805,0.1112,0.7815
+linear_grid_pchip,7.2454,3.4186,8.6241,3.9644,0.0492,0.8332
+log_grid_cubic,6.6926,2.9267,8.0445,3.5396,0.1762,0.6942
+log_grid_linear,7.1151,3.5066,8.5742,4.1367,0.0314,0.8987
+log_grid_pchip,7.012,3.0243,8.578,3.7898,0.0769,0.7242

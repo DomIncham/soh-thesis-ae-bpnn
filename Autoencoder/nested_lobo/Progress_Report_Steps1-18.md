@@ -67,13 +67,17 @@
 
 The B0006 anomaly appears in Re(Z) RMSE (≈13× the other batteries) with identical scaling — consistent with the AE-specific latent degradation reported in Steps 6 and 9–10. High relative error percentages reflect the tiny absolute scale of this rectified arc (denominators of 1–6 mOhm), not large absolute errors.
 
-## 2c. Ablations planned for the final paper (Part F3 / I3) — declared pending
+## 2c. Ablations (Part F3 / I3) — completed
 
-The following ablations are listed by the advisor (F3) for the final paper. They were executed under the old single-split protocol and are scheduled for re-execution under the corrected nested protocol:
+All previously pending ablations are now executed under the corrected nested protocol (full tables in `Steps_F3_I3_B7_Ablations.md`):
 
-1. AE bottleneck-size ablation (old: sizes 1–67; new protocol: pending).
-2. BPNN loss-function comparison MSE/MAE/Huber under the nested protocol (I3; old protocol comparison exists).
-3. Interpolation-method ablation on all 6 grid×method configs under the nested protocol (Steps 7–8 ran tolerance on log_grid+pchip only, to isolate the tolerance variable).
+| Ablation | Result |
+|---|---|
+| AE bottleneck sizes {3, 7, 17, 37, 67} | RMSE 8.30–8.82 %SOH, all within 1 std — indistinguishable; 17 retained |
+| BPNN loss MSE/MAE/Huber (I3) | RMSE 8.32–8.57, indistinguishable — no loss changes the conclusion |
+| Interpolation 6 grid×method configs | RMSE 7.99–8.62, indistinguishable — cubic's Step-5 overshoot has no measured downstream penalty; PCHIP kept for shape preservation |
+
+**B7 supporting evidence (added):** Pipeline E fusion (time-domain + causal backward-aligned EIS latent) reaches R² **+0.726**, positive on **all four folds including B0018 (+0.67)**, and beats every EIS-only pipeline — the EIS latent adds value only when anchored by time-domain features. AE applied to time-domain features also does not help (R² +0.43 vs +0.85 for raw TD features). The complete pipeline ranking across 10 tested configurations: **TD-BPNN (3.59) > TD-Ridge (4.35) > E-fusion (4.89) > EIS pipelines (8.3–8.6) > Mean (11.5)**.
 
 ## 3. Findings for the advisor's decision (B7)
 
@@ -88,7 +92,7 @@ Supporting evidence collected for that discussion: the B0006 AE-specific degrada
 ## 4. Declared limitations
 
 - Per-point EIS frequencies are not recoverable from the distributed `.mat`; the interpolation grid rests on the documented 0.1 Hz–5 kHz sweep (declared assumption, Step 1–2).
-- Time-domain features describe a completed discharge cycle — practical for cycle-level SOH logging (the BMS records every V/I/T cycle), not a mid-discharge estimator (Part J discussion pending).
+- Time-domain features describe a completed discharge cycle — practical for cycle-level SOH logging (the BMS records every V/I/T cycle), not a mid-discharge estimator; the full BMS practicality comparison (Part J) is delivered in `Part_J_BMS_Practicality.md`.
 - ICA/DVA and pulse-resistance features were not built (granularity insufficient) — declared, not skipped.
 - SOH can exceed 100% by up to 0.8% (measurement variability vs the early-life reference); B0006 fades to 57% (NASA ran past EOL) — data kept as measured.
 - Gate breaches in individual runs were disclosed in each step report (Steps 7–10) and none of the working-fold conclusions depend on them.

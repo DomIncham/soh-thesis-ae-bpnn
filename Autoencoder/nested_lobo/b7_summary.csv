@@ -1,0 +1,5 @@
+,test_MAE,test_MAE,test_RMSE,test_RMSE,test_R2,test_R2,nRMSE,nRMSE
+,mean,std,mean,std,mean,std,mean,std
+pipeline,,,,,,,,
+AE_on_TD,5.744,4.283,7.092,5.378,0.427,0.588,0.2,0.115
+E_fusion_td_eis,3.986,1.371,4.893,1.633,0.726,0.142,0.158,0.05
