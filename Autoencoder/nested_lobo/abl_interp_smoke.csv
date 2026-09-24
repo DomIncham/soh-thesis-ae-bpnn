@@ -1,0 +1,2 @@
+cfg,ae_epochs,val_rmse,test_MAE,test_RMSE,test_R2,mode,value,seed,test_battery
+[16]/l2=0.0,59,7.977,4.7368,5.8901,0.6301,interp,log_grid_pchip,42,B0005

@@ -1,0 +1,2 @@
+mode,value,seed,test_battery,cfg,ae_epochs,val_rmse,test_MAE,test_RMSE,test_R2
+loss,mse,42,B0005,[16]/l2=1e-4,59,7.979,4.7375,5.8912,0.6299

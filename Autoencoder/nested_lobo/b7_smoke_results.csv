@@ -1,0 +1,3 @@
+pipeline,seed,test_battery,cfg,val_rmse,test_MAE,test_RMSE,test_R2,nRMSE
+E_fusion_td_eis,42,B0005,"[8, 4]/l2=0.0001",7.3281,5.1794,6.1329,0.6461,0.1985
+AE_on_TD,42,B0005,[8]/l2=0.0001,12.6113,4.0837,5.3855,0.7271,0.1743
