@@ -91,10 +91,7 @@ ControlledAutoencoder (256→128→17→128→256), trained on `log_grid + pchip
 
 ---
 
-## Ablation log
-
-`2026-09-23 | step5_6 | pchip 0% vs cubic 0.3-11 mOhm; recon≈input+0.1 mOhm | cubic arc exceeds -Im scale; AE fits interp input`
-
+#
 ## Artifacts (`Autoencoder/eis_verify/`)
 
 | File | Purpose |

@@ -77,10 +77,7 @@ Delivered separately in `Part_J_BMS_Practicality.md` (measurement requirements, 
 
 ---
 
-## Ablation log
-
-`2026-09-25 | f3_i3_b7 | bottleneck/loss/interp ns downstream; E_fusion +0.73 all folds; AE_on_TD 0.43 | ablations close F3/I3; AE adds no value on either modality; fusion fixes EIS folds`
-
+#
 ## Artifacts
 
 `ablations_f3_i3.py`, `abl_bottleneck*.csv`, `abl_loss*.csv`, `abl_interp*.csv`, `b7_fusion_aeontd.py`, `b7_results.csv`, `b7_summary.csv`, `gate_optionB.py`, `Steps_F3_I3_B7_Ablations.md`

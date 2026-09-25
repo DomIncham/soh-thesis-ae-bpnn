@@ -146,10 +146,7 @@ Interpolation output is labeled as interpolation in every figure; measured point
 
 ---
 
-## Ablation log
-
-`2026-09-23 | eis_raw_verify | 34593/34593 rows; order 887/887 | Rectified arc flat by design; no per-point freq in .mat`
-
+#
 ## Reproducibility statement
 
 All scripts and data outputs are archived with the project files (`Autoencoder/eis_verify/`). Every number in this report is produced by a script in that archive; the internal artifact index maps each script to its output.

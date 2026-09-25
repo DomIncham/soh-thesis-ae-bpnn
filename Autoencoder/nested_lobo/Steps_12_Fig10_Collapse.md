@@ -70,10 +70,7 @@ This report does not judge whether the remaining B0018 failure belongs to the EI
 
 ---
 
-## Ablation log
-
-`2026-09-25 | step12 | old Fig10 RMSE = 1.13 x std(y); test R2 < 0 in all 12 old configs | flat-line collapse from unstable latents + unstandardized target`
-
+#
 ## Artifacts
 
 | File | Purpose |

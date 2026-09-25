@@ -76,10 +76,7 @@ Time-domain baseline from the discharge cycles (V/I/T features: CC/CV durations,
 
 ---
 
-## Ablation log
-
-`2026-09-25 | step9_10 | PCA best working folds (R2 0.61); AE<PCA all 3 | AE no gain over PCA; B0018=amplitude shift (P1n fixes)`
-
+#
 ## Artifacts (`Autoencoder/nested_lobo/`)
 
 | File | Purpose |

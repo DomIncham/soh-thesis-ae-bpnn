@@ -51,10 +51,7 @@ On this dataset, the time-domain pipeline is more practical for a production BMS
 
 ---
 
-## Ablation log
-
-`2026-09-25 | part_j | discussion (no new runs) | TD deployable on standard BMS; EIS needs added hardware + dedicated sweep`
-
+#
 ## Artifacts
 
 `Part_J_BMS_Practicality.md` (this report; written from measured evidence in Steps 7–16, no new runs)

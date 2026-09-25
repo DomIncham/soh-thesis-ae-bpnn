@@ -97,11 +97,7 @@ Supporting evidence collected for that discussion: the B0006 AE-specific degrada
 - SOH can exceed 100% by up to 0.8% (measurement variability vs the early-life reference); B0006 fades to 57% (NASA ran past EOL) — data kept as measured.
 - Gate breaches in individual runs were disclosed in each step report (Steps 7–10) and none of the working-fold conclusions depend on them.
 
-## 5. Ablation log (summary)
-
-`eis_raw` → `step5_6` → `step7_8` → `step9_10` → `step12` → `step14_16` (full lines in `USER.md` / step reports)
-
-## 6. Artifacts
+## 5. Artifacts
 
 | Folder | Content |
 |---|---|

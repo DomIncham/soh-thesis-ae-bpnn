@@ -84,10 +84,7 @@ Run under this exact protocol: Mean predictor, Linear/Ridge baseline, Raw EIS â†
 
 ---
 
-## Ablation log
-
-`2026-09-23 | step7_8 | RMSE 8.57-8.89 %SOH (tol ns); B0018 R2<0 all runs | tolerance no downstream effect; B0018 fold fails -> Step 9`
-
+#
 ## Artifacts (`Autoencoder/nested_lobo/`)
 
 | File | Purpose |
