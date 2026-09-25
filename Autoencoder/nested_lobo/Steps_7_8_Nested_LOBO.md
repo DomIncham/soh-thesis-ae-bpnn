@@ -69,8 +69,8 @@ Interpretation: B0005–07 EIS cycles sit either 1 cycle or 3 cycles behind a ca
 2. The "matched" (3m) arm is vacuous by construction. Backward matching gives every kept row (gap ≤ 1) the same capacity label under tolerance 1 and tolerance 3, so the matched subset carries identical labels: measured results are identical to tol1 to 4 decimals. What tolerance changes is which rows exist (retention), not the label value of shared rows. The retention-vs-alignment confound therefore remains a single variable: sample count.
 3. The prediction collapse is fixed on 3 of 4 folds. With nested LOBO + %SOH + standardized targets + EarlyStopping, test R² is positive for B0005 (+0.54), B0006 (+0.06…+0.24), B0007 (+0.62…+0.72): the old single-split pipeline gave R² ≈ −0.03 and collapse.
 4. The B0018 fold fails in every configuration (12/12 runs, test R² −0.56…−2.15). B0018 has 52 matched spectra and the steepest domain difference (Steps 1–4: only 53 impedance measurements; SOH range 73–101%). The failure is fold-specific, not tolerance-specific and not seed-specific. This localizes the open problem to cross-battery generalization toward B0018 and sets up Step 9 (Raw EIS → BPNN vs PCA → BPNN vs AE → BPNN under this identical protocol): if all three fail on B0018, the problem is the EIS representation; if only AE fails, it is the feature extraction.
-5. EarlyStopping is doing its job: AE early-stopped at 129–192 epochs mean (max 500): different per configuration, replacing the fixed "300 epochs" claim (Part I1).
-6. Inner validation selects differently per fold: arch counts [16]×20, [8,4]×14, [8]×14; L2 0×27 / 1e-4×21: hyperparameters were chosen without the outer test battery (Part C2).
+5. EarlyStopping is doing its job: AE early-stopped at 129–192 epochs mean (max 500), differing per configuration, replacing the fixed "300 epochs" claim (Part I1).
+6. Inner validation selects differently per fold: arch counts [16]×20, [8,4]×14, [8]×14; L2 0×27 / 1e-4×21; the hyperparameters were chosen without the outer test battery (Part C2).
 
 ## 5. Limitations
 
