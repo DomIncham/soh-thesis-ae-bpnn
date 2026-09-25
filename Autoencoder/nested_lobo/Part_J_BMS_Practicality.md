@@ -1,8 +1,8 @@
-# Part J: BMS Practicality Discussion (advisor Part J) — EIS vs Time-Domain
+# Part J: BMS Practicality Discussion (advisor Part J): EIS vs Time-Domain
 
-**Date:** 2026-09-25
-**Scope:** Advisor Part J — "When claiming real-time BMS suitability, compare: measurement requirements, computational complexity, required sensors/hardware, online feasibility, sensitivity to operating conditions."
-**Evidence base:** Steps 7–16 measured results (this repository).
+Date: 2026-09-25
+Scope: Advisor Part J: "When claiming real-time BMS suitability, compare: measurement requirements, computational complexity, required sensors/hardware, online feasibility, sensitivity to operating conditions."
+Evidence base: Steps 7–16 measured results (this repository).
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Aspect | EIS pipeline | Time-domain pipeline |
 |---|---|---|
-| Excitation | Dedicated small-AC injection swept over 0.1 Hz–5 kHz (39 frequencies per measurement, minutes per sweep) | None — uses the charge/discharge current already applied |
+| Excitation | Dedicated small-AC injection swept over 0.1 Hz–5 kHz (39 frequencies per measurement, minutes per sweep) | None: uses the charge/discharge current already applied |
 | Measurement condition | Quasi-static; the battery is taken through a dedicated impedance procedure | Normal operation (the logged charge/discharge cycle itself) |
 | Data needed | 39 complex impedance points per sweep | V(t), I(t), T(t) of one charge + one discharge cycle |
 
@@ -27,7 +27,7 @@ The time-domain features require no dedicated excitation procedure; they are com
 
 | Stage | EIS pipeline | Time-domain pipeline |
 |---|---|---|
-| Preprocessing | Interpolation 39 → 128 points on the nominal grid | 8 scalar features (durations, means, two linear slopes) — O(n) over the logged cycle |
+| Preprocessing | Interpolation 39 → 128 points on the nominal grid | 8 scalar features (durations, means, two linear slopes): O(n) over the logged cycle |
 | Feature model | AE: 256→128→17→128→256 (trained offline); encoder at inference | AE-on-TD variant: 8→4 (or none for TD-Ridge) |
 | Regressor | BPNN (17 → ≤16 hidden units) | BPNN (8 → ≤16) or closed-form Ridge |
 
@@ -35,8 +35,8 @@ Both inference paths are lightweight by modern standards; the time-domain path i
 
 ## 4. Online feasibility
 
-- **Time-domain:** cycle-level SOH after each completed charge/discharge cycle — matches how capacity-fade SOH itself is defined (capacity of that cycle). Feasible in any BMS that logs cycles. Features are causal: discharge features come from the cycle being scored; charge features come from the **preceding** charge only (Steps 14–16).
-- **EIS:** cycle-level, but requires the dedicated sweep procedure and hardware; NASA's own log contains impedance only every ~2.2 cycles (278 impedance vs 616 cycles for B0005), and Step 8 showed the EIS↔capacity mapping depends on tolerance because the two measurements are not co-timed.
+- Time-domain: cycle-level SOH after each completed charge/discharge cycle: matches how capacity-fade SOH itself is defined (capacity of that cycle). Feasible in any BMS that logs cycles. Features are causal: discharge features come from the cycle being scored; charge features come from the preceding charge only (Steps 14–16).
+- EIS: cycle-level, but requires the dedicated sweep procedure and hardware; NASA's own log contains impedance only every ~2.2 cycles (278 impedance vs 616 cycles for B0005), and Step 8 showed the EIS↔capacity mapping depends on tolerance because the two measurements are not co-timed.
 - Neither pipeline estimates SOH mid-discharge; both are cycle-level estimators.
 
 ## 5. Sensitivity to operating conditions / cross-battery behavior (measured in Steps 7–16)
@@ -47,7 +47,7 @@ Both inference paths are lightweight by modern standards; the time-domain path i
 
 ## 6. Conclusion for the thesis discussion
 
-On this dataset, the time-domain pipeline is more practical for a production BMS (no extra hardware, simpler preprocessing, causal features) **and** more accurate cross-battery (Steps 14–16). The EIS pipeline's role, if retained, should be argued on grounds other than cycle-level SOH accuracy (e.g., mechanism diagnostics), and any such claim requires its own experiments.
+On this dataset, the time-domain pipeline is more practical for a production BMS (no extra hardware, simpler preprocessing, causal features) and more accurate cross-battery (Steps 14–16). The EIS pipeline's role, if retained, should be argued on grounds other than cycle-level SOH accuracy (e.g., mechanism diagnostics), and any such claim requires its own experiments.
 
 ---
 
