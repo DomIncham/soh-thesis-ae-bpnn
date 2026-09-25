@@ -11,22 +11,22 @@
 
 | Step | Task (advisor Part) | Result | Evidence |
 |---|---|---|---|
-| 1–2 | Verify NASA EIS variables and frequency ordering (A1–A2, M-A/B) | CSV = `Rectified_Impedance`, exact on all 34,593 rows (max diff < 1e-15 Ohm); row order consistent with low→high frequency (887/887 spectra, indirect evidence); **no per-point frequency exists in the distributed `.mat`** — any frequency column is a declared assumption. The flat Nyquist arc is a property of NASA's `Rectified_Impedance` itself (Case 2): max \|Im\| ≈ 2–6 mOhm across all 887 spectra, while the raw `Battery_impedance` differs by 32–68× and contains values that are not physically plausible | `eis_verify/EIS_Raw_Verification.md` |
-| 3–4 | Frequency-ordered table + plots; spectrum integrity (A3–A5, M-C/D) | 39 points × 887 spectra = 34,593 CSV rows; timestamps monotonic; 0 NaN/Inf/duplicates; no isolated outlier points | same + `A3_*_3plots.png`, `A7_*` |
+| 1–2 | Verify NASA EIS variables and frequency ordering (A1–A2, M-A/B) | CSV = `Rectified_Impedance`, exact on all 34,593 rows (max diff < 1e-15 Ohm); row order consistent with low→high frequency (887/887 spectra, indirect evidence); **no per-point frequency exists in the distributed `.mat`** — any frequency column is a declared assumption. The flat Nyquist arc is a property of NASA's `Rectified_Impedance` itself (Case 2): max \|Im\| ≈ 2–6 mOhm across all 887 spectra, while the raw `Battery_impedance` differs by 32–68× and contains values that are not physically plausible | [`eis_verify/EIS_Raw_Verification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/eis_verify/EIS_Raw_Verification.md) |
+| 3–4 | Frequency-ordered table + plots; spectrum integrity (A3–A5, M-C/D) | 39 points × 887 spectra = 34,593 CSV rows; timestamps monotonic; 0 NaN/Inf/duplicates; no isolated outlier points | [`eis_verify/EIS_Raw_Verification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/eis_verify/EIS_Raw_Verification.md) + [`figures/A3_*`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/figures/), [`figures/A7_*`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/figures/) |
 | 5 | Re-evaluate interpolation with a quantitative measure (A8) | Chord-envelope overshoot: **PCHIP 0 in all 1,774 checks; Cubic 0.25–1.76 mOhm mean, worst 11.2 mOhm** (exceeds the full reactive span 2–6 mOhm); Linear also 0 but not smooth | `Interpolation_Reeval.md` |
-| 6b | Expanded AE reconstruction metrics (D3) | Re(Z) RMSE / Im(Z) RMSE separately + nRMSE + relative error, per battery (table in Section 4); reproduces the B0006 Re RMSE anomaly (14.6 mOhm, ~13× the other batteries) | `ae_reconstruction_d3_metrics.csv` |
-| 6 | Recheck Figure 6 (H2) | AE reconstructs the **interpolated input**, not the measurement (recon-vs-measured = recon-vs-input + ~0.1 mOhm); B0006 anomaly is AE-specific | `Step6_Fig6_recheck.png` |
-| 7 | Nested 4-fold LOBO (C1–C3) | Implemented; inner validation selects different configs per fold; leakage probes PASS | `Steps_7_8_Nested_LOBO.md` |
-| 8 | Tolerance 1/2/3 on downstream metrics (E1–E3) | Tolerances indistinguishable downstream (RMSE 8.57–8.89 %SOH, all within 1 std) → pre-declared rule selects **tolerance 1**; gap distribution reported (bimodal: gap 1 or 3 for B0005–07) | same |
-| 9 | Raw EIS / PCA / AE → BPNN (F1.3–4) | Working folds: **PCA best (RMSE 5.92, R² +0.61)**; AE loses to PCA on all three | `Steps_9_10_Baselines.md` |
-| 10 | Mean + Linear baselines (F1.1–2) | Mean predictor marks the collapse baseline (R² −0.77); 256-dim Ridge is fragile (disclosed breaches) | same |
-| 11 | MAE/RMSE/R² for every unseen battery (D2) | Per-fold tables in both reports above | — |
-| 12 | Explain Figure 10 quantitatively (G1–G3) | Old RMSE = 1.126 × std(y) → statistically a flat line, 12.6% worse than the trivial mean; cause chain: unstable latents (correlation flip) + unstandardized target + fixed epochs + single split | `Steps_12_Fig10_Collapse.md` |
-| 13 | mean ± std across folds and seeds (C3) | All aggregates use 12 runs (4 folds × 3 seeds) | — |
-| 14–15 | Time-domain baseline and comparison (B1–B5) | **TD-BPNN: RMSE 3.59, R² +0.85, positive on ALL four folds including B0018 (+0.79)**; EIS pipelines negative on B0018 (−1.0 to −1.2) | `Steps_14_16_TimeDomain.md` |
-| 16 | Justify EIS vs time-domain (B6) | Measured pattern matches the B6 criterion verbatim: R²_time ≫ 0 while R²_EIS < 0 → the cross-battery failure is an **EIS representation problem, not a model problem**; the BPNN architecture is cleared | same |
-| 17 | EarlyStopping + ModelCheckpoint (I1) | EarlyStopping verified (AE stops at 129–192 epochs); ModelCheckpoint demonstrated: best weights saved at epoch 325/355, reloaded, metrics reproduce exactly (test RMSE 2.5210, R² 0.9402) | `checkpoints/`, `step17_checkpoint.py` |
-| 18 | Reconstruct all results with the corrected pipeline | This report + the regenerated figures below | `figures/` |
+| 6b | Expanded AE reconstruction metrics (D3) | Re(Z) RMSE / Im(Z) RMSE separately + nRMSE + relative error, per battery (table in Section 4); reproduces the B0006 Re RMSE anomaly (14.6 mOhm, ~13× the other batteries) | [`ae_reconstruction_d3_metrics.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/ae_reconstruction_d3_metrics.csv) |
+| 6 | Recheck Figure 6 (H2) | AE reconstructs the **interpolated input**, not the measurement (recon-vs-measured = recon-vs-input + ~0.1 mOhm); B0006 anomaly is AE-specific | [`Step6_Fig6_recheck.png`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/figures/Step6_Fig6_recheck.png) |
+| 7 | Nested 4-fold LOBO (C1–C3) | Implemented; inner validation selects different configs per fold; leakage probes PASS | [`Steps_7_8_Nested_LOBO.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_7_8_Nested_LOBO.md) |
+| 8 | Tolerance 1/2/3 on downstream metrics (E1–E3) | Tolerances indistinguishable downstream (RMSE 8.57–8.89 %SOH, all within 1 std) → pre-declared rule selects **tolerance 1**; gap distribution reported (bimodal: gap 1 or 3 for B0005–07) | [`Steps_7_8_Nested_LOBO.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_7_8_Nested_LOBO.md) |
+| 9 | Raw EIS / PCA / AE → BPNN (F1.3–4) | Working folds: **PCA best (RMSE 5.92, R² +0.61)**; AE loses to PCA on all three | [`Steps_9_10_Baselines.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_9_10_Baselines.md) |
+| 10 | Mean + Linear baselines (F1.1–2) | Mean predictor marks the collapse baseline (R² −0.77); 256-dim Ridge is fragile (disclosed breaches) | [`Steps_9_10_Baselines.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_9_10_Baselines.md) |
+| 11 | MAE/RMSE/R² for every unseen battery (D2) | Per-fold tables in both reports above | [`Steps_7_8_Nested_LOBO.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_7_8_Nested_LOBO.md), [`Steps_9_10_Baselines.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_9_10_Baselines.md) |
+| 12 | Explain Figure 10 quantitatively (G1–G3) | Old RMSE = 1.126 × std(y) → statistically a flat line, 12.6% worse than the trivial mean; cause chain: unstable latents (correlation flip) + unstandardized target + fixed epochs + single split | [`Steps_12_Fig10_Collapse.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_12_Fig10_Collapse.md) |
+| 13 | mean ± std across folds and seeds (C3) | All aggregates use 12 runs (4 folds × 3 seeds) | [`Steps_7_8_Nested_LOBO.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_7_8_Nested_LOBO.md), [`b7_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/b7_results.csv) |
+| 14–15 | Time-domain baseline and comparison (B1–B5) | **TD-BPNN: RMSE 3.59, R² +0.85, positive on ALL four folds including B0018 (+0.79)**; EIS pipelines negative on B0018 (−1.0 to −1.2) | [`Steps_14_16_TimeDomain.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_14_16_TimeDomain.md) |
+| 16 | Justify EIS vs time-domain (B6) | Measured pattern matches the B6 criterion verbatim: R²_time ≫ 0 while R²_EIS < 0 → the cross-battery failure is an **EIS representation problem, not a model problem**; the BPNN architecture is cleared | [`Steps_14_16_TimeDomain.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_14_16_TimeDomain.md) |
+| 17 | EarlyStopping + ModelCheckpoint (I1) | EarlyStopping verified (AE stops at 129–192 epochs); ModelCheckpoint demonstrated: best weights saved at epoch 325/355, reloaded, metrics reproduce exactly (test RMSE 2.5210, R² 0.9402) | [`checkpoints/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/checkpoints/), [`step17_checkpoint.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/step17_checkpoint.py) |
+| 18 | Reconstruct all results with the corrected pipeline | This report + the regenerated figures below | [`figures/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/figures/) |
 
 ## 2. Headline result (Step 18 figure)
 
@@ -69,7 +69,7 @@ The B0006 anomaly appears in Re(Z) RMSE (≈13× the other batteries) with ident
 
 ## 2c. Ablations (Part F3 / I3) — completed
 
-All previously pending ablations are now executed under the corrected nested protocol (full tables in `Steps_F3_I3_B7_Ablations.md`):
+All previously pending ablations are now executed under the corrected nested protocol (full tables in [`Steps_F3_I3_B7_Ablations.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_F3_I3_B7_Ablations.md)):
 
 | Ablation | Result |
 |---|---|
@@ -92,7 +92,7 @@ Supporting evidence collected for that discussion: the B0006 AE-specific degrada
 ## 4. Declared limitations
 
 - Per-point EIS frequencies are not recoverable from the distributed `.mat`; the interpolation grid rests on the documented 0.1 Hz–5 kHz sweep (declared assumption, Step 1–2).
-- Time-domain features describe a completed discharge cycle — practical for cycle-level SOH logging (the BMS records every V/I/T cycle), not a mid-discharge estimator; the full BMS practicality comparison (Part J) is delivered in `Part_J_BMS_Practicality.md`.
+- Time-domain features describe a completed discharge cycle — practical for cycle-level SOH logging (the BMS records every V/I/T cycle), not a mid-discharge estimator; the full BMS practicality comparison (Part J) is delivered in [`Part_J_BMS_Practicality.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Part_J_BMS_Practicality.md).
 - ICA/DVA and pulse-resistance features were not built (granularity insufficient) — declared, not skipped.
 - SOH can exceed 100% by up to 0.8% (measurement variability vs the early-life reference); B0006 fades to 57% (NASA ran past EOL) — data kept as measured.
 - Gate breaches in individual runs were disclosed in each step report (Steps 7–10) and none of the working-fold conclusions depend on them.
@@ -101,6 +101,12 @@ Supporting evidence collected for that discussion: the B0006 AE-specific degrada
 
 | Folder | Content |
 |---|---|
-| `Autoencoder/eis_verify/` | Steps 1–6: verification scripts, raw Nyquist figures, verified dataset, `EIS_Raw_Verification.md`, `Interpolation_Reeval.md` |
-| `Autoencoder/nested_lobo/` | Steps 7–17: mapped datasets, harnesses, all results CSVs, gates, probes, checkpoint, step reports, `figures/` (this report's images) |
-| `NASA DataSet/1. BatteryAgingARC-FY08Q4/` | Verified source data (tracked in Git since Steps 1–4) |
+| [`Autoencoder/eis_verify/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/eis_verify/) | Steps 1–6: verification scripts, raw Nyquist figures, verified dataset, `EIS_Raw_Verification.md`, `Interpolation_Reeval.md` |
+| [`Autoencoder/nested_lobo/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/) | Steps 7–17: mapped datasets, harnesses, all results CSVs, gates, probes, checkpoint, step reports, [`figures/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/Autoencoder/nested_lobo/figures/) (this report's images) |
+| [`NASA DataSet/1. BatteryAgingARC-FY08Q4/`](https://github.com/DomIncham/soh-thesis-ae-bpnn/tree/main/NASA%20DataSet/1.%20BatteryAgingARC-FY08Q4/) | Verified source data (tracked in Git since Steps 1–4) |
+
+## 6. Repository
+
+All scripts, step reports, results, figures, and the verified dataset are versioned in this repository — every linked filename in this report opens directly on GitHub:
+
+[**https://github.com/DomIncham/soh-thesis-ae-bpnn**](https://github.com/DomIncham/soh-thesis-ae-bpnn) (private repository; advisor access granted by invitation — Y.F. Luo, NTUST)
