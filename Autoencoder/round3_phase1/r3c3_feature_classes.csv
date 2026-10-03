@@ -1,0 +1,9 @@
+feature,side,mean_R2_capacity,mean_R2_soh,mean_r_capacity,pooled_r_soh,per_battery_R2_capacity,across_battery_spread,class_
+dis_duration,discharge,0.972,0.972,0.986,0.891,"[0.952, 0.986, 0.964, 0.985]",60.45,PROXY
+dis_mean_V,discharge,0.948,0.948,0.974,0.955,"[0.965, 0.932, 0.924, 0.971]",0.054,PROXY
+cc_dur,charge(previous cycle),0.651,0.651,0.801,0.847,"[0.742, 0.824, 0.615, 0.423]",585.891,BORDERLINE
+dis_V_slope,discharge,0.6,0.6,0.233,-0.225,"[0.123, 0.417, 0.944, 0.915]",0.0,BORDERLINE
+cv_I_slope,charge(previous cycle),0.556,0.556,-0.275,-0.545,"[0.395, 0.535, 0.44, 0.853]",0.0,BORDERLINE
+cv_dur,charge(previous cycle),0.552,0.552,-0.725,-0.782,"[0.661, 0.758, 0.587, 0.203]",585.891,BORDERLINE
+dis_mean_T,discharge,0.43,0.43,-0.605,-0.564,"[0.656, 0.677, 0.346, 0.04]",1.698,SAFE
+ch_mean_T,charge(previous cycle),0.018,0.018,0.102,0.022,"[0.0, 0.052, 0.006, 0.013]",0.698,SAFE

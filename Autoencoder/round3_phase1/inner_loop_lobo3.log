@@ -1,1 +1,29 @@
 [device] cpu | threads=8
+seed42 test=B0005 cfg=[8, 4]/l2=0.0001 sel_epochs=274 | R2=+0.990 RMSE=1.057
+seed42 test=B0006 cfg=[8, 4]/l2=0.0001 sel_epochs=274 | R2=+0.878 RMSE=4.354
+  [guard] inner-lobo3: no candidate converged; using [8]/l2=0.0001 200ep
+seed42 test=B0007 cfg=[8]/l2=0.0001 sel_epochs=200 | R2=+0.981 RMSE=1.181
+seed42 test=B0018 cfg=[16]/l2=0.0 sel_epochs=254 | R2=+0.826 RMSE=3.497
+seed7 test=B0005 cfg=[8]/l2=0.0001 sel_epochs=274 | R2=+0.982 RMSE=1.366
+seed7 test=B0006 cfg=[8]/l2=0.0001 sel_epochs=274 | R2=+0.921 RMSE=3.502
+seed7 test=B0007 cfg=[16]/l2=0.0001 sel_epochs=128 | R2=+0.983 RMSE=1.113
+seed7 test=B0018 cfg=[8]/l2=0.0 sel_epochs=398 | R2=+0.805 RMSE=3.700
+seed123 test=B0005 cfg=[8, 4]/l2=0.0001 sel_epochs=273 | R2=+0.984 RMSE=1.303
+seed123 test=B0006 cfg=[8, 4]/l2=0.0001 sel_epochs=273 | R2=+0.874 RMSE=4.419
+seed123 test=B0007 cfg=[8]/l2=0.0 sel_epochs=216 | R2=+0.978 RMSE=1.253
+seed123 test=B0018 cfg=[8]/l2=0.0 sel_epochs=308 | R2=+0.806 RMSE=3.690
+
+=== inner=lobo3: refit_on_3, mean / median / std over 4 folds x 3 seeds ===
+
+        test_MAE  test_RMSE  test_R2  test_MAPE  test_RMSE_Ah
+mean       2.271      2.536    0.917      2.814         0.049
+median     2.045      2.432    0.950      2.570         0.045
+std        1.315      1.413    0.075      1.759         0.028
+
+test_R2 per fold (mean over seeds):
+test_battery
+B0005    0.985
+B0006    0.891
+B0007    0.981
+B0018    0.813
+saved
