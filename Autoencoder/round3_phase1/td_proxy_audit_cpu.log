@@ -1,0 +1,73 @@
+[device] cpu | threads=8
+TD-All         seed42 test=B0005 n_feat=8 | R2=+0.961 RMSE=2.034% MAPE=2.35%
+TD-All         seed42 test=B0006 n_feat=8 | R2=+0.935 RMSE=3.174% MAPE=3.64%
+TD-All         seed42 test=B0007 n_feat=8 | R2=+0.976 RMSE=1.319% MAPE=1.29%
+TD-All         seed42 test=B0018 n_feat=8 | R2=+0.841 RMSE=3.339% MAPE=3.62%
+TD-All         seed7 test=B0005 n_feat=8 | R2=+0.957 RMSE=2.134% MAPE=2.27%
+TD-All         seed7 test=B0006 n_feat=8 | R2=+0.901 RMSE=3.912% MAPE=4.62%
+TD-All         seed7 test=B0007 n_feat=8 | R2=+0.976 RMSE=1.331% MAPE=1.38%
+TD-All         seed7 test=B0018 n_feat=8 | R2=+0.888 RMSE=2.805% MAPE=2.76%
+TD-All         seed123 test=B0005 n_feat=8 | R2=+0.985 RMSE=1.270% MAPE=1.20%
+TD-All         seed123 test=B0006 n_feat=8 | R2=+0.864 RMSE=4.588% MAPE=4.77%
+TD-All         seed123 test=B0007 n_feat=8 | R2=+0.983 RMSE=1.113% MAPE=1.02%
+TD-All         seed123 test=B0018 n_feat=8 | R2=+0.809 RMSE=3.664% MAPE=4.13%
+  [guard] dropped 2 non-converged candidate(s) (sel_epochs < 20)
+TD-Proxy-Free  seed42 test=B0005 n_feat=7 | R2=+0.956 RMSE=2.154% MAPE=2.06%
+TD-Proxy-Free  seed42 test=B0006 n_feat=7 | R2=+0.876 RMSE=4.386% MAPE=4.54%
+TD-Proxy-Free  seed42 test=B0007 n_feat=7 | R2=+0.929 RMSE=2.277% MAPE=2.13%
+TD-Proxy-Free  seed42 test=B0018 n_feat=7 | R2=+0.763 RMSE=4.080% MAPE=4.04%
+TD-Proxy-Free  seed7 test=B0005 n_feat=7 | R2=+0.963 RMSE=1.997% MAPE=1.83%
+TD-Proxy-Free  seed7 test=B0006 n_feat=7 | R2=+0.898 RMSE=3.970% MAPE=4.59%
+TD-Proxy-Free  seed7 test=B0007 n_feat=7 | R2=+0.955 RMSE=1.817% MAPE=1.53%
+TD-Proxy-Free  seed7 test=B0018 n_feat=7 | R2=+0.745 RMSE=4.233% MAPE=4.24%
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Proxy-Free  seed123 test=B0005 n_feat=7 | R2=+0.851 RMSE=3.974% MAPE=3.64%
+TD-Proxy-Free  seed123 test=B0006 n_feat=7 | R2=+0.733 RMSE=6.437% MAPE=6.36%
+TD-Proxy-Free  seed123 test=B0007 n_feat=7 | R2=+0.945 RMSE=2.005% MAPE=1.98%
+TD-Proxy-Free  seed123 test=B0018 n_feat=7 | R2=+0.629 RMSE=5.107% MAPE=5.34%
+Oracle-proxy   seed42 test=B0005 n_feat=1 | R2=+0.907 RMSE=3.136% MAPE=3.02%
+Oracle-proxy   seed42 test=B0006 n_feat=1 | R2=+0.305 RMSE=10.387% MAPE=13.77%
+Oracle-proxy   seed42 test=B0007 n_feat=1 | R2=+0.594 RMSE=5.433% MAPE=6.14%
+Oracle-proxy   seed42 test=B0018 n_feat=1 | R2=+0.743 RMSE=4.250% MAPE=4.75%
+Oracle-proxy   seed7 test=B0005 n_feat=1 | R2=+0.929 RMSE=2.738% MAPE=2.64%
+Oracle-proxy   seed7 test=B0006 n_feat=1 | R2=+0.310 RMSE=10.348% MAPE=13.63%
+Oracle-proxy   seed7 test=B0007 n_feat=1 | R2=+0.710 RMSE=4.591% MAPE=4.92%
+Oracle-proxy   seed7 test=B0018 n_feat=1 | R2=+0.807 RMSE=3.681% MAPE=3.97%
+  [guard] dropped 2 non-converged candidate(s) (sel_epochs < 20)
+Oracle-proxy   seed123 test=B0005 n_feat=1 | R2=+0.947 RMSE=2.375% MAPE=2.24%
+Oracle-proxy   seed123 test=B0006 n_feat=1 | R2=+0.310 RMSE=10.344% MAPE=13.64%
+Oracle-proxy   seed123 test=B0007 n_feat=1 | R2=+0.664 RMSE=4.943% MAPE=5.49%
+Oracle-proxy   seed123 test=B0018 n_feat=1 | R2=+0.735 RMSE=4.315% MAPE=4.60%
+
+=== refit_on_3, mean +/- std over 4 folds x 3 seeds ===
+               test_MAE        test_RMSE        test_R2        test_MAPE        test_RMSE_Ah       
+                  mean    std      mean    std    mean    std      mean    std         mean    std
+setting                                                                                           
+Oracle-proxy     5.066  2.941     5.545  3.034   0.663  0.239     6.567  4.436        0.107  0.064
+TD-All           2.244  1.035     2.557  1.186   0.923  0.061     2.755  1.376        0.049  0.024
+TD-Proxy-Free    2.821  1.120     3.536  1.475   0.854  0.110     3.523  1.584        0.068  0.030
+
+sel_epochs per setting (guard visibility, F4):
+               min  median  max
+setting                        
+Oracle-proxy    44   148.0  294
+TD-All          48   325.0  499
+TD-Proxy-Free   20   108.0  476
+degenerate fold-seeds flagged: 3 / 36
+
+test_R2 per fold:
+setting       Oracle-proxy  TD-All  TD-Proxy-Free
+test_battery                                     
+B0005                0.928   0.968          0.923
+B0006                0.308   0.900          0.836
+B0007                0.656   0.978          0.943
+B0018                0.762   0.846          0.712
+
+test_RMSE %SOH per fold:
+setting       Oracle-proxy  TD-All  TD-Proxy-Free
+test_battery                                     
+B0005                2.750   1.813          2.708
+B0006               10.360   3.891          4.931
+B0007                4.989   1.254          2.033
+B0018                4.082   3.270          4.474
+saved

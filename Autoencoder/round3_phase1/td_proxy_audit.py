@@ -38,7 +38,7 @@ def run(args):
 
     res = pd.DataFrame(rows)
     res["device"] = R.DEVICE.type
-    tag = ("smoke_" if smoke else "") + R.DEVICE.type
+    tag = args.tag if args.tag else ("smoke_" if smoke else "") + R.DEVICE.type
     res.to_csv(os.path.join(OUT, f"td_proxy_audit_{tag}_results.csv"), index=False)
     pd.concat(preds, ignore_index=True).to_csv(
         os.path.join(OUT, f"td_proxy_audit_{tag}_preds.csv"), index=False)
@@ -48,7 +48,10 @@ def run(args):
         cols = ["test_MAE", "test_RMSE", "test_R2", "test_MAPE", "test_RMSE_Ah"]
         agg = ref.groupby("setting")[cols].agg(["mean", "std"]).round(3)
         print("\n=== refit_on_3, mean +/- std over 4 folds x 3 seeds ===\n", agg.to_string())
-        agg.to_csv(os.path.join(OUT, f"td_proxy_audit_summary_{R.DEVICE.type}.csv"))
+        agg.to_csv(os.path.join(OUT, f"td_proxy_audit_summary_{tag}.csv"))
+        print("\nsel_epochs per setting (guard visibility, F4):")
+        print(ref.groupby("setting").sel_epochs.agg(["min", "median", "max"]).to_string())
+        print(f"degenerate fold-seeds flagged: {int(ref.sel_degenerate.sum())} / {len(ref)}")
         print("\ntest_R2 per fold:")
         print(ref.pivot_table(index="test_battery", columns="setting", values="test_R2")
               .round(3).to_string())
@@ -66,4 +69,7 @@ if __name__ == "__main__":
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--full", action="store_true")
     ap.add_argument("--device", default="cpu", choices=["cpu", "cuda", "auto"])
+    ap.add_argument("--tag", default=None,
+                    help="suffix for output filenames (default: device type); "
+                         "use to keep a new run beside an existing baseline")
     run(ap.parse_args())

@@ -1,0 +1,55 @@
+prediction dumps: ['steps14_16_refit_cpu_preds.csv', 'td_proxy_audit_cpu_preds.csv']
+
+=== pooled (4 folds concatenated) per seed ===
+
+                        source device       setting      stage  seed                   scope   n  pooled_R2  pooled_RMSE  pooled_MAE  pooled_MAPE  pooled_RMSE_Ah  pooled_nRMSE
+steps14_16_refit_cpu_preds.csv    cpu        TD-All  pre_refit     7 per_seed_pooled_4_folds 636     0.9174       3.1526      2.2802       2.9144          0.0581        0.1020
+steps14_16_refit_cpu_preds.csv    cpu        TD-All  pre_refit    42 per_seed_pooled_4_folds 636     0.8784       3.8240      2.9425       3.8167          0.0704        0.1238
+steps14_16_refit_cpu_preds.csv    cpu        TD-All  pre_refit   123 per_seed_pooled_4_folds 636     0.7549       5.4297      3.7469       4.9751          0.1000        0.1757
+steps14_16_refit_cpu_preds.csv    cpu        TD-All refit_on_3     7 per_seed_pooled_4_folds 636     0.9389       2.7105      2.2336       2.7596          0.0499        0.0877
+steps14_16_refit_cpu_preds.csv    cpu        TD-All refit_on_3    42 per_seed_pooled_4_folds 636     0.9457       2.5551      2.2009       2.6760          0.0471        0.0827
+steps14_16_refit_cpu_preds.csv    cpu        TD-All refit_on_3   123 per_seed_pooled_4_folds 636     0.9243       3.0167      2.1709       2.7018          0.0556        0.0976
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy  pre_refit     7 per_seed_pooled_4_folds 636     0.6270       6.6985      5.3127       6.9603          0.1234        0.2168
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy  pre_refit    42 per_seed_pooled_4_folds 636     0.5966       6.9662      5.8487       7.5898          0.1283        0.2255
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy  pre_refit   123 per_seed_pooled_4_folds 636     0.5870       7.0480      5.8193       7.6253          0.1298        0.2281
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy refit_on_3     7 per_seed_pooled_4_folds 636     0.6787       6.2167      4.9329       6.4223          0.1145        0.2012
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy refit_on_3    42 per_seed_pooled_4_folds 636     0.6455       6.5301      5.4692       7.0408          0.1203        0.2113
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy refit_on_3   123 per_seed_pooled_4_folds 636     0.6668       6.3304      5.0494       6.6005          0.1166        0.2049
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All  pre_refit     7 per_seed_pooled_4_folds 636     0.9174       3.1526      2.2802       2.9144          0.0581        0.1020
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All  pre_refit    42 per_seed_pooled_4_folds 636     0.8784       3.8240      2.9425       3.8167          0.0704        0.1238
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All  pre_refit   123 per_seed_pooled_4_folds 636     0.7549       5.4297      3.7469       4.9751          0.1000        0.1757
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All refit_on_3     7 per_seed_pooled_4_folds 636     0.9389       2.7105      2.2336       2.7596          0.0499        0.0877
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All refit_on_3    42 per_seed_pooled_4_folds 636     0.9457       2.5551      2.2009       2.6760          0.0471        0.0827
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All refit_on_3   123 per_seed_pooled_4_folds 636     0.9243       3.0167      2.1709       2.7018          0.0556        0.0976
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free  pre_refit     7 per_seed_pooled_4_folds 636     0.6411       6.5700      4.4471       6.0122          0.1210        0.2126
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free  pre_refit    42 per_seed_pooled_4_folds 636     0.3848       8.6021      5.9724       8.0668          0.1584        0.2784
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free  pre_refit   123 per_seed_pooled_4_folds 636     0.2164       9.7082      6.3989       8.7796          0.1788        0.3142
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free refit_on_3     7 per_seed_pooled_4_folds 636     0.9185       3.1318      2.3880       2.9785          0.0577        0.1014
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free refit_on_3    42 per_seed_pooled_4_folds 636     0.9075       3.3364      2.5466       3.1447          0.0614        0.1080
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free refit_on_3   123 per_seed_pooled_4_folds 636     0.8205       4.6467      3.3633       4.2732          0.0856        0.1504
+
+=== pooled mean +/- std across seeds ===
+
+                                pooled_R2         pooled_RMSE         pooled_MAE         pooled_MAPE         pooled_RMSE_Ah         pooled_nRMSE        
+                                     mean     std        mean     std       mean     std        mean     std           mean     std         mean     std
+device setting       stage                                                                                                                              
+cpu    Oracle-proxy  pre_refit     0.6035  0.0209      6.9042  0.1828     5.6602  0.3013      7.3918  0.3741         0.1271  0.0034       0.2234  0.0059
+                     refit_on_3    0.6637  0.0168      6.3591  0.1587     5.1505  0.2821      6.6879  0.3184         0.1171  0.0029       0.2058  0.0051
+       TD-All        pre_refit     0.8502  0.0759      4.1354  1.0465     2.9899  0.6570      3.9021  0.9240         0.0762  0.0193       0.1338  0.0339
+                     refit_on_3    0.9363  0.0098      2.7608  0.2100     2.2018  0.0281      2.7125  0.0383         0.0508  0.0039       0.0893  0.0068
+       TD-Proxy-Free pre_refit     0.4141  0.2139      8.2934  1.5917     5.6062  1.0262      7.6195  1.4369         0.1527  0.0293       0.2684  0.0515
+                     refit_on_3    0.8821  0.0537      3.7050  0.8220     2.7660  0.5234      3.4655  0.7044         0.0682  0.0151       0.1199  0.0266
+
+=== grand pooled (all seeds) ===
+
+                        source device       setting      stage  seed                  scope    n  pooled_R2  pooled_RMSE  pooled_MAE  pooled_MAPE  pooled_RMSE_Ah  pooled_nRMSE
+steps14_16_refit_cpu_preds.csv    cpu        TD-All  pre_refit    -1 grand_pooled_all_seeds 1908     0.8502       4.2443      2.9899       3.9021          0.0782        0.1374
+steps14_16_refit_cpu_preds.csv    cpu        TD-All refit_on_3    -1 grand_pooled_all_seeds 1908     0.9363       2.7674      2.2018       2.7125          0.0510        0.0896
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy  pre_refit    -1 grand_pooled_all_seeds 1908     0.6035       6.9058      5.6602       7.3918          0.1272        0.2235
+  td_proxy_audit_cpu_preds.csv    cpu  Oracle-proxy refit_on_3    -1 grand_pooled_all_seeds 1908     0.6637       6.3604      5.1505       6.6879          0.1171        0.2058
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All  pre_refit    -1 grand_pooled_all_seeds 1908     0.8502       4.2443      2.9899       3.9021          0.0782        0.1374
+  td_proxy_audit_cpu_preds.csv    cpu        TD-All refit_on_3    -1 grand_pooled_all_seeds 1908     0.9363       2.7674      2.2018       2.7125          0.0510        0.0896
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free  pre_refit    -1 grand_pooled_all_seeds 1908     0.4141       8.3947      5.6062       7.6195          0.1546        0.2717
+  td_proxy_audit_cpu_preds.csv    cpu TD-Proxy-Free refit_on_3    -1 grand_pooled_all_seeds 1908     0.8821       3.7653      2.7660       3.4655          0.0693        0.1219
+
+saved: phase1_pooled_metrics.csv

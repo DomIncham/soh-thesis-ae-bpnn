@@ -49,17 +49,43 @@ not a universal one.
 - **Action for Phase 2:** run the Oracle-proxy under the random / chronological splits. Expectation
   is R2 near 1 there. That single number completes the argument.
 
-## Open item (do not lose)
+## Resolved: the TD-Proxy-Free collapse (selection guard, 2026-10-04)
 
-`TD-Proxy-Free` (no `dis_duration`) on fold B0005 collapses for one seed: **seed123 R2 = -0.602**
-(B0005 mean 0.439, std 0.901). The other folds are stable. The "honest, proxy-free" headline number
-is therefore seed-sensitive and must be reported with more seeds (or investigated) before it is used
-as a Phase 3 result.
+`TD-Proxy-Free` (no `dis_duration`) on fold B0005 collapsed for one seed: **seed123 R2 = -0.602**
+with `train_R2 = -0.276`. The cause was not the feature set. `fit_bpnn_ep` returns
+`best_epoch + 1`, so when validation never improves on the first epoch the returned budget is 1 and
+the "best" weights are the initialisation. The refit then reproduced a flat line (var(y_pred) = 0.21
+against var(y_true) = 106.9), while the other two seeds selected 67 and 143 epochs and scored 0.96.
+
+Guard added in `r3common.run_fold`: a candidate may only win on validation RMSE if its selected epoch
+budget is >= `MIN_EP` (20). If no candidate converged, the best-by-validation one is retrained for a
+fixed `RETRAIN_EP` (200) epochs. Result rows now carry a `sel_degenerate` flag and the driver prints
+the `sel_epochs` distribution, so this failure mode is visible instead of silent.
+
+Regression evidence (`td_proxy_audit_cpu.log`, full 36 fold-seeds, guard run compared key-by-key
+against the pre-guard baseline):
+
+| setting | fold-stages changed | outcome |
+|---|---|---|
+| TD-All | **0 / 24** | no-op; the 0.923 headline stands unchanged |
+| Oracle-proxy | **0 / 24** | no-op; 0.663 stands unchanged |
+| TD-Proxy-Free | **2 / 24** | exactly the degenerate fold-seed, both stages |
+
+| TD-Proxy-Free, refit_on_3 | before | after |
+|---|---|---|
+| mean R2 | 0.732 +/- 0.434 | **0.854 +/- 0.110** |
+| mean RMSE | 4.293 +/- 3.124 | **3.536 +/- 1.475** |
+| median R2 | 0.887 | **0.887** (unchanged) |
+| B0005 fold | 0.439 | **0.923** (B0006/07/18 bit-identical) |
+
+The median was already robust to the collapse, so mean and median should both be reported and the
+median treated as the primary headline for the proxy-free setting.
 
 ## Evidence files
 
 - `td_proxy_audit_cpu_results.csv` — per fold-seed metrics, 3 settings x 2 stages
 - `td_proxy_audit_cpu_preds.csv` — per-cycle y_true / y_pred
 - `td_proxy_audit_summary_cpu.csv` — per-setting means
+- `td_proxy_audit_cpu.log` — full 36 fold-seed run under the selection guard
 - `refit_full.log` — the 12 fold-seed refit run
 - `probe_s14b.log` — leakage probe, `max|diff| = 0.00e+00` on both stages

@@ -26,6 +26,14 @@ PROXY_FEATS = ["dis_duration"]  # CC discharge at constant current: Capacity = I
 FEATS_PROXY_FREE = [f for f in FEATS_ALL if f not in PROXY_FEATS]
 ARCHS, L2S = [[8], [16], [8, 4]], [0.0, 1e-4]  # same grid as Round 2 (comparability)
 
+# ---- selection guard (2026-10-04) ------------------------------------------------------------
+# fit_bpnn_ep returns best_epoch+1. When validation never improves on the first epoch the returned
+# budget is 1, i.e. the "best" weights are the initialisation and the refit reproduces a flat line.
+# Observed once: TD-Proxy-Free B0005/seed123 -> sel_epochs=1, train_R2=-0.28, test_R2=-0.60.
+# A candidate must therefore have actually improved before it may win on validation RMSE.
+MIN_EP = 20        # below this the candidate is treated as not converged
+RETRAIN_EP = 200   # fixed budget used when NO candidate converged
+
 SETTINGS = {"TD-All": FEATS_ALL,
             "TD-Proxy-Free": FEATS_PROXY_FREE,
             "Oracle-proxy": PROXY_FEATS}
@@ -153,14 +161,27 @@ def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting):
     assert np.allclose(sc.data_min_, X[m_tr].min(0)), "LEAKAGE: selection scaler != fold-train"
     tr_s, va_s = sc.transform(X[m_tr]), sc.transform(X[m_va])
     mu, sd = soh[m_tr].mean(), soh[m_tr].std()
-    best = None
+    cands = []
     for dims, l2 in itertools.product(ARCHS, L2S):
         bp, ep = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
                              va_s, (soh[m_va] - mu) / sd, seed, bp_max, pat)
         v = float(np.sqrt(np.mean((predict(bp, va_s, mu, sd) - soh[m_va]) ** 2)))
-        if best is None or v < best[0]:
-            best = (v, dims, l2, ep, bp)
-    v, dims, l2, ep, bp_sel = best
+        cands.append((v, dims, l2, ep, bp))
+    ok = [c for c in cands if c[3] >= MIN_EP]
+    sel_degenerate = len(ok) < len(cands)
+    if not ok:
+        # no candidate converged within patience: retrain the best-by-val one on a fixed budget
+        _, dims, l2, _, _ = min(cands, key=lambda c: c[0])
+        bp2, _ = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
+                             None, None, seed, bp_max, pat, epochs=RETRAIN_EP)
+        v = float(np.sqrt(np.mean((predict(bp2, va_s, mu, sd) - soh[m_va]) ** 2)))
+        ok = [(v, dims, l2, RETRAIN_EP, bp2)]
+        print(f"  [guard] no candidate converged (min sel_epochs={min(c[3] for c in cands)}); "
+              f"retrained {dims}/l2={l2} for {RETRAIN_EP} epochs -> val RMSE={v:.4f}")
+    elif sel_degenerate:
+        print(f"  [guard] dropped {len(cands) - len(ok)} non-converged candidate(s) "
+              f"(sel_epochs < {MIN_EP})")
+    v, dims, l2, ep, bp_sel = min(ok, key=lambda c: c[0])
 
     # ---- Stage B: refit on all 3 remaining batteries, same epoch budget ----
     sc2 = MinMaxScaler().fit(X[m_all])
@@ -186,7 +207,8 @@ def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting):
         rows.append(dict(setting=setting, stage=stage, seed=seed, test_battery=BATT[test_b],
                          val_battery=BATT[val_b],
                          fit_batteries=str([BATT[b] for b in fit_batteries]),
-                         cfg=f"{dims}/l2={l2}", sel_epochs=ep, sel_val_rmse=round(v, 4),
+                         cfg=f"{dims}/l2={l2}", sel_epochs=ep, sel_degenerate=sel_degenerate,
+                         sel_val_rmse=round(v, 4),
                          train_RMSE=round(float(trmse), 4), train_R2=round(float(tr2), 4),
                          test_nRMSE=round(ex["test_RMSE"] / float(rng.loc[test_b]), 4),
                          **{k: round(float(x), 4) for k, x in ex.items()}))
