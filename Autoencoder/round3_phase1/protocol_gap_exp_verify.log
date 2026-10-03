@@ -1,0 +1,88 @@
+====================================================================================================
+PHASE 2 AUDIT
+====================================================================================================
+
+[1] completeness
+setting               Oracle-proxy  TD-All  TD-Proxy-Free
+split                                                    
+chronological_within            20      20             20
+lobo_nested                     40      40             40
+random_pooled                    5       5              5
+random_within                   20      20             20
+
+[2] split structure
+    random_within        blocks = ['B0005', 'B0006', 'B0007', 'B0018']
+    chronological_within blocks = ['B0005', 'B0006', 'B0007', 'B0018']
+    random_pooled        blocks = ['pooled']
+
+[3] predictions trace to the raw feature file
+
+[4] metric formulas recomputed (all 4 splits)
+
+[5] REGRESSION: lobo_nested must reproduce the committed Phase 1 numbers exactly
+
+[6] advisor expectation R3-C2: random split should reach R2 > 0.97
+setting               Oracle-proxy  TD-All  TD-Proxy-Free
+split                                                    
+chronological_within         0.179  -1.028         -5.234
+lobo_nested                  0.671   0.927          0.845
+random_pooled                0.815   0.989          0.978
+random_within                0.992   0.979          0.978
+
+medians:
+setting               Oracle-proxy  TD-All  TD-Proxy-Free
+split                                                    
+chronological_within         0.756   0.196         -3.687
+lobo_nested                  0.734   0.947          0.876
+random_pooled                0.818   0.991          0.978
+random_within                0.993   0.995          0.989
+
+Oracle-proxy per split (the advisor expects ~1; measured LOBO 0.663):
+split
+chronological_within    0.179
+lobo_nested             0.671
+random_pooled           0.815
+random_within           0.992
+
+[7] per-fold R2, all splits, TD-All
+              test_R2
+test_battery         
+B0005           0.975
+B0006           0.904
+B0007           0.982
+B0018           0.849
+
+degenerate blocks per split:
+                      sum  count
+split                           
+chronological_within   30     60
+lobo_nested            12    120
+random_pooled           0     15
+random_within           8     60
+
+====================================================================================================
+PASS | 5 seeds present (F3: 2024 and 11 are new) | [7, 11, 42, 123, 2024]
+PASS | all 4 splits present | ['chronological_within', 'lobo_nested', 'random_pooled', 'random_within']
+PASS | all 3 settings present
+PASS | no NaN in any metric column
+PASS | n_train/n_val/n_test populated for every split-based block
+PASS | n_train/n_val are NaN for lobo_nested by design (its fitting set differs per stage)
+PASS | no NaN in preds
+PASS | lobo_nested keeps both stages
+PASS | the new splits have a single stage
+PASS | lobo_nested: 4 folds x 2 stages per (setting, seed) | [8]
+PASS | random_within: 70/10/20 partition covers every cycle exactly once
+PASS | chronological_within: 70/10/20 partition covers every cycle exactly once
+PASS | random_pooled: 70/10/20 partition covers every cycle exactly once
+PASS | preds row count == n_test for a sampled block | 34 vs 34
+PASS | every per-battery block matches the feature file row-for-row | []
+PASS | y_true == raw SOH | max|diff|=0.00e+00
+PASS | recomputed rmse matches every row | max|diff|=4.99e-05
+PASS | recomputed r2 matches every row | max|diff|=5.13e-05
+PASS | recomputed mape matches every row | max|diff|=4.99e-05
+PASS | recomputed ah matches every row | max|diff|=5.00e-05
+PASS | 72 fold-stages matched between Phase 1 and Phase 2 lobo_nested | 72
+PASS | lobo_nested bit-identical to the committed Phase 1 audit | max|diff|=0.00e+00
+PASS | R3-C2 expectation met: random split TD-All R2 > 0.97 | got 0.979
+
+ALL 23 CHECKS PASSED
