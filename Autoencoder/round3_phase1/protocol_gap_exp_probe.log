@@ -1,0 +1,12 @@
+[device] cpu | threads=8
+
+random_within: B0005, 34 outer test rows doubled
+  fit RMSE=0.330400 R2=0.998900 | max|diff|=0.00e+00 | same cfg=True same sel_epochs=True
+
+chronological_within: B0005, 34 outer test rows doubled
+  fit RMSE=0.471700 R2=0.996200 | max|diff|=0.00e+00 | same cfg=True same sel_epochs=True
+
+random_pooled: pooled, 127 outer test rows doubled
+  fit RMSE=1.098400 R2=0.989500 | max|diff|=0.00e+00 | same cfg=True same sel_epochs=True
+
+probe verdict: max|diff| = 0.00e+00 -> PASS: no leakage (fit metrics unmoved by perturbed outer test)
