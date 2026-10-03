@@ -1,0 +1,74 @@
+====================================================================================================
+[1] structure and metric recomputation
+
+[2] can the model FIT the training batteries? (train_R2, refit_on_3)
+           train_R2                      test_R2                     
+               mean median    min    max    mean median    min    max
+setting                                                              
+TD-Clean-4    0.599  0.610  0.157  0.868   -0.40 -0.136 -2.224  0.486
+TD-Clean-6    0.822  0.934  0.379  0.982    0.49  0.556 -0.292  0.939
+
+  -> if train_R2 is low too, the features are uninformative, not overfitting
+
+  worst-fitting fold-seeds (lowest train_R2):
+   setting  seed test_battery              cfg  sel_epochs  train_R2  test_R2
+TD-Clean-4   123        B0005       [8]/l2=0.0          22    0.1573   0.0670
+TD-Clean-4    42        B0006    [8, 4]/l2=0.0          41    0.2581  -0.4262
+TD-Clean-4    11        B0006      [16]/l2=0.0          21    0.3371  -0.7418
+TD-Clean-6  2024        B0005 [8, 4]/l2=0.0001          24    0.3786   0.1712
+TD-Clean-4   123        B0006       [8]/l2=0.0          44    0.3996  -0.6567
+TD-Clean-4     7        B0006       [8]/l2=0.0          40    0.4130  -0.4647
+
+[3] PAIRED comparison on identical (fold, seed) cells
+ seed test_battery  TD-All  TD-Proxy-Free  TD-Clean-6  TD-Clean-4  PF-C6
+    7        B0005   0.957          0.962       0.903       0.350  0.059
+   11        B0005   0.986          0.942       0.431       0.342  0.511
+   42        B0005   0.961          0.956       0.931       0.486  0.026
+  123        B0005   0.985          0.851       0.939       0.067 -0.088
+ 2024        B0005   0.986          0.732       0.171       0.424  0.561
+    7        B0006   0.901          0.898      -0.292      -0.465  1.190
+   11        B0006   0.885          0.877      -0.100      -0.742  0.977
+   42        B0006   0.935          0.876      -0.073      -0.426  0.949
+  123        B0006   0.864          0.733       0.172      -0.657  0.560
+ 2024        B0006   0.936          0.846       0.158      -1.363  0.689
+    7        B0007   0.976          0.955       0.507       0.264  0.447
+   11        B0007   0.983          0.956       0.836       0.158  0.120
+   42        B0007   0.976          0.929       0.683      -0.080  0.246
+  123        B0007   0.983          0.945       0.931       0.320  0.013
+ 2024        B0007   0.990          0.936       0.903       0.433  0.033
+    7        B0018   0.888          0.745       0.599      -0.192  0.146
+   11        B0018   0.832          0.702       0.651      -1.363  0.051
+   42        B0018   0.841          0.763       0.345      -1.722  0.418
+  123        B0018   0.809          0.629       0.531      -1.607  0.098
+ 2024        B0018   0.872          0.658       0.581      -2.224  0.077
+
+  mean drop Proxy-Free -> Clean-6 per fold:
+test_battery
+B0005    0.214
+B0006    0.873
+B0007    0.172
+B0018    0.158
+
+  overall: TD-Proxy-Free mean R2 0.845 -> TD-Clean-6 0.490  (delta -0.354)
+  overall: TD-All 0.927 -> TD-Clean-4 -0.400  (delta -1.327)
+
+[4] did the inner validation have any usable signal?
+  degenerate fold-seeds flagged: 22 / 40
+  sel_val_rmse (the quantity the selection minimises):
+             min  median    max
+setting                        
+TD-Clean-4  5.76    9.66  44.59
+TD-Clean-6  2.66    6.48  29.75
+  compare: SOH span of the training batteries is ~30-45 %SOH, so a validation RMSE of
+  25-45 %SOH means the selection was choosing between candidates that all failed.
+
+====================================================================================================
+PASS | 80 rows = 2 settings x 2 stages x 4 folds x 5 seeds | 80
+PASS | both clean settings present
+PASS | every block matches the feature file and y_true == raw SOH | []
+PASS | recomputed rmse matches | max|diff|=4.90e-05
+PASS | recomputed r2 matches | max|diff|=4.96e-05
+PASS | recomputed mape matches | max|diff|=4.92e-05
+PASS | at least 19 of 20 fold-seeds got WORSE when dis_mean_V was removed | worse in 19/20, mean drop = 0.354
+
+ALL 7 CHECKS PASSED

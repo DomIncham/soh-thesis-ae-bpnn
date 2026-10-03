@@ -24,6 +24,17 @@ FEATS_ALL = ["dis_duration", "dis_mean_V", "dis_mean_T", "dis_V_slope",
              "cc_dur", "cv_dur", "cv_I_slope", "ch_mean_T"]
 PROXY_FEATS = ["dis_duration"]  # CC discharge at constant current: Capacity = I x t
 FEATS_PROXY_FREE = [f for f in FEATS_ALL if f not in PROXY_FEATS]
+
+# ---- R3-C3 follow-up: truly proxy-free sets (2026-10-04) ---------------------------------------
+# TD-Proxy-Free dropped dis_duration only, but dis_mean_V is collinear with it (within-battery
+# Pearson r = 0.941) and on its own explains 94.8 % of within-battery capacity variance, so the
+# capacity proxy was still present under another name. See r3c3_feature_classification.md.
+# Deliberately NOT added to SETTINGS, so the drivers that iterate SETTINGS keep reproducing the
+# committed Phase 1 / Phase 2 artifacts unchanged.
+PROXY_EQUIVALENT_FEATS = ["dis_duration", "dis_mean_V"]          # both R2(capacity) >= 0.90
+BORDERLINE_FEATS = ["cc_dur", "cv_dur"]                          # charge-side durations, 0.55-0.65
+FEATS_CLEAN6 = [f for f in FEATS_ALL if f not in PROXY_EQUIVALENT_FEATS]
+FEATS_CLEAN4 = [f for f in FEATS_CLEAN6 if f not in BORDERLINE_FEATS]
 ARCHS, L2S = [[8], [16], [8, 4]], [0.0, 1e-4]  # same grid as Round 2 (comparability)
 
 # ---- selection guard (2026-10-04) ------------------------------------------------------------
