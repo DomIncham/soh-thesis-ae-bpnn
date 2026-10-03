@@ -1,0 +1,26 @@
+rows: 636 (expected 636)  |  NaN per new feature:
+t_39_40       0
+t_40_41       0
+ic_peak_V     5
+ic_peak_h     5
+cc_dTdt       5
+cc_V_slope    5
+
+=== proxy rule applied to the NEW features (within-battery OLS R2 vs capacity) ===
+feature         mean R2(cap)                     per-battery R2  class
+t_39_40                0.716        [0.805, 0.86, 0.674, 0.523]  BORDERLINE
+t_40_41                0.341       [0.377, 0.668, 0.106, 0.213]  SAFE
+ic_peak_V              0.489       [0.621, 0.749, 0.283, 0.305]  SAFE
+ic_peak_h              0.906       [0.935, 0.936, 0.879, 0.873]  PROXY
+cc_dTdt                0.394        [0.51, 0.665, 0.297, 0.104]  SAFE
+cc_V_slope             0.479        [0.557, 0.75, 0.011, 0.599]  SAFE
+
+=== cross-battery domain shift (per-battery mean min..max) ===
+  t_39_40            487.8991 ..     823.3266
+  t_40_41            735.8556 ..     850.6172
+  ic_peak_V            4.0033 ..       4.0500
+  ic_peak_h            3.6467 ..       4.4617
+  cc_dTdt             -0.0011 ..       0.0013
+  cc_V_slope           0.0001 ..       0.0002
+
+saved: nested_lobo/charge_features.csv
