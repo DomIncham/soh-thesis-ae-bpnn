@@ -84,3 +84,10 @@ NASA DataSet/*
 !NASA DataSet/1. BatteryAgingARC-FY08Q4/
 !NASA DataSet/1. BatteryAgingARC-FY08Q4/**
 Autoencoder/eis_verify/*.docx
+
+# =========================
+# Exception (2026-10-04, Round 3 Phase 1): the run logs under round3_phase1/ are the
+# gate evidence itself (12 fold-seed refit summary, leakage-probe verdict). The global
+# *.log rule would drop them, so re-include that one directory.
+# =========================
+!Autoencoder/round3_phase1/*.log

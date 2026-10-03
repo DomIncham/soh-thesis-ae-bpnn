@@ -1,0 +1,44 @@
+[device] cpu | threads=8
+seed42 test=B0005 cfg=[16]/l2=0.0001 sel_epochs=325 | pre_refit R2=+0.940 RMSE=2.521 | refit_on_3 R2=+0.961 RMSE=2.034 (MAPE 2.35%, nRMSE 0.066)
+seed42 test=B0006 cfg=[16]/l2=0.0001 sel_epochs=325 | pre_refit R2=+0.760 RMSE=6.099 | refit_on_3 R2=+0.935 RMSE=3.174 (MAPE 3.64%, nRMSE 0.073)
+seed42 test=B0007 cfg=[8, 4]/l2=0.0001 sel_epochs=358 | pre_refit R2=+0.964 RMSE=1.623 | refit_on_3 R2=+0.976 RMSE=1.319 (MAPE 1.29%, nRMSE 0.051)
+seed42 test=B0018 cfg=[8, 4]/l2=0.0001 sel_epochs=245 | pre_refit R2=+0.834 RMSE=3.416 | refit_on_3 R2=+0.841 RMSE=3.339 (MAPE 3.62%, nRMSE 0.120)
+seed7 test=B0005 cfg=[16]/l2=0.0001 sel_epochs=499 | pre_refit R2=+0.972 RMSE=1.732 | refit_on_3 R2=+0.957 RMSE=2.134 (MAPE 2.27%, nRMSE 0.069)
+seed7 test=B0006 cfg=[16]/l2=0.0001 sel_epochs=499 | pre_refit R2=+0.832 RMSE=5.101 | refit_on_3 R2=+0.901 RMSE=3.912 (MAPE 4.62%, nRMSE 0.089)
+seed7 test=B0007 cfg=[16]/l2=0.0001 sel_epochs=276 | pre_refit R2=+0.972 RMSE=1.421 | refit_on_3 R2=+0.976 RMSE=1.331 (MAPE 1.38%, nRMSE 0.051)
+seed7 test=B0018 cfg=[16]/l2=0.0 sel_epochs=195 | pre_refit R2=+0.881 RMSE=2.896 | refit_on_3 R2=+0.888 RMSE=2.805 (MAPE 2.76%, nRMSE 0.100)
+seed123 test=B0005 cfg=[8]/l2=0.0001 sel_epochs=496 | pre_refit R2=+0.937 RMSE=2.584 | refit_on_3 R2=+0.985 RMSE=1.270 (MAPE 1.20%, nRMSE 0.041)
+seed123 test=B0006 cfg=[8]/l2=0.0 sel_epochs=48 | pre_refit R2=+0.465 RMSE=9.111 | refit_on_3 R2=+0.864 RMSE=4.588 (MAPE 4.77%, nRMSE 0.105)
+seed123 test=B0007 cfg=[8, 4]/l2=0.0 sel_epochs=167 | pre_refit R2=+0.964 RMSE=1.624 | refit_on_3 R2=+0.983 RMSE=1.113 (MAPE 1.02%, nRMSE 0.043)
+seed123 test=B0018 cfg=[8]/l2=0.0001 sel_epochs=479 | pre_refit R2=+0.651 RMSE=4.953 | refit_on_3 R2=+0.809 RMSE=3.664 (MAPE 4.13%, nRMSE 0.131)
+
+=== per stage, mean +/- std over 4 folds x 3 seeds ===
+                    test_MAE        test_RMSE        test_R2        test_MAPE        test_RMSE_Ah        test_nRMSE       
+                       mean    std      mean    std    mean    std      mean    std         mean    std       mean    std
+setting stage                                                                                                            
+TD-All  pre_refit     3.013  2.056     3.590  2.325   0.848  0.156     3.906  3.016        0.069  0.048      0.106  0.050
+        refit_on_3    2.244  1.035     2.557  1.186   0.923  0.061     2.755  1.376        0.049  0.024      0.078  0.031
+
+test_R2 by fold (pre_refit):
+              test_R2
+test_battery         
+B0005           0.950
+B0006           0.686
+B0007           0.967
+B0018           0.789
+
+test_R2 by fold (refit_on_3):
+              test_R2
+test_battery         
+B0005           0.968
+B0006           0.900
+B0007           0.978
+B0018           0.846
+
+refit - pre_refit, mean test_R2 per fold:
+ test_battery
+B0005    0.018
+B0006    0.214
+B0007    0.012
+B0018    0.058
+saved

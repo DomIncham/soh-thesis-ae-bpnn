@@ -1,0 +1,3 @@
+setting,stage,seed,test_battery,val_battery,fit_batteries,cfg,sel_epochs,sel_val_rmse,train_RMSE,train_R2,test_nRMSE,test_MAE,test_RMSE,test_R2,test_MAPE,test_MAE_Ah,test_RMSE_Ah,device
+TD-All,pre_refit,42,B0005,B0006,"['B0007', 'B0018']",[16]/l2=0.0001,100,8.6802,0.9447,0.9878,0.153,3.7596,4.7261,0.7898,4.875,0.0692,0.087,cpu
+TD-All,refit_on_3,42,B0005,B0006,"['B0006', 'B0007', 'B0018']",[16]/l2=0.0001,100,8.6802,1.4472,0.983,0.045,1.2747,1.3909,0.9818,1.4596,0.0235,0.0256,cpu

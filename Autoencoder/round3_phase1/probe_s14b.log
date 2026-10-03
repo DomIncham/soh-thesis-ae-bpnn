@@ -1,0 +1,6 @@
+[device] cpu | threads=8
+perturbation applied: 168 rows of B0005 doubled
+pre_refit   baseline fit RMSE=0.944700 R2=0.987800 | perturbed fit RMSE=0.944700 R2=0.987800 | max|diff|=0.00e+00
+refit_on_3  baseline fit RMSE=1.447200 R2=0.983000 | perturbed fit RMSE=1.447200 R2=0.983000 | max|diff|=0.00e+00
+
+probe verdict: max|diff| = 0.00e+00 -> PASS: no leakage (fit metrics unmoved by perturbed outer test)

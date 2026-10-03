@@ -1,0 +1,6 @@
+,test_MAE,test_MAE,test_RMSE,test_RMSE,test_R2,test_R2,test_MAPE,test_MAPE,test_RMSE_Ah,test_RMSE_Ah
+,mean,std,mean,std,mean,std,mean,std,mean,std
+setting,,,,,,,,,,
+Oracle-proxy,5.066,2.941,5.545,3.034,0.663,0.239,6.567,4.436,0.107,0.064
+TD-All,2.244,1.035,2.557,1.186,0.923,0.061,2.755,1.376,0.049,0.024
+TD-Proxy-Free,3.447,2.542,4.293,3.124,0.732,0.434,4.203,2.87,0.081,0.058
