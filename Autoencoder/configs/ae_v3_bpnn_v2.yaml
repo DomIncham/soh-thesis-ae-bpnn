@@ -1,0 +1,91 @@
+# AE + BPNN Training Configuration — ae_v3_bpnn_v2
+# Best known from Priority 4 ablation: Bottleneck=17, L2=1e-4, MSE loss
+# Use with: python scripts/train_fold.py --config configs/ae_v3_bpnn_v2.yaml --fold 0
+
+# Experiment metadata
+experiment_name: "ae_v3_bpnn_v2"
+description: "AE bottleneck=17 + BPNN [16,8] with L2=1e-4, MSE loss, EarlyStopping"
+
+# Data
+data:
+  mapped_file: "Mapped_EIS_SOH_log_grid_pchip.pt"  # relative to workdir
+  input_dim: 256
+  target_col: 2  # Capacity_Ah (labels[:, 2])
+  battery_id_col: 0
+  cycle_col: 1
+
+# LOBO Folds: 0=B0005, 1=B0006, 2=B0007, 3=B0018
+# test_battery_id: 1, 2, 3, 4 respectively
+
+# Autoencoder
+autoencoder:
+  bottleneck_dim: 17
+  hidden_dim: 128
+  encoder_layers: [128]  # 256 -> 128 -> bottleneck
+  decoder_layers: [128]  # bottleneck -> 128 -> 256
+  activation: "relu"
+  bottleneck_activation: null  # linear (no activation)
+
+# BPNN
+bpnn:
+  hidden_layers: [16, 8]
+  activation: "relu"
+  output_dim: 1
+  weight_init: "kaiming_normal"
+
+# Training Hyperparameters
+training:
+  # Autoencoder
+  ae_epochs: 300
+  ae_lr: 0.001
+  ae_batch_size: 16
+  ae_loss: "mse"  # mse, mae, huber
+  ae_early_stopping:
+    enabled: true
+    patience: 20
+    min_delta: 1e-6
+    monitor: "val_loss"  # reconstruction loss on held-out inner-val
+  
+  # BPNN
+  bpnn_epochs: 300
+  bpnn_lr: 0.001
+  bpnn_batch_size: 16
+  bpnn_loss: "mse"  # mse, mae, huber
+  bpnn_l2: 0.0001  # weight_decay
+  bpnn_early_stopping:
+    enabled: true
+    patience: 20
+    min_delta: 1e-6
+    monitor: "val_loss"  # loss on held-out inner-val
+
+# Inner Validation (for EarlyStopping & hyperparameter selection)
+# Split training batteries further: 80% train, 20% inner-val (stratified by battery)
+inner_validation:
+  enabled: true
+  val_ratio: 0.2
+  random_seed: 42
+
+# Optimization
+optimizer:
+  type: "adam"
+  betas: [0.9, 0.999]
+  eps: 1e-8
+
+# Reproducibility
+seed: 42
+deterministic: true
+cudnn_benchmark: false
+
+# Hardware
+device: "auto"  # auto, cuda, cpu
+num_workers: 0
+
+# Output
+output:
+  checkpoint_dir: "runs/{experiment_name}/fold_{fold}"
+  save_best_only: true
+  save_encoder: true
+  save_scalers: true
+  metrics_file: "metrics.json"
+  predictions_file: "predictions.npz"
+  log_level: "INFO"

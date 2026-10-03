@@ -1,0 +1,2 @@
+bottleneck,loss,l2,test_rmse,status,exp_dir
+17,mse,0.0001,0.7335061554211668,ok,C:\Master Degree\Thesis\Autoencoder\runs\b17_l0p0001_mse_e1
