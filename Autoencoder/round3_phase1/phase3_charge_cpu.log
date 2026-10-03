@@ -1,0 +1,103 @@
+[device] cpu | threads=8
+rows kept: 631 / 636  (dropped 5: no usable CC phase)
+dropped (battery, cycle): [[1, 86], [2, 86], [3, 86], [4, 117], [4, 141]]
+
+--- TD-Clean-6*: 6 features (reference on the same rows)
+  [guard] no candidate converged (min sel_epochs=1); retrained [16]/l2=0.0001 for 200 epochs -> val RMSE=24.1480
+TD-Clean-6*  seed42    test=B0005 cfg=[16]/l2=0.0001 ep=200 | R2=+0.933 RMSE=2.661
+TD-Clean-6*  seed42    test=B0006 cfg=[8, 4]/l2=0.0 ep=33 | R2=+0.519 RMSE=8.604
+TD-Clean-6*  seed42    test=B0007 cfg=[16]/l2=0.0001 ep=400 | R2=+0.621 RMSE=5.226
+TD-Clean-6*  seed42    test=B0018 cfg=[16]/l2=0.0 ep=435 | R2=+0.574 RMSE=5.474
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-6*  seed7     test=B0005 cfg=[8]/l2=0.0 ep=24 | R2=+0.509 RMSE=7.197
+TD-Clean-6*  seed7     test=B0006 cfg=[8]/l2=0.0 ep=54 | R2=+0.569 RMSE=8.149
+TD-Clean-6*  seed7     test=B0007 cfg=[16]/l2=0.0 ep=227 | R2=+0.804 RMSE=3.761
+TD-Clean-6*  seed7     test=B0018 cfg=[16]/l2=0.0 ep=436 | R2=+0.565 RMSE=5.532
+  [guard] dropped 5 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-6*  seed123   test=B0005 cfg=[8, 4]/l2=0.0 ep=26 | R2=+0.293 RMSE=8.639
+TD-Clean-6*  seed123   test=B0006 cfg=[8]/l2=0.0 ep=57 | R2=+0.574 RMSE=8.095
+TD-Clean-6*  seed123   test=B0007 cfg=[8, 4]/l2=0.0 ep=111 | R2=+0.843 RMSE=3.368
+TD-Clean-6*  seed123   test=B0018 cfg=[16]/l2=0.0 ep=484 | R2=+0.448 RMSE=6.236
+  [guard] no candidate converged (min sel_epochs=1); retrained [16]/l2=0.0 for 200 epochs -> val RMSE=21.2876
+TD-Clean-6*  seed2024  test=B0005 cfg=[16]/l2=0.0 ep=200 | R2=+0.847 RMSE=4.022
+TD-Clean-6*  seed2024  test=B0006 cfg=[16]/l2=0.0 ep=47 | R2=+0.570 RMSE=8.141
+TD-Clean-6*  seed2024  test=B0007 cfg=[8, 4]/l2=0.0001 ep=298 | R2=+0.886 RMSE=2.869
+  [guard] dropped 1 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-6*  seed2024  test=B0018 cfg=[16]/l2=0.0001 ep=278 | R2=+0.707 RMSE=4.546
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-6*  seed11    test=B0005 cfg=[8, 4]/l2=0.0 ep=30 | R2=+0.786 RMSE=4.749
+TD-Clean-6*  seed11    test=B0006 cfg=[8, 4]/l2=0.0001 ep=48 | R2=+0.544 RMSE=8.375
+  [guard] dropped 1 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-6*  seed11    test=B0007 cfg=[8, 4]/l2=0.0001 ep=214 | R2=+0.936 RMSE=2.154
+TD-Clean-6*  seed11    test=B0018 cfg=[8, 4]/l2=0.0001 ep=344 | R2=+0.762 RMSE=4.091
+
+--- TD-Clean-7: 7 features = CLEAN6 + ['ic_peak_V']
+TD-Clean-7   seed42    test=B0005 cfg=[8, 4]/l2=0.0001 ep=36 | R2=+0.506 RMSE=7.218
+TD-Clean-7   seed42    test=B0006 cfg=[16]/l2=0.0001 ep=34 | R2=+0.726 RMSE=6.497
+TD-Clean-7   seed42    test=B0007 cfg=[16]/l2=0.0001 ep=497 | R2=+0.961 RMSE=1.680
+TD-Clean-7   seed42    test=B0018 cfg=[8, 4]/l2=0.0001 ep=449 | R2=+0.787 RMSE=3.868
+  [guard] dropped 5 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-7   seed7     test=B0005 cfg=[16]/l2=0.0 ep=29 | R2=+0.867 RMSE=3.742
+TD-Clean-7   seed7     test=B0006 cfg=[16]/l2=0.0 ep=34 | R2=+0.539 RMSE=8.421
+TD-Clean-7   seed7     test=B0007 cfg=[16]/l2=0.0001 ep=376 | R2=+0.909 RMSE=2.567
+TD-Clean-7   seed7     test=B0018 cfg=[16]/l2=0.0 ep=411 | R2=+0.837 RMSE=3.384
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-7   seed123   test=B0005 cfg=[16]/l2=0.0001 ep=21 | R2=+0.869 RMSE=3.717
+TD-Clean-7   seed123   test=B0006 cfg=[16]/l2=0.0001 ep=33 | R2=+0.618 RMSE=7.669
+TD-Clean-7   seed123   test=B0007 cfg=[8, 4]/l2=0.0001 ep=267 | R2=+0.905 RMSE=2.621
+TD-Clean-7   seed123   test=B0018 cfg=[8]/l2=0.0 ep=410 | R2=+0.817 RMSE=3.590
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-7   seed2024  test=B0005 cfg=[8]/l2=0.0001 ep=41 | R2=+0.847 RMSE=4.017
+TD-Clean-7   seed2024  test=B0006 cfg=[8]/l2=0.0 ep=50 | R2=+0.596 RMSE=7.882
+TD-Clean-7   seed2024  test=B0007 cfg=[8]/l2=0.0001 ep=499 | R2=+0.914 RMSE=2.483
+TD-Clean-7   seed2024  test=B0018 cfg=[16]/l2=0.0001 ep=319 | R2=+0.588 RMSE=5.389
+  [guard] no candidate converged (min sel_epochs=1); retrained [8]/l2=0.0 for 200 epochs -> val RMSE=22.3174
+TD-Clean-7   seed11    test=B0005 cfg=[8]/l2=0.0 ep=200 | R2=+0.919 RMSE=2.926
+TD-Clean-7   seed11    test=B0006 cfg=[8, 4]/l2=0.0001 ep=37 | R2=+0.504 RMSE=8.742
+TD-Clean-7   seed11    test=B0007 cfg=[16]/l2=0.0 ep=342 | R2=+0.920 RMSE=2.402
+TD-Clean-7   seed11    test=B0018 cfg=[16]/l2=0.0001 ep=462 | R2=+0.804 RMSE=3.712
+
+--- TD-Clean-8: 8 features = CLEAN6 + ['t_40_41', 'ic_peak_V']
+TD-Clean-8   seed42    test=B0005 cfg=[16]/l2=0.0001 ep=40 | R2=+0.884 RMSE=3.504
+TD-Clean-8   seed42    test=B0006 cfg=[16]/l2=0.0001 ep=40 | R2=+0.677 RMSE=7.051
+  [guard] dropped 2 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-8   seed42    test=B0007 cfg=[16]/l2=0.0001 ep=313 | R2=+0.924 RMSE=2.336
+TD-Clean-8   seed42    test=B0018 cfg=[16]/l2=0.0001 ep=343 | R2=+0.808 RMSE=3.676
+TD-Clean-8   seed7     test=B0005 cfg=[8, 4]/l2=0.0 ep=36 | R2=+0.901 RMSE=3.234
+TD-Clean-8   seed7     test=B0006 cfg=[8, 4]/l2=0.0001 ep=36 | R2=+0.683 RMSE=6.981
+TD-Clean-8   seed7     test=B0007 cfg=[8]/l2=0.0001 ep=416 | R2=+0.956 RMSE=1.780
+TD-Clean-8   seed7     test=B0018 cfg=[8, 4]/l2=0.0 ep=310 | R2=+0.788 RMSE=3.863
+TD-Clean-8   seed123   test=B0005 cfg=[16]/l2=0.0 ep=30 | R2=+0.834 RMSE=4.188
+TD-Clean-8   seed123   test=B0006 cfg=[16]/l2=0.0 ep=44 | R2=+0.710 RMSE=6.678
+TD-Clean-8   seed123   test=B0007 cfg=[16]/l2=0.0001 ep=338 | R2=+0.942 RMSE=2.045
+TD-Clean-8   seed123   test=B0018 cfg=[16]/l2=0.0 ep=468 | R2=+0.793 RMSE=3.814
+  [guard] dropped 3 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-8   seed2024  test=B0005 cfg=[16]/l2=0.0 ep=28 | R2=+0.816 RMSE=4.409
+TD-Clean-8   seed2024  test=B0006 cfg=[16]/l2=0.0 ep=39 | R2=+0.566 RMSE=8.175
+  [guard] dropped 1 non-converged candidate(s) (sel_epochs < 20)
+TD-Clean-8   seed2024  test=B0007 cfg=[16]/l2=0.0001 ep=363 | R2=+0.937 RMSE=2.134
+TD-Clean-8   seed2024  test=B0018 cfg=[8, 4]/l2=0.0 ep=270 | R2=+0.756 RMSE=4.144
+TD-Clean-8   seed11    test=B0005 cfg=[16]/l2=0.0001 ep=36 | R2=+0.875 RMSE=3.637
+TD-Clean-8   seed11    test=B0006 cfg=[16]/l2=0.0001 ep=42 | R2=+0.647 RMSE=7.374
+TD-Clean-8   seed11    test=B0007 cfg=[8, 4]/l2=0.0001 ep=469 | R2=+0.862 RMSE=3.155
+TD-Clean-8   seed11    test=B0018 cfg=[8, 4]/l2=0.0 ep=345 | R2=+0.849 RMSE=3.257
+
+=== refit_on_3, mean / median / std over 4 folds x seeds ===
+            test_MAE               test_RMSE               test_R2               test_MAPE               test_RMSE_Ah              
+                mean median    std      mean median    std    mean median    std      mean median    std         mean median    std
+setting                                                                                                                            
+TD-Clean-6*    4.416  3.863  1.954     5.594  5.350  2.191   0.664  0.598  0.177     5.615  4.410  2.934        0.107  0.100  0.045
+TD-Clean-7     3.572  2.636  1.829     4.626  3.730  2.264   0.772  0.827  0.155     4.547  2.998  2.824        0.089  0.069  0.047
+TD-Clean-8     3.304  2.704  1.585     4.272  3.745  1.924   0.810  0.825  0.109     4.190  3.085  2.508        0.082  0.069  0.041
+
+test_R2 per fold (mean over seeds):
+setting       TD-Clean-6*  TD-Clean-7  TD-Clean-8
+test_battery                                     
+B0005               0.674       0.802       0.862
+B0006               0.555       0.597       0.657
+B0007               0.818       0.922       0.924
+B0018               0.611       0.767       0.799
+
+degenerate fold-seeds: 14 / 60
+reference: TD-Clean-6 mean 0.490 / median 0.556 (same protocol, same 5 seeds)
+saved
