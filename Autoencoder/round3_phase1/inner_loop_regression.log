@@ -1,0 +1,6 @@
+[device] cpu | threads=8
+TD-All  B0005/seed42  : R2=+0.961 RMSE=2.034 cfg=[16]/l2=0.0001 sel_ep=325  -> PASS
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-PF   B0005/seed123 : R2=+0.851 RMSE=3.974 cfg=[16]/l2=0.0001 sel_ep=20  -> PASS
+
+RESULT: DEFAULT PATH UNCHANGED

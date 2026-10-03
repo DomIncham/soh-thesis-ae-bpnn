@@ -142,7 +142,7 @@ def extras(y, yh, qref_ah):
                 test_RMSE_Ah=float(rmse) / 100.0 * float(qref_ah))
 
 
-def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting):
+def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting, inner="single"):
     """One outer fold, both stages.
     Stage A (pre_refit): inner validation on 1 battery selects the config - Round 2 protocol.
     Stage B (refit_on_3): the selected config is re-fitted on ALL 3 remaining batteries for the
@@ -157,31 +157,66 @@ def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting):
     m_all = np.isin(bids, remaining)
 
     # ---- Stage A: select config by inner validation (fold-train scaling only) ----
+    # inner="single"  : validate on remaining[0] only (Round 2 behaviour, the Phase 1 headline)
+    # inner="lobo3"   : rotate the inner validation over the 3 training batteries - the advisor's
+    #                   alternative in the audit (5-A, "make the inner loop a 3-fold LOBO").
+    #                   Each candidate is scored by the mean validation RMSE over the 3 inner
+    #                   folds, each with its own inner-train scaler. Kept as a separate branch so
+    #                   the default path stays bit-identical to the committed Phase 1 numbers.
     sc = MinMaxScaler().fit(X[m_tr])
     assert np.allclose(sc.data_min_, X[m_tr].min(0)), "LEAKAGE: selection scaler != fold-train"
     tr_s, va_s = sc.transform(X[m_tr]), sc.transform(X[m_va])
     mu, sd = soh[m_tr].mean(), soh[m_tr].std()
-    cands = []
-    for dims, l2 in itertools.product(ARCHS, L2S):
-        bp, ep = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
-                             va_s, (soh[m_va] - mu) / sd, seed, bp_max, pat)
-        v = float(np.sqrt(np.mean((predict(bp, va_s, mu, sd) - soh[m_va]) ** 2)))
-        cands.append((v, dims, l2, ep, bp))
-    ok = [c for c in cands if c[3] >= MIN_EP]
-    sel_degenerate = len(ok) < len(cands)
-    if not ok:
-        # no candidate converged within patience: retrain the best-by-val one on a fixed budget
-        _, dims, l2, _, _ = min(cands, key=lambda c: c[0])
-        bp2, _ = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
-                             None, None, seed, bp_max, pat, epochs=RETRAIN_EP)
-        v = float(np.sqrt(np.mean((predict(bp2, va_s, mu, sd) - soh[m_va]) ** 2)))
-        ok = [(v, dims, l2, RETRAIN_EP, bp2)]
-        print(f"  [guard] no candidate converged (min sel_epochs={min(c[3] for c in cands)}); "
-              f"retrained {dims}/l2={l2} for {RETRAIN_EP} epochs -> val RMSE={v:.4f}")
-    elif sel_degenerate:
-        print(f"  [guard] dropped {len(cands) - len(ok)} non-converged candidate(s) "
-              f"(sel_epochs < {MIN_EP})")
-    v, dims, l2, ep, bp_sel = min(ok, key=lambda c: c[0])
+    if inner == "lobo3":
+        inner_folds = [(np.isin(bids, [b for b in train_b if b != v]), bids == v) for v in train_b]
+        cands = []
+        for dims, l2 in itertools.product(ARCHS, L2S):
+            vs, eps = [], []
+            for itr, iva in inner_folds:
+                sci = MinMaxScaler().fit(X[itr])
+                assert np.allclose(sci.data_min_, X[itr].min(0)), "LEAKAGE: inner scaler != inner train"
+                mui, sdi = soh[itr].mean(), soh[itr].std()
+                bp_i, ep_i = fit_bpnn_ep([n_in] + dims, l2, sci.transform(X[itr]),
+                                         (soh[itr] - mui) / sdi, sci.transform(X[iva]),
+                                         (soh[iva] - mui) / sdi, seed, bp_max, pat)
+                vs.append(float(np.sqrt(np.mean(
+                    (predict(bp_i, sci.transform(X[iva]), mui, sdi) - soh[iva]) ** 2))))
+                eps.append(ep_i)
+            cands.append((float(np.mean(vs)), dims, l2, int(round(np.mean(eps))), min(eps)))
+        ok = [c for c in cands if c[4] >= MIN_EP]
+        sel_degenerate = len(ok) < len(cands)
+        if not ok:
+            _, dims, l2, _, _ = min(cands, key=lambda c: c[0])
+            ok = [(min(c[0] for c in cands), dims, l2, RETRAIN_EP, RETRAIN_EP)]
+            sel_degenerate = True
+            print(f"  [guard] inner-lobo3: no candidate converged; using {dims}/l2={l2} "
+                  f"{RETRAIN_EP}ep")
+        v, dims, l2, ep, _ = min(ok, key=lambda c: c[0])
+        # the pre_refit stage needs one model: train it on the 2-battery outer-train for ep epochs
+        bp_sel, _ = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
+                                None, None, seed, bp_max, pat, epochs=ep)
+    else:
+        cands = []
+        for dims, l2 in itertools.product(ARCHS, L2S):
+            bp, ep = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
+                                 va_s, (soh[m_va] - mu) / sd, seed, bp_max, pat)
+            v = float(np.sqrt(np.mean((predict(bp, va_s, mu, sd) - soh[m_va]) ** 2)))
+            cands.append((v, dims, l2, ep, bp))
+        ok = [c for c in cands if c[3] >= MIN_EP]
+        sel_degenerate = len(ok) < len(cands)
+        if not ok:
+            # no candidate converged within patience: retrain the best-by-val one on a fixed budget
+            _, dims, l2, _, _ = min(cands, key=lambda c: c[0])
+            bp2, _ = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
+                                 None, None, seed, bp_max, pat, epochs=RETRAIN_EP)
+            v = float(np.sqrt(np.mean((predict(bp2, va_s, mu, sd) - soh[m_va]) ** 2)))
+            ok = [(v, dims, l2, RETRAIN_EP, bp2)]
+            print(f"  [guard] no candidate converged (min sel_epochs={min(c[3] for c in cands)}); "
+                  f"retrained {dims}/l2={l2} for {RETRAIN_EP} epochs -> val RMSE={v:.4f}")
+        elif sel_degenerate:
+            print(f"  [guard] dropped {len(cands) - len(ok)} non-converged candidate(s) "
+                  f"(sel_epochs < {MIN_EP})")
+        v, dims, l2, ep, bp_sel = min(ok, key=lambda c: c[0])
 
     # ---- Stage B: refit on all 3 remaining batteries, same epoch budget ----
     sc2 = MinMaxScaler().fit(X[m_all])
