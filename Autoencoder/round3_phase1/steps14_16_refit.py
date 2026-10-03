@@ -44,8 +44,8 @@ def run(args):
 
     if not smoke:
         cols = ["test_MAE", "test_RMSE", "test_R2", "test_MAPE", "test_RMSE_Ah", "test_nRMSE"]
-        agg = res.groupby(["setting", "stage"])[cols].agg(["mean", "std"]).round(3)
-        print("\n=== per stage, mean +/- std over 4 folds x 3 seeds ===\n", agg.to_string())
+        agg = res.groupby(["setting", "stage"])[cols].agg(["mean", "median", "std"]).round(3)
+        print("\n=== per stage, mean / median / std over 4 folds x 3 seeds ===\n", agg.to_string())
         agg.to_csv(os.path.join(OUT, f"steps14_16_refit_summary_{R.DEVICE.type}.csv"))
         for stage in ("pre_refit", "refit_on_3"):
             print(f"\ntest_R2 by fold ({stage}):")

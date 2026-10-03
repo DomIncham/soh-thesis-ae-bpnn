@@ -1,5 +1,5 @@
-,,test_MAE,test_MAE,test_RMSE,test_RMSE,test_R2,test_R2,test_MAPE,test_MAPE,test_RMSE_Ah,test_RMSE_Ah,test_nRMSE,test_nRMSE
-,,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std
-setting,stage,,,,,,,,,,,,
-TD-All,pre_refit,3.013,2.056,3.59,2.325,0.848,0.156,3.906,3.016,0.069,0.048,0.106,0.05
-TD-All,refit_on_3,2.244,1.035,2.557,1.186,0.923,0.061,2.755,1.376,0.049,0.024,0.078,0.031
+,,test_MAE,test_MAE,test_MAE,test_RMSE,test_RMSE,test_RMSE,test_R2,test_R2,test_R2,test_MAPE,test_MAPE,test_MAPE,test_RMSE_Ah,test_RMSE_Ah,test_RMSE_Ah,test_nRMSE,test_nRMSE,test_nRMSE
+,,mean,median,std,mean,median,std,mean,median,std,mean,median,std,mean,median,std,mean,median,std
+setting,stage,,,,,,,,,,,,,,,,,,
+TD-All,pre_refit,3.013,2.196,2.056,3.59,2.74,2.325,0.848,0.909,0.156,3.906,2.648,3.016,0.069,0.05,0.048,0.106,0.094,0.05
+TD-All,refit_on_3,2.244,2.194,1.035,2.557,2.47,1.186,0.923,0.946,0.061,2.755,2.554,1.376,0.049,0.045,0.024,0.078,0.071,0.031

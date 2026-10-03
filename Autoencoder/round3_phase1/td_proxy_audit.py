@@ -46,8 +46,8 @@ def run(args):
     if not smoke:
         ref = res[res.stage == "refit_on_3"]
         cols = ["test_MAE", "test_RMSE", "test_R2", "test_MAPE", "test_RMSE_Ah"]
-        agg = ref.groupby("setting")[cols].agg(["mean", "std"]).round(3)
-        print("\n=== refit_on_3, mean +/- std over 4 folds x 3 seeds ===\n", agg.to_string())
+        agg = ref.groupby("setting")[cols].agg(["mean", "median", "std"]).round(3)
+        print("\n=== refit_on_3, mean / median / std over 4 folds x 3 seeds ===\n", agg.to_string())
         agg.to_csv(os.path.join(OUT, f"td_proxy_audit_summary_{tag}.csv"))
         print("\nsel_epochs per setting (guard visibility, F4):")
         print(ref.groupby("setting").sel_epochs.agg(["min", "median", "max"]).to_string())

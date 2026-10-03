@@ -78,8 +78,9 @@ def main():
     ps = out[out.scope == "per_seed_pooled_4_folds"]
     print("\n=== pooled (4 folds concatenated) per seed ===\n")
     print(ps.round(4).to_string(index=False))
-    print("\n=== pooled mean +/- std across seeds ===\n")
-    print(ps.groupby(["device", "setting", "stage"])[KEYS].agg(["mean", "std"]).round(4).to_string())
+    print("\n=== pooled mean / median / std across seeds ===\n")
+    print(ps.groupby(["device", "setting", "stage"])[KEYS].agg(["mean", "median", "std"])
+          .round(4).to_string())
     print("\n=== grand pooled (all seeds) ===\n")
     print(out[out.scope == "grand_pooled_all_seeds"].round(4).to_string(index=False))
     print("\nsaved: phase1_pooled_metrics.csv")
