@@ -1,0 +1,22 @@
+PASS | 19 cells present (got 19)
+PASS | 1,695 rows (got 1695)
+PASS | excluded cells are exactly B0033/34/36/45/46 (got ['B0033', 'B0034', 'B0036', 'B0045', 'B0046'])
+PASS | 14 cells included (got 14)
+PASS | independent recomputation of the rule reproduces include_cell
+PASS | no capacity <= 1.0 Ah or non-finite capacity
+PASS | all 10 features byte-identical to nested_lobo extraction for B0005/06/07/18
+PASS | t_40_41 / ic_peak_V identical to nested_lobo charge extraction (B0005)
+PASS | included capacities in (1.0, 2.1] Ah
+PASS | included SOH in (0, 120]
+PASS | cc_dur: NaN iff no preceding charge (extra rows: 0)
+PASS | cv_dur: NaN iff no preceding charge (extra rows: 0)
+PASS | cv_I_slope: NaN iff no preceding charge (extra rows: 0)
+PASS | ch_mean_T: NaN iff no preceding charge (extra rows: 0)
+PASS | t_40_41: NaN iff no preceding charge (extra rows: 0)
+PASS | ic_peak_V: extra NaN rows are the 5 old-pipeline positions + B0047/48 cyc169 (got [('B0005', 86), ('B0006', 86), ('B0007', 86), ('B0018', 117), ('B0018', 141), ('B0047', 169), ('B0048', 169)])
+PASS | dis features complete (no NaN)
+PASS | dis_duration positive
+PASS | dis_V_slope negative (voltage falls during discharge)
+PASS | regime coverage room>=8, hot=4, cold>=1 (got {'cold': 2, 'hot': 4, 'room': 8})
+
+ALL 20 CHECKS PASSED

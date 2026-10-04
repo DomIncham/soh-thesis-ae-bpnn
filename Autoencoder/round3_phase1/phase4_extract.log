@@ -1,0 +1,52 @@
+saved C:\Master Degree\Thesis\Autoencoder\round3_phase1\phase4_features.csv: 1695 rows, 19 cells
+
+per-cell row counts / capacity range / Q_ref:
+         rows  cap_min  cap_max  Q_ref  include
+battery                                        
+B0005     168    1.287    1.856  1.842     True
+B0006     168    1.154    2.035  2.018     True
+B0007     168    1.400    1.891  1.883     True
+B0018     132    1.341    1.855  1.840     True
+B0025      28    1.768    1.849  1.846     True
+B0026      28    1.386    1.817  1.814     True
+B0027      28    1.770    1.823  1.816     True
+B0028      28    1.717    1.805  1.798     True
+B0029      40    1.612    1.845  1.799     True
+B0030      40    1.563    1.782  1.738     True
+B0031      40    1.667    1.833  1.784     True
+B0032      40    1.636    1.894  1.838     True
+B0033     186    1.161    1.885  1.265    False
+B0034     196    1.261    1.820  1.602    False
+B0036     197    1.002    2.444  1.642    False
+B0045       1    1.082    1.082  1.082    False
+B0046      69    1.124    1.728  1.541    False
+B0047      69    1.106    1.674  1.531     True
+B0048      69    1.158    1.658  1.521     True
+
+excluded cells (rule): ['B0033', 'B0034', 'B0036', 'B0045', 'B0046']
+
+dropped by hygiene rule (<1.0 Ah or missing): 92 rows
+  B0033: 11 (e.g. cycles [1, 5, 341, 343, 347] caps [0.068, 0.69, 0.844, 0.299, 0.234])
+  B0034: 1 (e.g. cycles [1] caps [0.746])
+  B0045: 71 (e.g. cycles [5, 7, 9, 11, 13] caps [0.928, 0.885, 0.858, 0.841, 0.825])
+  B0046: 3 (e.g. cycles [51, 133, 165] caps [0.0, 0.0, 0.0])
+  B0047: 3 (e.g. cycles [51, 133, 165] caps [0.0, 0.0, 0.0])
+  B0048: 3 (e.g. cycles [51, 133, 165] caps [0.0, 0.0, 0.0])
+
+NaN per feature:
+capacity            0
+has_prev_charge     0
+dis_duration        0
+dis_mean_V          0
+dis_mean_T          0
+dis_V_slope         0
+cc_dur              9
+cv_dur              9
+cv_I_slope         15
+ch_mean_T          15
+t_40_41             9
+ic_peak_V          18
+soh                 0
+include_cell        0
+
+finite check: rows with any NaN = 24 (expected: early-cycle rows with no preceding charge cycle, same as the old pipeline; NaN columns listed above)
