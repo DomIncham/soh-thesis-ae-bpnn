@@ -1,0 +1,45 @@
+[device] cpu | threads=8
+rows kept: 631 / 636 (same subset as the 5.1 run)
+TD-Win-7: 7 features = ['dis_V_slope', 'cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ['win_mean_T', 'ic_peak_V']
+TD-Win-7   seed42    test=B0005 cfg=[8, 4]/l2=0.0 ep=36 | R2=+0.576 RMSE=6.691
+TD-Win-7   seed42    test=B0006 cfg=[8]/l2=0.0 ep=54 | R2=+0.781 RMSE=5.808
+TD-Win-7   seed42    test=B0007 cfg=[16]/l2=0.0001 ep=261 | R2=+0.971 RMSE=1.459
+TD-Win-7   seed42    test=B0018 cfg=[16]/l2=0.0001 ep=424 | R2=+0.857 RMSE=3.177
+  [guard] no candidate converged (min sel_epochs=1); retrained [16]/l2=0.0 for 200 epochs -> val RMSE=20.8316
+TD-Win-7   seed7     test=B0005 cfg=[16]/l2=0.0 ep=200 | R2=+0.968 RMSE=1.829
+TD-Win-7   seed7     test=B0006 cfg=[16]/l2=0.0001 ep=29 | R2=+0.705 RMSE=6.738
+TD-Win-7   seed7     test=B0007 cfg=[8, 4]/l2=0.0001 ep=493 | R2=+0.926 RMSE=2.304
+TD-Win-7   seed7     test=B0018 cfg=[16]/l2=0.0 ep=497 | R2=+0.813 RMSE=3.630
+  [guard] dropped 2 non-converged candidate(s) (sel_epochs < 20)
+TD-Win-7   seed123   test=B0005 cfg=[8, 4]/l2=0.0 ep=28 | R2=+0.933 RMSE=2.665
+TD-Win-7   seed123   test=B0006 cfg=[8, 4]/l2=0.0 ep=28 | R2=+0.769 RMSE=5.957
+TD-Win-7   seed123   test=B0007 cfg=[8, 4]/l2=0.0001 ep=196 | R2=+0.929 RMSE=2.269
+TD-Win-7   seed123   test=B0018 cfg=[8]/l2=0.0001 ep=393 | R2=+0.767 RMSE=4.051
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Win-7   seed2024  test=B0005 cfg=[16]/l2=0.0 ep=23 | R2=+0.798 RMSE=4.619
+TD-Win-7   seed2024  test=B0006 cfg=[8]/l2=0.0001 ep=41 | R2=+0.562 RMSE=8.213
+TD-Win-7   seed2024  test=B0007 cfg=[8]/l2=0.0 ep=198 | R2=+0.887 RMSE=2.858
+TD-Win-7   seed2024  test=B0018 cfg=[16]/l2=0.0001 ep=500 | R2=+0.850 RMSE=3.248
+  [guard] dropped 4 non-converged candidate(s) (sel_epochs < 20)
+TD-Win-7   seed11    test=B0005 cfg=[8]/l2=0.0001 ep=47 | R2=+0.918 RMSE=2.943
+TD-Win-7   seed11    test=B0006 cfg=[8]/l2=0.0001 ep=54 | R2=+0.707 RMSE=6.718
+TD-Win-7   seed11    test=B0007 cfg=[8, 4]/l2=0.0001 ep=200 | R2=+0.879 RMSE=2.958
+TD-Win-7   seed11    test=B0018 cfg=[16]/l2=0.0 ep=410 | R2=+0.781 RMSE=3.930
+
+=== refit_on_3, mean / median / std over 4 folds x 5 seeds ===
+        test_MAE  test_RMSE  test_R2  test_MAPE  test_RMSE_Ah
+mean       3.185      4.103    0.819      4.024         0.079
+median     2.543      3.439    0.832      2.930         0.063
+std        1.561      1.931    0.117      2.385         0.040
+
+test_R2 per fold (mean over seeds):
+test_battery
+B0005    0.838
+B0006    0.705
+B0007    0.918
+B0018    0.813
+
+degenerate fold-seeds: 4 / 20
+
+reference (same 631 rows): TD-Clean-7 = 0.772 mean / 0.827 median
+saved

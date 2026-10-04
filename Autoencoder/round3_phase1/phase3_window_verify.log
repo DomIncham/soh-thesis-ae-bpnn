@@ -1,0 +1,59 @@
+================================================================================================
+[1] structure, provenance, metric recomputation
+
+[2] the swap is exactly ONE feature: Clean-7 (dis_mean_T) vs Win-7 (win_mean_T)
+
+[3] PAIRED on identical (fold, seed) cells
+ seed test_battery  test_R2_clean  test_R2_win  delta
+   42        B0005          0.506        0.576  0.070
+   42        B0006          0.726        0.781  0.055
+   42        B0007          0.961        0.970  0.010
+   42        B0018          0.788        0.857  0.069
+    7        B0005          0.867        0.968  0.101
+    7        B0006          0.539        0.705  0.166
+    7        B0007          0.909        0.926  0.018
+    7        B0018          0.837        0.813 -0.024
+  123        B0005          0.869        0.933  0.064
+  123        B0006          0.618        0.770  0.151
+  123        B0007          0.905        0.929  0.024
+  123        B0018          0.817        0.767 -0.050
+ 2024        B0005          0.847        0.798 -0.049
+ 2024        B0006          0.596        0.562 -0.035
+ 2024        B0007          0.914        0.887 -0.028
+ 2024        B0018          0.588        0.850  0.263
+   11        B0005          0.919        0.918 -0.001
+   11        B0006          0.504        0.707  0.203
+   11        B0007          0.920        0.879 -0.041
+   11        B0018          0.804        0.781 -0.024
+
+  mean delta per fold:
+test_battery
+ 0.037
+ 0.108
+-0.004
+ 0.047
+
+  Win-7 better in 12/20 cells | mean delta +0.047 | median delta +0.021
+  mean R2: Clean-7 0.772 -> Win-7 0.819
+  median R2: Clean-7 0.827 -> Win-7 0.832
+  std: Clean-7 0.155 -> Win-7 0.117
+
+[4] tension to record: the new feature is MORE correlated with capacity, yet performs better
+  dis_mean_T  R2(capacity) = 0.430  (whole cycle)
+  win_mean_T  R2(capacity) = 0.494  (4.0-3.6 V window)
+
+================================================================================================
+PASS | 40 rows = 1 setting x 2 stages x 4 folds x 5 seeds | 40
+PASS | every block traces to the raw feature file, y_true == raw SOH | []
+PASS | recomputed RMSE and R2 match every row | max|diff|=4.98e-05
+PASS | Clean-7 reference has 20 fold-seeds from the committed 5.1 run | 20
+PASS | 20 cells matched | 20
+PASS | the swap FAILS the 15/20 consistency bar used for ic_peak_V -> recorded as NOT established | 12/20 cells better, mean delta +0.047, worst fold-mean -0.004
+PASS | no fold gets worse by more than 0.02 | worst fold-mean delta -0.004
+
+ALL 7 CHECKS PASSED
+
+Notes:
+  NOTE | verdict for 5.2: NOT established. The one admissible substitution raises the mean (0.772 -> 0.819) and helps the hardest fold (B0006 +0.108, 4/5 seeds), but it is better in only 12 of 20 cells, below the 15/20 bar that ic_peak_V cleared in 5.1, and the aggregate gain is smaller than the known instability of the proxy-free regime. It is therefore reported as suggestive and NOT adopted.
+  NOTE | the proxy rule measures label-correlation, not usefulness. win_mean_T is slightly MORE correlated with capacity than dis_mean_T yet performs better, because restricting to a fixed voltage window removes the per-cell cut-off-voltage difference that the whole-cycle mean carries. Both are SAFE (< 0.90), so the substitution is admissible, and it is the first Phase 3 change that helped.
+  NOTE | the aggregate gain (+0.047) is smaller than the known instability of the proxy-free regime, so the claim must be the paired one (see the counts above), not the aggregate alone.
