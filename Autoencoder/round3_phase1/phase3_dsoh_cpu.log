@@ -1,0 +1,76 @@
+[device] cpu | threads=8
+rows kept: 631 / 636 (same 631-row subset as the other Phase 3 runs)
+
+--- TD-Clean-7: 7 features | dSOH self-test passed for all 4 batteries
+TD-Clean-7   seed42    test=B0005 cfg=[16]/l2=0.0001 ep=146 | R2=-0.487 RMSE=12.528 | mono R2=-0.455 RMSE=12.388 | anchor_offset=+0.81
+TD-Clean-7   seed42    test=B0006 cfg=[8, 4]/l2=0.0 ep=274 | R2=+0.693 RMSE=6.872 | mono R2=+0.777 RMSE=5.860 | anchor_offset=+0.88
+TD-Clean-7   seed42    test=B0007 cfg=[16]/l2=0.0 ep=152 | R2=+0.719 RMSE=4.505 | mono R2=+0.713 RMSE=4.553 | anchor_offset=+0.45
+TD-Clean-7   seed42    test=B0018 cfg=[8, 4]/l2=0.0 ep=170 | R2=-4.397 RMSE=19.495 | mono R2=-4.397 RMSE=19.495 | anchor_offset=+0.80
+TD-Clean-7   seed7     test=B0005 cfg=[8, 4]/l2=0.0 ep=131 | R2=+0.843 RMSE=4.066 | mono R2=+0.842 RMSE=4.085 | anchor_offset=+0.81
+TD-Clean-7   seed7     test=B0006 cfg=[16]/l2=0.0 ep=190 | R2=+0.942 RMSE=2.977 | mono R2=+0.943 RMSE=2.967 | anchor_offset=+0.88
+TD-Clean-7   seed7     test=B0007 cfg=[8, 4]/l2=0.0 ep=200 | R2=-0.106 RMSE=8.931 | mono R2=-0.094 RMSE=8.883 | anchor_offset=+0.45
+TD-Clean-7   seed7     test=B0018 cfg=[16]/l2=0.0 ep=248 | R2=-29.766 RMSE=46.544 | mono R2=-29.766 RMSE=46.544 | anchor_offset=+0.80
+TD-Clean-7   seed123   test=B0005 cfg=[16]/l2=0.0001 ep=158 | R2=+0.757 RMSE=5.067 | mono R2=+0.755 RMSE=5.080 | anchor_offset=+0.81
+TD-Clean-7   seed123   test=B0006 cfg=[8, 4]/l2=0.0001 ep=60 | R2=-0.306 RMSE=14.180 | mono R2=-0.031 RMSE=12.598 | anchor_offset=+0.88
+TD-Clean-7   seed123   test=B0007 cfg=[8, 4]/l2=0.0 ep=26 | R2=+0.069 RMSE=8.197 | mono R2=+0.069 RMSE=8.197 | anchor_offset=+0.45
+TD-Clean-7   seed123   test=B0018 cfg=[8]/l2=0.0 ep=475 | R2=-11.307 RMSE=29.438 | mono R2=-11.307 RMSE=29.438 | anchor_offset=+0.80
+TD-Clean-7   seed2024  test=B0005 cfg=[8]/l2=0.0 ep=60 | R2=+0.272 RMSE=8.764 | mono R2=+0.272 RMSE=8.764 | anchor_offset=+0.81
+TD-Clean-7   seed2024  test=B0006 cfg=[8, 4]/l2=0.0 ep=176 | R2=-0.106 RMSE=13.047 | mono R2=+0.075 RMSE=11.935 | anchor_offset=+0.88
+TD-Clean-7   seed2024  test=B0007 cfg=[8, 4]/l2=0.0 ep=70 | R2=+0.301 RMSE=7.100 | mono R2=+0.301 RMSE=7.100 | anchor_offset=+0.45
+TD-Clean-7   seed2024  test=B0018 cfg=[8]/l2=0.0 ep=353 | R2=-14.273 RMSE=32.794 | mono R2=-14.273 RMSE=32.794 | anchor_offset=+0.80
+TD-Clean-7   seed11    test=B0005 cfg=[8]/l2=0.0 ep=46 | R2=+0.883 RMSE=3.520 | mono R2=+0.883 RMSE=3.520 | anchor_offset=+0.81
+TD-Clean-7   seed11    test=B0006 cfg=[8, 4]/l2=0.0001 ep=72 | R2=+0.111 RMSE=11.700 | mono R2=+0.111 RMSE=11.700 | anchor_offset=+0.88
+TD-Clean-7   seed11    test=B0007 cfg=[8, 4]/l2=0.0 ep=29 | R2=+0.461 RMSE=6.233 | mono R2=+0.461 RMSE=6.233 | anchor_offset=+0.45
+TD-Clean-7   seed11    test=B0018 cfg=[8]/l2=0.0 ep=326 | R2=-19.075 RMSE=37.597 | mono R2=-19.075 RMSE=37.597 | anchor_offset=+0.80
+
+--- TD-Clean-8: 8 features | dSOH self-test passed for all 4 batteries
+TD-Clean-8   seed42    test=B0005 cfg=[8, 4]/l2=0.0001 ep=46 | R2=+0.802 RMSE=4.575 | mono R2=+0.802 RMSE=4.575 | anchor_offset=+0.81
+TD-Clean-8   seed42    test=B0006 cfg=[8, 4]/l2=0.0001 ep=28 | R2=+0.324 RMSE=10.204 | mono R2=+0.324 RMSE=10.204 | anchor_offset=+0.88
+TD-Clean-8   seed42    test=B0007 cfg=[8, 4]/l2=0.0 ep=22 | R2=+0.867 RMSE=3.102 | mono R2=+0.867 RMSE=3.102 | anchor_offset=+0.45
+TD-Clean-8   seed42    test=B0018 cfg=[16]/l2=0.0 ep=253 | R2=-30.089 RMSE=46.788 | mono R2=-30.089 RMSE=46.788 | anchor_offset=+0.80
+TD-Clean-8   seed7     test=B0005 cfg=[8]/l2=0.0001 ep=54 | R2=+0.307 RMSE=8.552 | mono R2=+0.307 RMSE=8.552 | anchor_offset=+0.81
+TD-Clean-8   seed7     test=B0006 cfg=[8, 4]/l2=0.0 ep=49 | R2=+0.338 RMSE=10.097 | mono R2=+0.338 RMSE=10.097 | anchor_offset=+0.88
+  [guard] no candidate converged; using [8, 4]/l2=0.0001 200ep
+TD-Clean-8   seed7     test=B0007 cfg=[8, 4]/l2=0.0001 ep=200 | R2=+0.509 RMSE=5.953 | mono R2=+0.743 RMSE=4.308 | anchor_offset=+0.45
+TD-Clean-8   seed7     test=B0018 cfg=[16]/l2=0.0001 ep=324 | R2=-33.536 RMSE=49.314 | mono R2=-33.536 RMSE=49.314 | anchor_offset=+0.80
+TD-Clean-8   seed123   test=B0005 cfg=[8, 4]/l2=0.0 ep=28 | R2=+0.738 RMSE=5.263 | mono R2=+0.738 RMSE=5.263 | anchor_offset=+0.81
+TD-Clean-8   seed123   test=B0006 cfg=[8, 4]/l2=0.0001 ep=24 | R2=+0.437 RMSE=9.311 | mono R2=+0.437 RMSE=9.311 | anchor_offset=+0.88
+  [guard] no candidate converged; using [8]/l2=0.0001 200ep
+TD-Clean-8   seed123   test=B0007 cfg=[8]/l2=0.0001 ep=200 | R2=+0.197 RMSE=7.613 | mono R2=+0.165 RMSE=7.759 | anchor_offset=+0.45
+TD-Clean-8   seed123   test=B0018 cfg=[8]/l2=0.0 ep=473 | R2=-32.681 RMSE=48.700 | mono R2=-32.681 RMSE=48.700 | anchor_offset=+0.80
+TD-Clean-8   seed2024  test=B0005 cfg=[8, 4]/l2=0.0 ep=487 | R2=+0.695 RMSE=5.674 | mono R2=+0.732 RMSE=5.323 | anchor_offset=+0.81
+TD-Clean-8   seed2024  test=B0006 cfg=[8]/l2=0.0001 ep=111 | R2=-0.918 RMSE=17.185 | mono R2=-0.905 RMSE=17.125 | anchor_offset=+0.88
+TD-Clean-8   seed2024  test=B0007 cfg=[8, 4]/l2=0.0 ep=73 | R2=+0.808 RMSE=3.721 | mono R2=+0.808 RMSE=3.721 | anchor_offset=+0.45
+TD-Clean-8   seed2024  test=B0018 cfg=[8, 4]/l2=0.0001 ep=251 | R2=-2.196 RMSE=15.002 | mono R2=-2.196 RMSE=15.002 | anchor_offset=+0.80
+TD-Clean-8   seed11    test=B0005 cfg=[16]/l2=0.0001 ep=77 | R2=+0.822 RMSE=4.336 | mono R2=+0.822 RMSE=4.336 | anchor_offset=+0.81
+TD-Clean-8   seed11    test=B0006 cfg=[16]/l2=0.0 ep=447 | R2=-0.448 RMSE=14.929 | mono R2=-0.382 RMSE=14.584 | anchor_offset=+0.88
+TD-Clean-8   seed11    test=B0007 cfg=[8, 4]/l2=0.0001 ep=27 | R2=-0.252 RMSE=9.505 | mono R2=-0.252 RMSE=9.505 | anchor_offset=+0.45
+TD-Clean-8   seed11    test=B0018 cfg=[8, 4]/l2=0.0 ep=123 | R2=-2.423 RMSE=15.525 | mono R2=-2.423 RMSE=15.525 | anchor_offset=+0.80
+
+=== accumulated SOH, mean / median / std over 4 folds x 5 seeds ===
+           test_R2                test_RMSE                test_MAPE                 mono_R2                mono_RMSE                mono_MAPE                
+              mean median     std      mean median     std      mean  median     std    mean median     std      mean median     std      mean  median     std
+setting                                                                                                                                                       
+TD-Clean-7  -3.689  0.090   8.377    14.178  8.847  12.547    15.691   9.730  13.846  -3.660  0.093   8.390    13.987  8.823  12.591    15.504   9.656  13.871
+TD-Clean-8  -4.785  0.315  11.824    14.767  9.408  15.023    16.604  11.209  16.395  -4.769  0.315  11.832    14.655  9.408  15.085    16.525  11.209  16.429
+
+test_R2 per fold (mean over seeds):
+setting       TD-Clean-7  TD-Clean-8
+test_battery                        
+B0005              0.453       0.673
+B0006              0.267      -0.054
+B0007              0.289       0.425
+B0018            -15.763     -20.185
+
+anchor offset per fold (true first-cycle SOH - 100):
+setting       TD-Clean-7  TD-Clean-8
+test_battery                        
+B0005              0.808       0.808
+B0006              0.883       0.883
+B0007              0.454       0.454
+B0018              0.803       0.803
+
+degenerate fold-seeds: 19 / 40
+
+reference (same 631 rows, absolute-SOH model): Clean-7 0.772 | Clean-8 0.810
+saved

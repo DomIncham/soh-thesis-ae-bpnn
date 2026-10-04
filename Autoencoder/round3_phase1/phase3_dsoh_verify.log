@@ -1,0 +1,81 @@
+================================================================================================
+[1] structure, provenance, metric recomputation
+
+[2] accumulated SOH, per fold (mean over 5 seeds)
+setting       TD-Clean-7  TD-Clean-8
+test_battery                        
+B0005              0.453       0.673
+B0006              0.267      -0.054
+B0007              0.289       0.425
+B0018            -15.763     -20.185
+
+  RMSE per fold:
+setting       TD-Clean-7  TD-Clean-8
+test_battery                        
+B0005               6.79        5.68
+B0006               9.76       12.35
+B0007               6.99        5.98
+B0018              33.17       35.07
+
+  monotone-projected R2 per fold:
+setting       TD-Clean-7  TD-Clean-8
+test_battery                        
+B0005              0.459       0.680
+B0006              0.375      -0.038
+B0007              0.290       0.466
+B0018            -15.763     -20.185
+
+[3] MECHANISM: does the error grow with cycle position?
+
+  TD-Clean-7: regression of |error| on normalised cycle position, per fold
+    B0005: mean corr(cycle position, |error|) = +0.568   mean slope = +8.08 %SOH over the full range
+    B0006: mean corr(cycle position, |error|) = +0.874   mean slope = +17.87 %SOH over the full range
+    B0007: mean corr(cycle position, |error|) = +0.896   mean slope = +10.63 %SOH over the full range
+    B0018: mean corr(cycle position, |error|) = +0.993   mean slope = +54.97 %SOH over the full range
+
+  TD-Clean-8: regression of |error| on normalised cycle position, per fold
+    B0005: mean corr(cycle position, |error|) = +0.368   mean slope = +3.52 %SOH over the full range
+    B0006: mean corr(cycle position, |error|) = +0.891   mean slope = +18.03 %SOH over the full range
+    B0007: mean corr(cycle position, |error|) = +0.592   mean slope = +6.12 %SOH over the full range
+    B0018: mean corr(cycle position, |error|) = +0.988   mean slope = +59.96 %SOH over the full range
+
+[4] PAIRED against the absolute-SOH model on identical (fold, seed) cells
+
+  TD-Clean-7: mean R2 absolute +0.772 -> accumulated -3.689  (delta -4.460)
+    per fold delta:
+test_battery
+ -0.348
+ -0.330
+ -0.633
+-16.530
+
+  TD-Clean-8: mean R2 absolute +0.810 -> accumulated -4.785  (delta -5.596)
+    per fold delta:
+test_battery
+ -0.189
+ -0.710
+ -0.499
+-20.984
+
+[5] anchor offset (true first-cycle SOH - 100), per fold
+              anchor_offset
+test_battery               
+B0005                 0.808
+B0006                 0.883
+B0007                 0.454
+B0018                 0.803
+
+================================================================================================
+PASS | 40 rows = 2 settings x 4 folds x 5 seeds | 40
+PASS | both settings present
+PASS | single accumulated stage
+PASS | every block traces to the raw file, y_true == raw SOH, and series start at the anchor | []
+PASS | recomputed RMSE and R2 match every row | max|diff|=4.95e-05
+PASS | TD-Clean-7: accumulation does NOT clear the 15/20 bar | 1/20 cells better
+PASS | TD-Clean-8: accumulation does NOT clear the 15/20 bar | 0/20 cells better
+
+ALL 7 CHECKS PASSED
+
+Notes:
+  NOTE | a positive slope means the accumulated prediction drifts away from the truth as the battery ages - the signature of integrating a biased increment over the cycle count. This is the mechanism behind the B0018 collapse, and it is why the monotone projection cannot rescue it: clamping the series does not remove a linear drift.
+  NOTE | the anchor offset is under 1 %SOH everywhere, so the anchor choice is not what drives the failure.
