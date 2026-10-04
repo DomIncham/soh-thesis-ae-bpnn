@@ -1,0 +1,46 @@
+================================================================================================
+[1] structure, provenance, metric recomputation
+
+[2] fold coverage: the four folds must partition the 631 cycles (from the preds dump)
+
+[3] the curve
+curve          PF     PL
+window_min              
+5.0         0.842  0.874
+10.0        0.828  0.885
+20.0        0.830  0.898
+30.0        0.843  0.914
+
+curve          PF     PL
+window_min              
+5.0         3.760  3.231
+10.0        3.892  3.072
+20.0        3.897  2.840
+30.0        3.750  2.644
+
+[4] what actually differs between the W5-PF set and the full-cycle reference
+  W5-PF  (6 feats): cc_dur, cv_dur, cv_I_slope, ch_mean_T, ic_peak_V, w5_mean_T
+  Clean-7(7 feats): dis_mean_T, dis_V_slope, cc_dur, cv_dur, cv_I_slope, ch_mean_T,
+                    ic_peak_V
+
+  full-cycle reference (same rows, same seeds): R2 0.778 RMSE 4.581
+  W5-PF:                                        R2 0.842 RMSE 3.760
+
+================================================================================================
+PASS | 8 settings x 2 stages x 4 folds x 3 seeds | 192
+PASS | both curves present
+PASS | all four window lengths present
+PASS | zero degenerate fold-seeds in this run | 0
+PASS | every block traces to the raw feature file, y_true == raw SOH | []
+PASS | recomputed RMSE and R2 match every row | max|diff|=4.93e-05
+PASS | every (setting, seed) covers exactly 631 disjoint keys | {631}
+PASS | no duplicate (battery, cycle) keys anywhere | 0
+PASS | PF curve is FLAT between 5 and 30 minutes | 5min 0.842 vs 30min 0.843
+PASS | PL curve rises monotonically with window length | {5.0: 0.874, 10.0: 0.885, 20.0: 0.898, 30.0: 0.914}
+PASS | PL beats PF at every window length
+PASS | full-cycle reference has 12 fold-seeds (3 seeds) | 12
+
+ALL 12 CHECKS PASSED
+
+Notes:
+  NOTE | W5-PF differs from the full-cycle Clean-7 reference by MORE than the window: it also drops dis_V_slope (R2(capacity) 0.600, and numerically fragile at 1e-4 with a sign-flipping per-battery correlation) and swaps dis_mean_T (0.430) for w5_mean_T (0.086). The gain over the full-cycle reference therefore cannot be attributed to the shorter window alone.

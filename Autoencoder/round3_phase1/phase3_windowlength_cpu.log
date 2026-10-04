@@ -1,0 +1,148 @@
+[device] cpu | threads=8
+rows kept: 631 / 636 (same 631-row subset as the other Phase 3 runs)
+
+--- W5-PF: 6 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w5_mean_T']
+W5-PF      seed42    test=B0005 cfg=[16]/l2=0.0001 ep=64 | R2=+0.906 RMSE=3.156
+W5-PF      seed42    test=B0006 cfg=[16]/l2=0.0001 ep=61 | R2=+0.907 RMSE=3.789
+W5-PF      seed42    test=B0007 cfg=[8, 4]/l2=0.0001 ep=325 | R2=+0.921 RMSE=2.382
+W5-PF      seed42    test=B0018 cfg=[8, 4]/l2=0.0 ep=295 | R2=+0.810 RMSE=3.654
+W5-PF      seed7     test=B0005 cfg=[16]/l2=0.0001 ep=118 | R2=+0.935 RMSE=2.620
+W5-PF      seed7     test=B0006 cfg=[8, 4]/l2=0.0 ep=237 | R2=+0.646 RMSE=7.386
+W5-PF      seed7     test=B0007 cfg=[8]/l2=0.0001 ep=471 | R2=+0.924 RMSE=2.337
+W5-PF      seed7     test=B0018 cfg=[16]/l2=0.0 ep=298 | R2=+0.607 RMSE=5.262
+W5-PF      seed123   test=B0005 cfg=[8]/l2=0.0001 ep=147 | R2=+0.878 RMSE=3.589
+W5-PF      seed123   test=B0006 cfg=[16]/l2=0.0 ep=71 | R2=+0.863 RMSE=4.600
+W5-PF      seed123   test=B0007 cfg=[16]/l2=0.0 ep=458 | R2=+0.907 RMSE=2.584
+W5-PF      seed123   test=B0018 cfg=[16]/l2=0.0 ep=379 | R2=+0.799 RMSE=3.758
+
+--- W5-PL: 7 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w5_mean_T', 'w5_mean_V']
+W5-PL      seed42    test=B0005 cfg=[16]/l2=0.0001 ep=32 | R2=+0.937 RMSE=2.574
+W5-PL      seed42    test=B0006 cfg=[8]/l2=0.0 ep=61 | R2=+0.941 RMSE=3.016
+W5-PL      seed42    test=B0007 cfg=[8, 4]/l2=0.0001 ep=388 | R2=+0.846 RMSE=3.328
+W5-PL      seed42    test=B0018 cfg=[16]/l2=0.0 ep=322 | R2=+0.773 RMSE=3.994
+W5-PL      seed7     test=B0005 cfg=[8]/l2=0.0001 ep=60 | R2=+0.935 RMSE=2.609
+W5-PL      seed7     test=B0006 cfg=[8]/l2=0.0 ep=54 | R2=+0.941 RMSE=3.006
+W5-PL      seed7     test=B0007 cfg=[8]/l2=0.0001 ep=394 | R2=+0.889 RMSE=2.823
+W5-PL      seed7     test=B0018 cfg=[16]/l2=0.0001 ep=280 | R2=+0.805 RMSE=3.706
+W5-PL      seed123   test=B0005 cfg=[16]/l2=0.0001 ep=67 | R2=+0.929 RMSE=2.731
+W5-PL      seed123   test=B0006 cfg=[8, 4]/l2=0.0 ep=48 | R2=+0.931 RMSE=3.269
+W5-PL      seed123   test=B0007 cfg=[8]/l2=0.0 ep=173 | R2=+0.882 RMSE=2.917
+W5-PL      seed123   test=B0018 cfg=[8, 4]/l2=0.0 ep=131 | R2=+0.673 RMSE=4.800
+
+--- W10-PF: 6 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w10_mean_T']
+W10-PF     seed42    test=B0005 cfg=[16]/l2=0.0001 ep=59 | R2=+0.905 RMSE=3.164
+W10-PF     seed42    test=B0006 cfg=[16]/l2=0.0001 ep=55 | R2=+0.906 RMSE=3.798
+W10-PF     seed42    test=B0007 cfg=[8, 4]/l2=0.0001 ep=299 | R2=+0.911 RMSE=2.536
+W10-PF     seed42    test=B0018 cfg=[8, 4]/l2=0.0 ep=295 | R2=+0.793 RMSE=3.816
+W10-PF     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=99 | R2=+0.919 RMSE=2.917
+W10-PF     seed7     test=B0006 cfg=[8, 4]/l2=0.0 ep=237 | R2=+0.648 RMSE=7.365
+W10-PF     seed7     test=B0007 cfg=[8]/l2=0.0 ep=471 | R2=+0.919 RMSE=2.419
+W10-PF     seed7     test=B0018 cfg=[16]/l2=0.0 ep=415 | R2=+0.594 RMSE=5.350
+W10-PF     seed123   test=B0005 cfg=[16]/l2=0.0 ep=260 | R2=+0.970 RMSE=1.793
+W10-PF     seed123   test=B0006 cfg=[8, 4]/l2=0.0001 ep=421 | R2=+0.655 RMSE=7.287
+W10-PF     seed123   test=B0007 cfg=[16]/l2=0.0 ep=499 | R2=+0.888 RMSE=2.845
+W10-PF     seed123   test=B0018 cfg=[16]/l2=0.0 ep=379 | R2=+0.834 RMSE=3.417
+
+--- W10-PL: 7 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w10_mean_T', 'w10_mean_V']
+W10-PL     seed42    test=B0005 cfg=[16]/l2=0.0001 ep=30 | R2=+0.931 RMSE=2.689
+W10-PL     seed42    test=B0006 cfg=[8]/l2=0.0 ep=55 | R2=+0.947 RMSE=2.856
+W10-PL     seed42    test=B0007 cfg=[8]/l2=0.0 ep=263 | R2=+0.907 RMSE=2.587
+W10-PL     seed42    test=B0018 cfg=[16]/l2=0.0001 ep=261 | R2=+0.779 RMSE=3.942
+W10-PL     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=102 | R2=+0.953 RMSE=2.224
+W10-PL     seed7     test=B0006 cfg=[8]/l2=0.0 ep=49 | R2=+0.943 RMSE=2.960
+W10-PL     seed7     test=B0007 cfg=[8]/l2=0.0 ep=394 | R2=+0.905 RMSE=2.619
+W10-PL     seed7     test=B0018 cfg=[16]/l2=0.0001 ep=280 | R2=+0.817 RMSE=3.593
+W10-PL     seed123   test=B0005 cfg=[16]/l2=0.0 ep=67 | R2=+0.927 RMSE=2.783
+W10-PL     seed123   test=B0006 cfg=[8, 4]/l2=0.0001 ep=41 | R2=+0.936 RMSE=3.145
+W10-PL     seed123   test=B0007 cfg=[8]/l2=0.0 ep=239 | R2=+0.904 RMSE=2.631
+W10-PL     seed123   test=B0018 cfg=[8, 4]/l2=0.0001 ep=104 | R2=+0.667 RMSE=4.841
+
+--- W20-PF: 6 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w20_mean_T']
+W20-PF     seed42    test=B0005 cfg=[16]/l2=0.0 ep=59 | R2=+0.901 RMSE=3.236
+W20-PF     seed42    test=B0006 cfg=[16]/l2=0.0 ep=55 | R2=+0.908 RMSE=3.760
+W20-PF     seed42    test=B0007 cfg=[8, 4]/l2=0.0001 ep=294 | R2=+0.920 RMSE=2.407
+W20-PF     seed42    test=B0018 cfg=[8, 4]/l2=0.0001 ep=295 | R2=+0.786 RMSE=3.881
+W20-PF     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=99 | R2=+0.898 RMSE=3.287
+W20-PF     seed7     test=B0006 cfg=[8, 4]/l2=0.0 ep=273 | R2=+0.605 RMSE=7.802
+W20-PF     seed7     test=B0007 cfg=[8]/l2=0.0 ep=421 | R2=+0.908 RMSE=2.568
+W20-PF     seed7     test=B0018 cfg=[16]/l2=0.0001 ep=297 | R2=+0.579 RMSE=5.446
+W20-PF     seed123   test=B0005 cfg=[8]/l2=0.0001 ep=105 | R2=+0.875 RMSE=3.635
+W20-PF     seed123   test=B0006 cfg=[16]/l2=0.0 ep=65 | R2=+0.865 RMSE=4.565
+W20-PF     seed123   test=B0007 cfg=[16]/l2=0.0 ep=464 | R2=+0.928 RMSE=2.284
+W20-PF     seed123   test=B0018 cfg=[16]/l2=0.0 ep=375 | R2=+0.785 RMSE=3.894
+
+--- W20-PL: 7 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w20_mean_T', 'w20_mean_V']
+W20-PL     seed42    test=B0005 cfg=[16]/l2=0.0001 ep=31 | R2=+0.921 RMSE=2.882
+W20-PL     seed42    test=B0006 cfg=[8]/l2=0.0 ep=55 | R2=+0.949 RMSE=2.805
+W20-PL     seed42    test=B0007 cfg=[8, 4]/l2=0.0 ep=273 | R2=+0.940 RMSE=2.077
+W20-PL     seed42    test=B0018 cfg=[16]/l2=0.0 ep=347 | R2=+0.809 RMSE=3.666
+W20-PL     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=111 | R2=+0.965 RMSE=1.914
+W20-PL     seed7     test=B0006 cfg=[8]/l2=0.0 ep=49 | R2=+0.942 RMSE=2.980
+W20-PL     seed7     test=B0007 cfg=[16]/l2=0.0001 ep=193 | R2=+0.936 RMSE=2.148
+W20-PL     seed7     test=B0018 cfg=[8]/l2=0.0001 ep=415 | R2=+0.740 RMSE=4.277
+W20-PL     seed123   test=B0005 cfg=[16]/l2=0.0001 ep=101 | R2=+0.940 RMSE=2.511
+W20-PL     seed123   test=B0006 cfg=[16]/l2=0.0001 ep=125 | R2=+0.959 RMSE=2.527
+W20-PL     seed123   test=B0007 cfg=[8, 4]/l2=0.0001 ep=136 | R2=+0.953 RMSE=1.841
+W20-PL     seed123   test=B0018 cfg=[8, 4]/l2=0.0 ep=104 | R2=+0.719 RMSE=4.449
+
+--- W30-PF: 6 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w30_mean_T']
+W30-PF     seed42    test=B0005 cfg=[16]/l2=0.0 ep=54 | R2=+0.892 RMSE=3.369
+W30-PF     seed42    test=B0006 cfg=[16]/l2=0.0001 ep=47 | R2=+0.911 RMSE=3.694
+W30-PF     seed42    test=B0007 cfg=[8]/l2=0.0001 ep=489 | R2=+0.906 RMSE=2.602
+W30-PF     seed42    test=B0018 cfg=[8, 4]/l2=0.0 ep=295 | R2=+0.795 RMSE=3.795
+W30-PF     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=118 | R2=+0.896 RMSE=3.305
+W30-PF     seed7     test=B0006 cfg=[8]/l2=0.0 ep=73 | R2=+0.855 RMSE=4.720
+W30-PF     seed7     test=B0007 cfg=[8]/l2=0.0001 ep=490 | R2=+0.911 RMSE=2.533
+W30-PF     seed7     test=B0018 cfg=[16]/l2=0.0001 ep=193 | R2=+0.574 RMSE=5.478
+W30-PF     seed123   test=B0005 cfg=[8]/l2=0.0001 ep=95 | R2=+0.848 RMSE=4.011
+W30-PF     seed123   test=B0006 cfg=[16]/l2=0.0 ep=65 | R2=+0.863 RMSE=4.587
+W30-PF     seed123   test=B0007 cfg=[8, 4]/l2=0.0001 ep=191 | R2=+0.835 RMSE=3.449
+W30-PF     seed123   test=B0018 cfg=[16]/l2=0.0 ep=375 | R2=+0.830 RMSE=3.462
+
+--- W30-PL: 7 features = ['cc_dur', 'cv_dur', 'cv_I_slope', 'ch_mean_T'] + ic_peak_V + ['w30_mean_T', 'w30_mean_V']
+W30-PL     seed42    test=B0005 cfg=[16]/l2=0.0001 ep=29 | R2=+0.916 RMSE=2.981
+W30-PL     seed42    test=B0006 cfg=[8, 4]/l2=0.0 ep=377 | R2=+0.962 RMSE=2.423
+W30-PL     seed42    test=B0007 cfg=[8]/l2=0.0001 ep=367 | R2=+0.938 RMSE=2.108
+W30-PL     seed42    test=B0018 cfg=[16]/l2=0.0 ep=347 | R2=+0.830 RMSE=3.461
+W30-PL     seed7     test=B0005 cfg=[16]/l2=0.0001 ep=261 | R2=+0.978 RMSE=1.533
+W30-PL     seed7     test=B0006 cfg=[8, 4]/l2=0.0001 ep=143 | R2=+0.950 RMSE=2.779
+W30-PL     seed7     test=B0007 cfg=[16]/l2=0.0001 ep=269 | R2=+0.946 RMSE=1.975
+W30-PL     seed7     test=B0018 cfg=[8]/l2=0.0001 ep=415 | R2=+0.746 RMSE=4.231
+W30-PL     seed123   test=B0005 cfg=[16]/l2=0.0001 ep=333 | R2=+0.947 RMSE=2.374
+W30-PL     seed123   test=B0006 cfg=[16]/l2=0.0001 ep=257 | R2=+0.953 RMSE=2.700
+W30-PL     seed123   test=B0007 cfg=[8, 4]/l2=0.0 ep=166 | R2=+0.946 RMSE=1.975
+W30-PL     seed123   test=B0018 cfg=[8, 4]/l2=0.0001 ep=282 | R2=+0.855 RMSE=3.193
+
+=== the curve: refit_on_3, mean / median over 4 folds x seeds ===
+                 test_R2        test_RMSE        test_MAPE       
+                    mean median      mean median      mean median
+curve window_min                                                 
+PF    5.0          0.842  0.892     3.760  3.622     3.578  2.961
+      10.0         0.828  0.896     3.892  3.290     3.762  2.884
+      20.0         0.830  0.886     3.897  3.698     3.645  3.100
+      30.0         0.843  0.859     3.750  3.578     3.501  3.148
+PL    5.0          0.874  0.909     3.231  3.011     3.071  3.045
+      10.0         0.885  0.917     3.072  2.819     2.969  2.877
+      20.0         0.898  0.940     2.840  2.666     2.749  2.511
+      30.0         0.914  0.946     2.644  2.561     2.622  2.571
+
+RMSE (%SOH) vs window length, one row per curve:
+curve          PF     PL
+window_min              
+5.0         3.760  3.231
+10.0        3.892  3.072
+20.0        3.897  2.840
+30.0        3.750  2.644
+
+R2 vs window length:
+curve          PF     PL
+window_min              
+5.0         0.842  0.874
+10.0        0.828  0.885
+20.0        0.830  0.898
+30.0        0.843  0.914
+
+degenerate fold-seeds: 0 / 96
+
+reference point (full cycle, same 631 rows, same seeds [42, 7, 123]): TD-Clean-7 mean R2 = 0.778, RMSE = 4.581 (n=12)
+saved

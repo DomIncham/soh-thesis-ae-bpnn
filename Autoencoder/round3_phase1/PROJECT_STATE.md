@@ -19,10 +19,13 @@ re-checked by script; nothing is quoted from memory.
 | item | content | status | result |
 |---|---|---|---|
 | 5.1 | charging-segment / ICA features | ✅ done | `ic_peak_V` supported: Clean-6 0.664 → Clean-7 **0.772** → Clean-8 **0.810** |
-| 5.2 | fixed discharge voltage window (4.0→3.6 V) | ⬜ next | — |
+| 5.2 | fixed discharge voltage window (4.0→3.6 V) | ✅ done | **NOT ESTABLISHED** — 5 of 7 window features are proxies, the strongest (`win_dur` 0.995) beating the whole-cycle proxy; the one admissible swap helps in only 12/20 cells |
 | 5.3 | self-referenced normalisation | ✅ done | **REJECTED** — 0.810 → 0.075, B0018 collapses in 5/5 seeds |
-| 5.4 | monotonic / ΔSOH prior | ⬜ | — |
-| 5.5 | window-length curve | ⬜ | — |
+| 5.4 | monotonic / ΔSOH prior | ✅ done | **REJECTED** (accumulation) — 0.810 → −4.785; error grows with cycle position. The advisor's second option (monotonicity penalty) is untested |
+| 5.5 | window-length curve | ✅ done | **PF curve flat from 5 to 30 min (0.842 → 0.843)**; PL rises 0.874 → 0.914. ΔV = 0.1/0.2 V infeasible on these files |
+
+**Phase 3 is complete.** Its outcome: one supported addition (`ic_peak_V`), one usable figure
+(the window-length curve), and three measured negatives, each with an identified mechanism.
 
 ## The results that stand
 
@@ -65,9 +68,11 @@ All six scripts were re-run against the current committed artifacts. 134 checks,
 | `phase3_charge_verify.py` | 8 | paired 5.1 comparison |
 | `phase3_selfref_verify.py` | 9 | paired 5.3 comparison, localisation of the damage |
 | `phase3_window_verify.py` | 7 | paired 5.2 comparison |
+| `phase3_dsoh_verify.py` | 7 | paired 5.4 comparison, error-vs-cycle-position mechanism |
+| `phase3_windowlength_verify.py` | 12 | paired 5.5 comparison, curve shape, fold coverage |
 | `phase3_feature_audit.py` | 50 | charge/window features recomputed from raw `.mat`; `load_td` column ORDER; the feature matrices actually fed to `run_fold`; fold coverage of the 631 keys; headline numbers |
 
-Total: **191 checks, all passing** (141 before the Phase 3 feature audit, +50 from it).
+Total: **210 checks, all passing**.
 
 Plus leakage probes at `max|diff| = 0.00e+00` on every protocol and on the clean feature sets.
 
@@ -84,11 +89,17 @@ Plus leakage probes at `max|diff| = 0.00e+00` on every protocol and on the clean
 | 7 | `np.array_equal` on arrays containing NaN returns False (NaN != NaN) | checker only | n/a |
 | 8 | compared cycle NUMBERS across batteries; cycle numbers repeat per battery, so the sets always "overlap" | checker only | n/a |
 | 9 | wrong expected fold size for B0018 (132 rows, 2 dropped, so 130 not 131) | checker only | n/a |
+| 10 | masking applied after `np.hstack` instead of before (636 vs 631) — **made twice** | crash before writing | n/a |
+| 11 | `\nnested_lobo` in an f-string path (extra n) — **made twice** | crash before writing | n/a |
+| 12 | expected row count typed by hand (96 instead of 192) | checker only | n/a |
+| 13 | `seg_feats(..., 0, 1, ...)` used as a NaN placeholder, but polyfit on one point raises | crash before writing | n/a |
+| 14 | hardcoded reference numbers in a print statement | reporting only | n/a |
 
-Bugs 3–9 never touched a result. Bug 1 did change a feature verdict and is fixed with the evidence
-above. Bug 2 was a real defect and was fixed with a full regression.
+Bugs 3–14 never touched a result — every one either crashed before writing anything or was confined
+to the verification code. Bug 1 did change a feature verdict and is fixed with the evidence above.
+Bug 2 was a real defect and was fixed with a full regression.
 
-**Pattern worth naming:** every one of bugs 5–9 was in the verification code, not in the pipeline.
+**Pattern worth naming:** every one of bugs 5-14 was in the verification code, not in the pipeline.
 The data has survived every check; the checkers have not. The recurring failure modes are
 (a) comparing at the wrong aggregation level, (b) assuming a comparison operation handles NaN or
 repeated keys, and (c) arithmetic in an expected value written by hand. Rules that would have

@@ -1,0 +1,70 @@
+C:\Master Degree\Thesis\Autoencoder\round3_phase1\extract_windowlength_features.py:95: RuntimeWarning: Mean of empty slice
+  mr = float(np.nanmean(rs))
+rows: 636  (expected 636)
+features: 35  NaN counts (non-zero only):
+dv0.1_mean_V     636
+dv0.1_mean_T     636
+dv0.1_V_slope    636
+dv0.1_dT         636
+dv0.2_mean_V     636
+dv0.2_mean_T     636
+dv0.2_V_slope    636
+dv0.2_dT         636
+dv0.3_mean_V     243
+dv0.3_mean_T     243
+dv0.3_V_slope    243
+dv0.3_dT         243
+
+=== proxy rule on every window-length feature (within-battery OLS R2 vs capacity) ===
+
+  --- w5
+    w5_mean_V        R2(cap)=  0.947  PROXY       [0.971, 0.979, 0.961, 0.875]
+    w5_mean_T        R2(cap)=  0.086  SAFE        [0.077, 0.12, 0.05, 0.099]
+    w5_V_slope       R2(cap)=  0.555  BORDERLINE  [0.437, 0.711, 0.113, 0.96]
+    w5_dT            R2(cap)=  0.920  PROXY       [0.955, 0.967, 0.932, 0.825]
+    w5_n             R2(cap)=  0.573  BORDERLINE  [0.388, 0.527, 0.432, 0.944]
+
+  --- w10
+    w10_mean_V       R2(cap)=  0.953  PROXY       [0.966, 0.969, 0.956, 0.921]
+    w10_mean_T       R2(cap)=  0.162  SAFE        [0.224, 0.264, 0.136, 0.022]
+    w10_V_slope      R2(cap)=  0.861  BORDERLINE  [0.861, 0.879, 0.724, 0.978]
+    w10_dT           R2(cap)=  0.720  BORDERLINE  [0.779, 0.877, 0.623, 0.601]
+    w10_n            R2(cap)=  0.575  BORDERLINE  [0.39, 0.528, 0.433, 0.949]
+
+  --- w20
+    w20_mean_V       R2(cap)=  0.975  PROXY       [0.982, 0.978, 0.979, 0.962]
+    w20_mean_T       R2(cap)=  0.288  SAFE        [0.414, 0.539, 0.192, 0.005]
+    w20_V_slope      R2(cap)=  0.983  PROXY       [0.988, 0.975, 0.979, 0.99]
+    w20_dT           R2(cap)=  0.887  BORDERLINE  [0.948, 0.908, 0.877, 0.816]
+    w20_n            R2(cap)=  0.574  BORDERLINE  [0.388, 0.527, 0.431, 0.95]
+
+  --- w30
+    w30_mean_V       R2(cap)=  0.979  PROXY       [0.983, 0.98, 0.983, 0.969]
+    w30_mean_T       R2(cap)=  0.466  SAFE        [0.67, 0.724, 0.4, 0.071]
+    w30_V_slope      R2(cap)=  0.983  PROXY       [0.98, 0.98, 0.983, 0.989]
+    w30_dT           R2(cap)=  0.942  PROXY       [0.966, 0.932, 0.945, 0.925]
+    w30_n            R2(cap)=  0.575  BORDERLINE  [0.389, 0.528, 0.432, 0.953]
+
+  --- dv0.1
+    dv0.1_mean_V     R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.1_mean_T     R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.1_V_slope    R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.1_dT         R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.1_n          R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+
+  --- dv0.2
+    dv0.2_mean_V     R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.2_mean_T     R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.2_V_slope    R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.2_dT         R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+    dv0.2_n          R2(cap)=    nan  SAFE        [nan, nan, nan, nan]
+
+  --- dv0.3
+    dv0.3_mean_V     R2(cap)=  0.349  SAFE        [0.516, 0.002, 0.115, 0.764]
+    dv0.3_mean_T     R2(cap)=  0.140  SAFE        [0.022, 0.23, 0.008, 0.301]
+    dv0.3_V_slope    R2(cap)=  0.786  BORDERLINE  [0.907, 0.71, 0.831, 0.696]
+    dv0.3_dT         R2(cap)=  0.822  BORDERLINE  [0.937, 0.861, 0.913, 0.577]
+    dv0.3_n          R2(cap)=  0.623  BORDERLINE  [0.609, 0.705, 0.295, 0.883]
+
+saved: C:\Master Degree\Thesis\Autoencoder\nested_lobo\windowlength_features.csv
+saved: round3_phase1/r3c5_windowlength_classes.csv
