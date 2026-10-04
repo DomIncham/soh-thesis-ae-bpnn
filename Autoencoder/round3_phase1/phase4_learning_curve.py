@@ -59,11 +59,20 @@ def fold_once(X, bids, soh, cyc, test_b, train_pool, k, seed, setting, qref, rng
     mu, sd = soh[m_sel].mean(), soh[m_sel].std()
     cands = []
     for dims, l2 in itertools.product(rc.ARCHS, rc.L2S):
-        bp, ep = rc.fit_bpnn_ep([n_in] + dims, l2, sc.transform(X[m_sel]), (soh[m_sel] - mu) / sd,
-                                sc.transform(X[m_va]), (soh[m_va] - mu) / sd, seed, bp_max, pat)
+        try:
+            bp, ep = rc.fit_bpnn_ep([n_in] + dims, l2, sc.transform(X[m_sel]), (soh[m_sel] - mu) / sd,
+                                    sc.transform(X[m_va]), (soh[m_va] - mu) / sd, seed, bp_max, pat)
+        except (TypeError, RuntimeError) as e:
+            # NaN validation loss -> best_state is None (or a torch error); candidate is dead,
+            # not a crash: the fold must continue (mixed-condition folds can diverge).
+            print(f"  [guard] candidate {dims}/l2={l2} diverged ({type(e).__name__}); skipped")
+            continue
         v = float(np.sqrt(np.mean((rc.predict(bp, sc.transform(X[m_va]), mu, sd) - soh[m_va]) ** 2)))
         cands.append((v, dims, l2, ep))
-    ok = [c for c in cands if c[3] >= rc.MIN_EP]
+    ok = [c for c in cands if c[3] >= rc.MIN_EP and np.isfinite(c[0])]
+    if not cands:  # every candidate diverged: fall back to the default config, fixed budget
+        cands = [(np.inf, [8], 0.0, rc.RETRAIN_EP)]
+        print("  [guard] all candidates diverged; default [8]/l2=0.0 retrain path")
     degen = len(ok) < len(cands)
     if not ok:
         _, dims, l2, _ = min(cands, key=lambda c: c[0])
