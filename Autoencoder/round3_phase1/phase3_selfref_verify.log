@@ -1,0 +1,55 @@
+================================================================================================
+[1] structure and metric recomputation
+
+[2] PAIRED on identical (fold, seed) cells: normalised vs unnormalised
+setting       TD-Clean-6  TD-Clean-7  TD-Clean-8
+test_battery                                    
+B0005              0.128       0.075       0.024
+B0006             -0.106      -0.057      -0.078
+B0007              0.109       0.010       0.014
+B0018             -3.637      -3.330      -2.904
+
+  per-fold mean R2, self-ref vs unnormalised:
+    TD-Clean-6: self -0.212  none +0.664  delta -0.877   (B0018 alone: -3.637)
+    TD-Clean-7: self -0.054  none +0.772  delta -0.826   (B0018 alone: -3.330)
+    TD-Clean-8: self +0.075  none +0.810  delta -0.736   (B0018 alone: -2.904)
+
+[3] is the damage localised to one fold?
+    TD-Clean-6: excluding B0018, mean R2 self 0.726 vs none 0.682  (delta +0.044)
+    TD-Clean-7: excluding B0018, mean R2 self 0.782 vs none 0.773  (delta +0.009)
+    TD-Clean-8: excluding B0018, mean R2 self 0.801 vs none 0.814  (delta -0.013)
+
+[4] why B0018: its first-cycle references are outliers
+         dis_mean_T  dis_V_slope   cc_dur    cv_dur  cv_I_slope  ch_mean_T  t_40_41  ic_peak_V
+battery                                                                                       
+1         32.572328    -0.000206  607.907  6989.968   -0.002255  25.324079   98.250       4.18
+2         32.142778    -0.000193  707.422  6890.453   -0.002309  25.318869  131.219       4.18
+3         32.624859    -0.000239  658.485  6939.390   -0.002278  25.115926  116.032       4.18
+4         31.773285    -0.000218  559.047  7563.797   -0.000384  24.422292   86.516       4.18
+
+  reference spread across batteries (max/min of |ref|):
+    dis_mean_T        1.027x   refs [32.572328 32.142778 32.624859 31.773285]
+    dis_V_slope       1.242x   refs [-0.000206 -0.000193 -0.000239 -0.000218]
+    cc_dur            1.265x   refs [607.907 707.422 658.485 559.047]
+    cv_dur            1.098x   refs [6989.968 6890.453 6939.39  7563.797]
+    cv_I_slope        6.014x   refs [-0.002255 -0.002309 -0.002278 -0.000384]
+    ch_mean_T         1.037x   refs [25.324079 25.318869 25.115926 24.422292]
+    t_40_41           1.517x   refs [ 98.25  131.219 116.032  86.516]
+    ic_peak_V         1.000x   refs [4.18 4.18 4.18 4.18]
+
+================================================================================================
+PASS | 120 rows = 3 settings x 2 stages x 4 folds x 5 seeds | 120
+PASS | no NaN in test_R2
+PASS | every block traces to the raw feature file, y_true == raw SOH | []
+PASS | recomputed RMSE and R2 match every row | max|diff|=5.02e-05
+PASS | 60 cells matched between the two runs | 60
+PASS | TD-Clean-6: B0018 collapses under self-ref (mean delta < -1, >=4/5 seeds negative) | mean -3.64, seeds negative 5/5, worst -4.25
+PASS | TD-Clean-7: B0018 collapses under self-ref (mean delta < -1, >=4/5 seeds negative) | mean -3.33, seeds negative 5/5, worst -6.66
+PASS | TD-Clean-8: B0018 collapses under self-ref (mean delta < -1, >=4/5 seeds negative) | mean -2.90, seeds negative 5/5, worst -3.47
+PASS | no other FOLD-MEAN is damaged by more than 0.15 | min fold-mean delta -0.106
+
+ALL 9 CHECKS PASSED
+
+Notes:
+  NOTE | the mean R2 is dragged below zero by B0018 alone; the median stays 0.766. Both must be quoted - a single fold can invert the sign of the mean.
+  NOTE | cv_I_slope's reference is 6.0x smaller for B0018 than for the others, so dividing B0018 by its own reference inflates that feature ~6x relative to the rest - self-referencing INTRODUCES a scale mismatch instead of removing one.
