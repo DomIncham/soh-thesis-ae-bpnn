@@ -19,7 +19,7 @@ and an automated verification script behind it.
 | R3-C3 | list every TD feature; label each safe or proxy | **done, and it changed a claim** | `r3c3_feature_classification.md`: `dis_duration` 0.972 and `dis_mean_V` 0.948 are proxies |
 | R3-C3 | oracle should reach R² ≈ 1 | **confirmed in scope, corrected out of scope** | 0.992 under the same-battery random split; 0.671 under LOBO |
 | **R3-C4** | positioning against the 2026 EIS+cross-battery paper | **done** | contribution (1) now quantified on two axes; see below |
-| **R3-C5** | proxy-free improvements | **started** | ridge probe: not a model limit (see below) |
+| **R3-C5** | proxy-free improvements (items 5.1–5.5) | **done (5.1 supported; 5.2 not established; 5.3, 5.4 rejected; 5.5 done)** | TD-Clean-7 0.772 / Clean-8 0.810 with no feature above 0.49 R²(capacity); see "Phase 3" below |
 | **R3-C6** | wider validation (B0025+, CALCE) | **not started** | deliberately deferred |
 | **R3-C7** | demote the AE to a negative result | **not started** | deferred |
 | **R3-C8** | send back 4 items | **4/4 ready** | this document, section "Answers the advisor asked for" |
@@ -101,14 +101,41 @@ Reported because the disagreement is measured, not argued.
    `td_proxy_audit_summary_cpu.csv`, `protocol_gap_exp_cpu_summary.csv` and the pooled files, all as
    mean / median / std, with RMSE in %SOH and Ah and MAPE alongside.
 
+## Phase 3 — proxy-free improvements (R3-C5, items 5.1–5.5, complete)
+
+Baseline for all comparisons: **TD-Clean-6** (6 features, no label-correlation above 0.90), mean R²
+0.490 under nested LOBO. Paired comparisons are on identical rows (631 cycles: five have no usable
+CC phase, so `ic_peak_V` is NaN there); 5 seeds; selection guard active.
+
+| item | advisor's suggestion | result | mechanism / evidence |
+|---|---|---|---|
+| **5.1** | charging-segment features (CC time in V-windows, CV time, IC peak) | **SUPPORTED** | `ic_peak_V` is the only safe addition (R²(capacity) 0.489): Clean-6 0.490 → Clean-7 **0.772** (improves 15/20 fold-seeds) → Clean-8 **0.810** (+`t_40_41`, but the extra is within noise — 11/20, Δ +0.039). The paired honest claim is 0.664 → 0.810 on identical rows. |
+| 5.2 | fixed discharge voltage window 4.0 → 3.6 V | **NOT ESTABLISHED** | 5 of 7 window features are proxies (`win_dur` R²(capacity) 0.995 — worse than the whole-cycle `dis_duration` 0.972, because at constant current window time is a fixed fraction of charge). The one admissible swap (`w_mean_T` for `dis_mean_T`) helps in only 12/20 cells, Δ +0.047 < the known proxy-free instability. Also: ΔV = 0.1/0.2 V cannot form a window on these files (switch-on step ~0.2 V); ΔV = 0.3 V gives only 8–13 samples. |
+| 5.3 | self-referenced normalisation (divide by first-cycle value) | **REJECTED** | 0.810 → 0.075; B0018 collapses in 5/5 seeds. Its `cv_I_slope` reference is 6.0× smaller than the other cells, so self-referencing *introduces* a ~6× scale mismatch. The premise (feature offsets) is also wrong: measured feature-level reference spreads are 1.03–1.27× for 6 of 8 features; the B0006 gap (2.035 vs ~1.86 Ah) is a **label** offset, not a feature offset. |
+| 5.4 | monotonic prior: predict ΔSOH and accumulate (as EWDC [10]) | **REJECTED** | 0.810 → −4.785. A biased increment integrates linearly: corr(cycle position, \|error\|) up to +0.993; anchor offset < 1 %SOH, so the anchor is not the cause. EWDC's 0.975 does not transfer (their features are proxy-laden with a far stronger per-cycle signal; EWDC is not in the local materials, so the convention could not be checked — question sent to advisor). |
+| **5.5** | window-length curve (RMSE vs 5/10/20/30 min) | **DONE — key figure** | Proxy-free curve is **flat**: 0.842 / 0.828 / 0.830 / 0.843 at 5/10/20/30 min (0 of 96 fold-seeds degenerate). Five minutes of discharge is enough. Proxy-laden rises 0.874 → 0.914. Caveat: the W5-PF set also drops `dis_V_slope` and swaps `dis_mean_T` for `w5_mean_T`, so the gain over the full-cycle Clean-7 reference is not attributable to the window alone. |
+
+**Result summary:** one supported improvement (5.1, Clean-8 = 0.810 ≈ 96 % of proxy-laden
+TD-Proxy-Free 0.845 — and Clean-8 contains **no feature above 0.49** label-correlation), one usable
+figure (5.5), and three measured negatives (5.2, 5.3, 5.4), each with an identified mechanism.
+
+**A caution on the thesis title.** "Proxy-free, partial-window" needs a qualification: a partial
+window is **not** proxy-free by virtue of being partial — `mean_V` inside any window is a proxy at
+every length, and window durations are the strongest proxies measured. Only window mean-temperature
+stays SAFE. The claim survives only with that qualification stated.
+
 ## Next
 
-- **R3-C5.** The ridge probe shows the proxy-free limit is a **feature** limit, not a model limit
-  (ridge on TD-Clean-6 gives −0.526 where the BPNN gives 0.490), so the next step is candidate
-  inputs that are genuine health indicators rather than capacity proxies — incremental-capacity /
-  differential-voltage peak features are the natural candidate, since they shift with degradation
-  and are not functions of capacity.
-- **R3-C6 / R3-C7 / R3-C9** remain deferred by decision, not by omission.
+- **R3-C6.** Wider validation: add B0025–B0056 (learning curve vs number of training batteries),
+  then cross-dataset to CALCE CS2. Four cells cannot support a generalisation claim.
+- **R3-C7** (demote the AE to a documented negative result) and **R3-C9** (citation verification)
+  remain deferred by decision, not by omission.
 
-Verification: `phase1_verify.py` 61/61, `protocol_gap_verify.py` 23/23, `td_clean_verify.py` 7/7,
+Verification (re-run 2026-10-05, all passing): `phase1_verify.py` 61/61, `protocol_gap_verify.py`
+23/23, `td_clean_verify.py` 7/7, `data_provenance_audit.py` 26/26, `phase3_charge_verify.py` 8/8,
+`phase3_selfref_verify.py` 9/9, `phase3_window_verify.py` 7/7, `phase3_dsoh_verify.py` 7/7,
+`phase3_windowlength_verify.py` 12/12, `phase3_feature_audit.py` 50/50 — **210/210**;
 leakage probes `max|diff| = 0.00e+00` on every protocol and on the clean feature sets.
+
+*Last updated: 2026-10-05 — Phase 3 section added (items 5.1–5.5); R3-C5 row moved to done;*
+*verification line covers all 10 suites (210 checks).*
