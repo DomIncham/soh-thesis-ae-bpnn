@@ -1,0 +1,72 @@
+====================================================================================================
+[A] NEW features recomputed from raw .mat vs the committed CSVs
+
+[B] load_td column ORDER
+
+[C] the matrices actually fed to run_fold in each Phase 3 run
+
+[D] the 631-row subset is identical across the Phase 3 runs (from the PREDICTION dumps)
+
+[E] within one (setting, stage, seed) the four folds partition the 631 cycles exactly once
+
+[F] headline numbers recomputed from the prediction dumps
+    5.1 TD-Clean-6*  mean 0.664  median 0.598  n=20
+    5.1 TD-Clean-7   mean 0.772  median 0.827  n=20
+    5.1 TD-Clean-8   mean 0.810  median 0.825  n=20
+    5.2 TD-Win-7     mean 0.819  median 0.832  n=20
+
+====================================================================================================
+PASS | charge.t_39_40: NaN pattern identical | 0 NaN rows
+PASS | charge.t_39_40: recomputed == committed | max|diff|=2.274e-13
+PASS | charge.t_40_41: NaN pattern identical | 0 NaN rows
+PASS | charge.t_40_41: recomputed == committed | max|diff|=2.274e-13
+PASS | charge.ic_peak_V: NaN pattern identical | 5 NaN rows
+PASS | charge.ic_peak_V: recomputed == committed | max|diff|=8.882e-16
+PASS | charge.ic_peak_h: NaN pattern identical | 5 NaN rows
+PASS | charge.ic_peak_h: recomputed == committed | max|diff|=8.882e-16
+PASS | charge.cc_dTdt: NaN pattern identical | 5 NaN rows
+PASS | charge.cc_dTdt: recomputed == committed | max|diff|=9.996e-17
+PASS | charge.cc_V_slope: NaN pattern identical | 5 NaN rows
+PASS | charge.cc_V_slope: recomputed == committed | max|diff|=9.991e-17
+PASS | window.win_dur: NaN pattern identical | 0 NaN rows
+PASS | window.win_dur: recomputed == committed | max|diff|=2.274e-13
+PASS | window.win_mean_V: NaN pattern identical | 0 NaN rows
+PASS | window.win_mean_V: recomputed == committed | max|diff|=8.882e-16
+PASS | window.win_mean_T: NaN pattern identical | 0 NaN rows
+PASS | window.win_mean_T: recomputed == committed | max|diff|=3.553e-15
+PASS | window.win_V_slope: NaN pattern identical | 0 NaN rows
+PASS | window.win_V_slope: recomputed == committed | max|diff|=9.996e-17
+PASS | window.win_dT: NaN pattern identical | 0 NaN rows
+PASS | window.win_dT: recomputed == committed | max|diff|=8.882e-16
+PASS | window.win_dQ: NaN pattern identical | 0 NaN rows
+PASS | window.win_dQ: recomputed == committed | max|diff|=8.327e-17
+PASS | window.win_frac: NaN pattern identical | 0 NaN rows
+PASS | window.win_frac: recomputed == committed | max|diff|=9.714e-17
+PASS | load_td returns columns in the requested order (8 features) | ['dis_duration', 'dis_mean_V', 'dis_mean_T'] ...
+PASS | load_td returns columns in the requested order (6 features) | ['dis_mean_T', 'dis_V_slope', 'cc_dur'] ...
+PASS | load_td returns columns in the requested order (5 features) | ['dis_V_slope', 'cc_dur', 'cv_dur'] ...
+PASS | load_td returns soh and cycle aligned with the same rows
+PASS | load_td returns the battery ids aligned too
+PASS | Clean-6 matrix column 0 really is dis_mean_T
+PASS | charge_features.csv reread gives an identical ic_peak_V column (NaN-safe compare)
+PASS | ic_peak_V has exactly the 5 expected NaN rows | 5
+PASS | Win-7 base part has 5 features | (636, 5)
+PASS | Win-7 base column 0 really is dis_V_slope
+PASS | Win-7 base column 1 really is cc_dur
+PASS | Win-7 base column 2 really is cv_dur
+PASS | Win-7 base column 3 really is cv_I_slope
+PASS | Win-7 base column 4 really is ch_mean_T
+PASS | Win-7's window column comes from window_features.csv
+PASS | Win-7 does NOT contain dis_mean_T (the swap is real)
+PASS | exactly 5 rows are dropped | [(1, 86), (2, 86), (3, 86), (4, 117), (4, 141)]
+PASS | the expected fold sizes sum to 631 | 631
+PASS | 5.1: every fold block has the 631-row size (167/167/167/131) | [130, 167]
+PASS | 5.3: every fold block has the 631-row size (167/167/167/131) | [130, 167]
+PASS | 5.2: every fold block has the 631-row size (167/167/167/131) | [130, 167]
+PASS | 5.1: each fold covers disjoint (battery, cycle) keys and all seeds agree | 631 unique keys per fold-set (expected 631); []
+PASS | 5.3: each fold covers disjoint (battery, cycle) keys and all seeds agree | 631 unique keys per fold-set (expected 631); []
+PASS | 5.2: each fold covers disjoint (battery, cycle) keys and all seeds agree | 631 unique keys per fold-set (expected 631); []
+
+ALL 50 CHECKS PASSED
+
+Notes:

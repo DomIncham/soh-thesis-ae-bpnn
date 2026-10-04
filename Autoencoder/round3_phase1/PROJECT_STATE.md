@@ -64,6 +64,10 @@ All six scripts were re-run against the current committed artifacts. 134 checks,
 | `data_provenance_audit.py` | 26 | raw `.mat` → label → features; also against the advisor's own numbers |
 | `phase3_charge_verify.py` | 8 | paired 5.1 comparison |
 | `phase3_selfref_verify.py` | 9 | paired 5.3 comparison, localisation of the damage |
+| `phase3_window_verify.py` | 7 | paired 5.2 comparison |
+| `phase3_feature_audit.py` | 50 | charge/window features recomputed from raw `.mat`; `load_td` column ORDER; the feature matrices actually fed to `run_fold`; fold coverage of the 631 keys; headline numbers |
+
+Total: **191 checks, all passing** (141 before the Phase 3 feature audit, +50 from it).
 
 Plus leakage probes at `max|diff| = 0.00e+00` on every protocol and on the clean feature sets.
 
@@ -77,9 +81,20 @@ Plus leakage probes at `max|diff| = 0.00e+00` on every protocol and on the clean
 | 4 | `t_3.9_4.0` used as a dict key (invalid identifier) | syntax error | n/a |
 | 5 | verification scripts missing `setting` in a groupby/merge key (3 occurrences) | checker only, never the data | n/a |
 | 6 | over-strict assertions: "every fold-seed", "no cell", absolute tolerance | reporting only | n/a |
+| 7 | `np.array_equal` on arrays containing NaN returns False (NaN != NaN) | checker only | n/a |
+| 8 | compared cycle NUMBERS across batteries; cycle numbers repeat per battery, so the sets always "overlap" | checker only | n/a |
+| 9 | wrong expected fold size for B0018 (132 rows, 2 dropped, so 130 not 131) | checker only | n/a |
 
-Bugs 3–6 never touched a result. Bug 1 did change a feature verdict and is fixed with the evidence
+Bugs 3–9 never touched a result. Bug 1 did change a feature verdict and is fixed with the evidence
 above. Bug 2 was a real defect and was fixed with a full regression.
+
+**Pattern worth naming:** every one of bugs 5–9 was in the verification code, not in the pipeline.
+The data has survived every check; the checkers have not. The recurring failure modes are
+(a) comparing at the wrong aggregation level, (b) assuming a comparison operation handles NaN or
+repeated keys, and (c) arithmetic in an expected value written by hand. Rules that would have
+caught all three: state every assertion at the same aggregation level as the claim it supports;
+never assume an equality helper is NaN-safe or key-unique; and make expected values computed rather
+than typed (here `sum(expected.values()) == 631` would have caught bug 9 immediately).
 
 **Nothing outstanding requires a re-run.** The one item that could still change a number is the
 known instability of the proxy-free regime: removing 5 of 636 cycles moves TD-Clean-6 between 0.490
