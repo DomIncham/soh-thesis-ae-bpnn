@@ -51,36 +51,14 @@ def find_mat(nm):
 
 
 def charge_feats(c):
-    """t_40_41 + ic_peak_V - identical maths to extract_charge_features.py (lines 30-67).
+    """NASA wrapper: charge_feats(V, I, T) from phase4_charge_common (single source of truth).
     c=None (no preceding charge cycle) -> NaN, matching the old pipeline's missing join."""
     if c is None:
         return dict(t_40_41=np.nan, ic_peak_V=np.nan)
-    V = np.asarray(c.data.Voltage_measured, float).ravel()
-    I = np.asarray(c.data.Current_measured, float).ravel()
-    T = np.asarray(c.data.Time, float).ravel()
-    ci = np.where(V >= CC_V)[0]
-    end = int(ci[0]) if len(ci) else len(V) - 1
-    n = max(end, 2)
-    dt = np.diff(T[:n])
-    t401 = float(dt[np.logical_and(V[:n - 1] >= 4.0, V[:n - 1] < 4.1)].sum())
-    Q = np.concatenate([[0.0], np.cumsum((I[:n - 1] + I[1:n]) / 2 * dt) / 3600.0])
-    lo = 3.6
-    seg = np.where(V[:n] >= lo)[0]
-    if len(seg) > 10:
-        s = seg[0]
-        Vs, Qs = V[s:n], Q[s:n]
-        keep = np.concatenate([[True], np.diff(Vs) > 0])
-        Vs, Qs = Vs[keep], Qs[keep]
-        grid = np.arange(lo, float(Vs[-1]) + 1e-9, 0.01)
-        if len(grid) > 5 and len(Vs) > 5:
-            Qg = np.interp(grid, Vs, Qs)
-            k = int(np.argmax(np.gradient(Qg, grid)))
-            ic_V = float(grid[k])
-        else:
-            ic_V = np.nan
-    else:
-        ic_V = np.nan
-    return dict(t_40_41=t401, ic_peak_V=ic_V)
+    from phase4_charge_common import charge_feats as cf
+    return cf(np.asarray(c.data.Voltage_measured, float).ravel(),
+              np.asarray(c.data.Current_measured, float).ravel(),
+              np.asarray(c.data.Time, float).ravel())
 
 
 def td_feats(c, ch, ch_cycle):

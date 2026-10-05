@@ -1,0 +1,21 @@
+CS2_33: 864 discharge cycles, cap 0.059-1.160 Ah, NaN: 233, cap_col cross-check max|diff| = 0.00018607548804383534
+CS2_34: 774 discharge cycles, cap 0.321-1.153 Ah, NaN: 192, cap_col cross-check max|diff| = 0.00016919092413558712
+CS2_35: 932 discharge cycles, cap 0.243-1.139 Ah, NaN: 167, cap_col cross-check max|diff| = 0.0037034526653546562
+CS2_36: 973 discharge cycles, cap 0.092-1.145 Ah, NaN: 228, cap_col cross-check max|diff| = 0.00030342944070360645
+CS2_37: 1038 discharge cycles, cap 0.055-1.135 Ah, NaN: 187, cap_col cross-check max|diff| = 0.0002916559447778688
+CS2_38: 1078 discharge cycles, cap 0.055-1.140 Ah, NaN: 204, cap_col cross-check max|diff| = 0.0002960305704872157
+CS2_8: 1288 discharge cycles, cap 0.245-1.212 Ah, NaN: 9, cap_col cross-check max|diff| = n/a
+CS2_21: 783 discharge cycles, cap 0.060-1.099 Ah, NaN: 7, cap_col cross-check max|diff| = n/a
+
+saved C:\Master Degree\Thesis\Autoencoder\round3_phase1\phase4_cs2_features.csv: 7730 rows, 8 cells
+         rows  full  cap_min  cap_max  include
+battery                                       
+CS2_21    783   741    0.060    1.099     True
+CS2_33    864   470    0.059    1.160     True
+CS2_34    774   474    0.321    1.153     True
+CS2_35    932   523    0.243    1.139     True
+CS2_36    973   486    0.092    1.145     True
+CS2_37   1038   555    0.055    1.135     True
+CS2_38   1078   574    0.055    1.140     True
+CS2_8    1288  1124    0.245    1.212     True
+included: ['CS2_21', 'CS2_33', 'CS2_34', 'CS2_35', 'CS2_36', 'CS2_37', 'CS2_38', 'CS2_8']
