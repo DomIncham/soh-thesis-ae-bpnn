@@ -11,7 +11,7 @@
 # Usage:
 #   python phase4_cs2_transfer.py --smoke      # 1 seed, tiny budget
 #   python phase4_cs2_transfer.py              # 5 seeds, full budget (CPU ok, ~30 min)
-import argparse, itertools
+import argparse, itertools, os
 import numpy as np
 import pandas as pd
 import r3common as rc
@@ -56,11 +56,21 @@ def select_and_fit(Xfit, yfit, Xval, yval, seed, bp_max, pat):
     if not ok:
         _, dims, l2, _ = min(cands, key=lambda c: c[0])
         dims, l2, ep = dims, l2, rc.RETRAIN_EP
+        try:
+            bp_rf, _ = rc.fit_bpnn_ep([Xfit.shape[1]] + dims, l2, Xfit, (yfit - mu) / sd,
+                                      None, None, seed, bp_max, pat, epochs=ep)
+        except (TypeError, RuntimeError):
+            print(f"  [guard] retrain diverged for seed {seed}; default linear-scale fallback")
+            return None, mu, sd, dims, l2, ep, True
     else:
         _, dims, l2, ep = min(ok, key=lambda c: c[0])
-    bp_rf, _ = rc.fit_bpnn_ep([Xfit.shape[1]] + dims, l2, Xfit, (yfit - mu) / sd,
-                              None, None, seed, bp_max, pat, epochs=ep)
-    return bp_rf, mu, sd, dims, l2, ep
+        try:
+            bp_rf, _ = rc.fit_bpnn_ep([Xfit.shape[1]] + dims, l2, Xfit, (yfit - mu) / sd,
+                                      None, None, seed, bp_max, pat, epochs=ep)
+        except (TypeError, RuntimeError):
+            print(f"  [guard] refit diverged for seed {seed}; default linear-scale fallback")
+            return None, mu, sd, dims, l2, ep, True
+    return bp_rf, mu, sd, dims, l2, ep, False
 
 
 def main():
@@ -73,37 +83,52 @@ def main():
     bp_max, pat = (60, 10) if args.smoke else (300, 20)
 
     cs2 = cs2_pool()
+    tag = "smoke" if args.smoke else "full"
     Xc, yc, cells_c = cs2[FEATS].values, cs2.soh.values, cs2.battery.values
     print(f"CS2 test pool: {len(cs2)} full cycles across {cs2.battery.nunique()} cells")
 
     rows = []
+    out_name = f"phase4_cs2_transfer_{tag}.csv"
+    if os.path.exists(out_name):
+        rows = pd.read_csv(out_name).to_dict("records")
+        done = {(r["pool"], r["seed"]) for r in rows}
+        print(f"[resume] {len(rows)} rows already in {out_name}; skipping those (pool, seed) pairs")
+    else:
+        done = set()
     for pool in ["room", "all13"]:
         nd = nasa_pool(pool)
         Xn, yn, bn = nd[FEATS].values, nd.soh.values, nd.bid.values
         uniq = np.unique(bn)
-        n_train = len(uniq) - 1
         for seed in seeds:
+            if (pool, seed) in done:
+                continue
             r = np.random.RandomState(seed)
             val_b = int(r.choice(uniq))
             fit_b = uniq  # refit on the whole pool (Phase 1 refit stage)
             m_val, m_fit = bn == val_b, np.isin(bn, fit_b)
             sc = MinMaxScaler().fit(Xn[m_fit])
-            bp, mu, sd, dims, l2, ep = select_and_fit(
+            bp, mu, sd, dims, l2, ep, degraded = select_and_fit(
                 sc.transform(Xn[m_fit]), yn[m_fit], sc.transform(Xn[m_val]), yn[m_val],
                 seed, bp_max, pat)
             for cell in sorted(set(cells_c)):
                 m_c = cells_c == cell
+                if bp is None:  # diverged even on the fallback config: record honestly, keep going
+                    rows.append(dict(pool=pool, seed=seed, test_battery=cell,
+                                     n_cycles=int(m_c.sum()), cfg=f"{dims}/l2={l2}",
+                                     sel_epochs=ep, MAE=np.nan, RMSE=np.nan, R2=np.nan))
+                    continue
                 p = rc.predict(bp, sc.transform(Xc[m_c]), mu, sd)
                 mae, rmse, r2 = rc.reg_metrics(yc[m_c], p)
                 rows.append(dict(pool=pool, seed=seed, test_battery=cell, n_cycles=int(m_c.sum()),
                                  cfg=f"{dims}/l2={l2}", sel_epochs=ep,
                                  MAE=round(float(mae), 3), RMSE=round(float(rmse), 3),
                                  R2=round(float(r2), 3)))
-            print(f"[{pool} seed {seed}] cfg {dims}/l2={l2} sel_ep {ep} done")
+            print(f"[{pool} seed {seed}] cfg {dims}/l2={l2} sel_ep {ep} "
+                  f"{'DEGRADED (fallback)' if degraded else 'ok'}")
+            pd.DataFrame(rows).to_csv(out_name, index=False)  # checkpoint after every seed
     out = pd.DataFrame(rows)
-    tag = "smoke" if args.smoke else "full"
-    out.to_csv(f"phase4_cs2_transfer_{tag}.csv", index=False)
-    print(f"\nsaved phase4_cs2_transfer_{tag}.csv: {len(out)} rows")
+    out.to_csv(out_name, index=False)
+    print(f"\nsaved {out_name}: {len(out)} rows")
     if not args.smoke:
         print("\nMean R2 / RMSE per (pool, CS2 cell):")
         print(out.groupby(["pool", "test_battery"]).agg(R2=("R2", "mean"), RMSE=("RMSE", "mean"),
