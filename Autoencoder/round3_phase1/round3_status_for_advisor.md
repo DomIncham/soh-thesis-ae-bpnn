@@ -124,12 +124,88 @@ window is **not** proxy-free by virtue of being partial — `mean_V` inside any 
 every length, and window durations are the strongest proxies measured. Only window mean-temperature
 stays SAFE. The claim survives only with that qualification stated.
 
+## Phase 4 — wider validation (R3-C6 items 6.1–6.2, done; 6.3 CALCE CS2 next)
+
+Learning curve vs number of training batteries, per the advisor's direction. **First finding: the
+"add B0025–B0056 (similar conditions)" premise does not hold** (measured from the .mat files, not
+assumed): only B0025–28 share our 24 °C ambient but use a 4 A **pulsed** load with 28 discharge
+cycles each; everything else is 43 °C, 4 °C, mixed, or has documented corrupt/zero-capacity runs.
+With committed cell-level hygiene rules (Q_ref ≥ 0.9 × max capacity, ≤ 2.1 Ah, ≥ 20 usable rows)
+the pool is **14 cells**: B0005/6/7/18 (24 °C 2 A), B0025–28 (pulsed), B0029–32 (43 °C), B0047/48
+(4 °C). Excluded with reasons: B0033/34/36 (corrupt heads, Q_ref up to 33 % low, B0036 has 2.44 Ah
+spurious readings), B0045 (1 usable row), B0046 (Q_ref 11 % off).
+
+Protocol: for each (k, seed, test cell) sample k train cells from the other 13; 1 is the
+inner-validation battery (config selection + guard); refit on all k; score the untouched test cell.
+2 settings (TD-All, Clean-8) × k ∈ {3,7,13} × 5 seeds × 14 cells = 420 fold-runs.
+
+| check | result |
+|---|---|
+| completeness / NaN metrics | 420/420, none missing |
+| leakage asserts (scaler = fold-train min/max, per fold) | 840 asserts, none fired |
+| determinism (fold re-run) | ΔR² 1.6e-05 (CSV rounding) |
+| protocol reproduction: same harness on the 4 original cells only (k=3, 5 seeds) | **0.933** vs Phase 1 reference 0.923 (20 folds, 0.827–0.991) |
+
+Results — pooled means are dominated by catastrophic cross-condition folds; the honest unit is
+per-condition (Clean-8, k=13, mean over 5 seeds):
+
+| test condition | R² | note |
+|---|---|---|
+| room 2 A (original pool) | **0.74** (0.55–0.85) | below the homogeneous 4-cell 0.933 |
+| room 4 A pulsed (B0025–28) | **−44.7** (B0027: −133) | discharge features do not transfer across load profile at all |
+| hot 43 °C 4A (B0029–32) | 0.25 | weak but positive |
+| cold 4 °C 1A (B0047/48) | 0.18 | weak but positive |
+
+**Findings the next steps must respect:**
+
+1. **Features do not transfer across load profiles.** `dis_duration` under a 4 A pulsed load is a
+   different quantity, not a scaled one; the Clean-8 charge-side features do not rescue the pulsed
+   cells (only 2 % of their fold-runs reach R² > 0).
+2. **"More batteries" helps only within a condition.** Widening the pool from 4 homogeneous cells
+   (0.933) to 13 heterogeneous ones makes the original cells *worse* (0.75 at k=13). Within-
+   condition curves stay positive (Clean-8 medians −1.25 → +0.15 → +0.32 for k = 3 → 7 → 13).
+3. Selection degeneracy (259/420 folds had no converging candidate) is the same effect: validating
+   a config on a battery from another condition selects nothing.
+4. **Consequence:** the learning-curve claim must be stated per condition. A pooled heterogeneous
+   number is a pool-design statement, not a model verdict — which is exactly why the pooled
+   generalisation claim should be tested cross-dataset (CALCE CS2, item 6.3: same chemistry, same
+   charge protocol), not by mixing load profiles inside NASA.
+
+## Phase 5 (7.3) — AE demotion to a documented negative result (draft claim)
+
+The AE's role is already fully measured; the section writes itself from existing runs:
+
+| evidence | numbers |
+|---|---|
+| AE-on-TD vs raw TD | 0.43 vs **0.85** (R²) — AE features strictly worse |
+| AE on EIS vs PCA on EIS | AE +0.08 vs PCA +0.61 — AE loses to a linear projection |
+| AE reconstructs | the interpolated input, not the measurement (+0.1 mΩ offset; B0006 anomaly is AE-specific) |
+| E_fusion (EIS latent anchored by TD) | +0.73 < TD-only 0.85 — EIS latent adds nothing once TD is present |
+
+Claim: *"the autoencoder bottleneck adds no measurable value on either modality; its latent space
+reconstructs the interpolation grid rather than the impedance measurement; PCA is the stronger EIS
+reducer. The AE is reported as a negative result and the pipeline proceeds without it."* This makes
+the thesis's negative-result chapter concrete and prevents any reader from assuming the AE is a
+load-bearing component.
+
+## Two questions to the advisor (blocking citations/title only, not experiments)
+
+1. **EWDC [10]**: the audit cites an EIS+cross-battery-2026 paper as "[10]"; the local materials do
+   not contain it, so the convention behind "predict ΔSOH and accumulate (0.975)" could not be
+   checked. Please send the reference (or confirm the 0.975 is same-battery random-split — under
+   our nested LOBO the same mechanism scored −4.8, so the two numbers must not be compared directly
+   in the thesis).
+2. **Thesis title qualification**: should the title say "proxy-free, **partial-window**"? Note a
+   partial window is *not* proxy-free by construction (window means are proxies at every length);
+   the supported claim is "no label-correlation above 0.49 in the feature set" (Clean-8). We can
+   phrase it as *"proxy-audited, partial-window"* if the advisor prefers precision.
+
 ## Next
 
-- **R3-C6.** Wider validation: add B0025–B0056 (learning curve vs number of training batteries),
-  then cross-dataset to CALCE CS2. Four cells cannot support a generalisation claim.
-- **R3-C7** (demote the AE to a documented negative result) and **R3-C9** (citation verification)
-  remain deferred by decision, not by omission.
+- **R3-C6 (6.3)** cross-dataset: freeze Clean-8, test on CALCE CS2 — the right venue for a pooled
+  claim; starts now.
+- **R3-C7** (demote AE — draft above) and **R3-C9** (citation verification — blocked on the EWDC
+  reference) follow.
 
 Verification (re-run 2026-10-05, all passing): `phase1_verify.py` 61/61, `protocol_gap_verify.py`
 23/23, `td_clean_verify.py` 7/7, `data_provenance_audit.py` 26/26, `phase3_charge_verify.py` 8/8,
