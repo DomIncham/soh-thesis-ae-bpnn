@@ -28,7 +28,7 @@ Per-fold mean R², TD-All features:
 |---|---|---|---|
 | Random split, same battery | **0.992** | **0.979** | 0.978 |
 | Random split, pooled across batteries | 0.815 | 0.989 | 0.978 |
-| Nested LOBO, unseen battery (ours) | 0.671 | **0.927** | 0.845 |
+| Nested LOBO, unseen battery (ours) | 0.663 | **0.927** | 0.854 |
 | Chronological split, same battery | 0.179 | **−1.028** | −5.234 |
 
 Findings:
@@ -36,7 +36,7 @@ Findings:
 1. The protocol alone moves the headline from −1.028 to 0.989 on the same features and the same
    model. The random-split 0.979 confirms the R3-C2 prediction (> 0.97).
 2. The "oracle ≈ 1" claim is **protocol-scoped**: 0.992 under the same-battery split the literature
-   uses, but 0.671 under LOBO. Published scores are high partly because published protocols are
+   uses, but 0.663 under LOBO. Published scores are high partly because published protocols are
    same-battery. This is now measured, not asserted.
 3. Pooling inflates R²: `chronological_within` scores −1.028 per fold but +0.850 pooled. A paper
    reporting only pooled R² on a chronological split looks healthy while every fold is negative.
@@ -44,7 +44,7 @@ Findings:
 
 ## 4.3 Axis 2 — the capacity proxy (R3-C3, R3-C5)
 
-Nested LOBO, 5 seeds:
+Nested LOBO (phase-3 runs, 5 seeds per fold):
 
 | Feature set | Features | Mean R² | Median R² | Mean RMSE |
 |---|---|---:|---:|---:|
@@ -52,6 +52,11 @@ Nested LOBO, 5 seeds:
 | TD-Proxy-Free (drop `dis_duration`) | 7 | **0.845** | 0.876 | 3.81 |
 | TD-Clean-6 (also drop `dis_mean_V`) | 6 | **0.490** | 0.556 | 6.79 |
 | TD-Clean-4 (also drop `cc_dur`, `cv_dur`) | 4 | −0.400 | −0.136 | 11.27 |
+
+Row-set note: this table is the phase-2 axis-2 experiment (its own runs). The phase-1 audit
+protocol run (§4.2) measured TD-Proxy-Free at 0.854 with a different row set — the two numbers
+(0.845 vs 0.854) must not be compared to each other; each is quoted only against numbers from
+the same row set.
 
 Paired on identical (fold, seed): removing `dis_mean_V` made **19 of 20** fold-seeds worse
 (mean drop 0.354).
@@ -117,7 +122,7 @@ reducer. The AE is reported as a negative result (Appendix) and the pipeline pro
 
 | Question | Answer (measured) |
 |---|---|
-| How much of published accuracy is protocol? | Random 0.979 vs LOBO 0.927 (TD-All); oracle 0.992 → 0.671 |
+| How much of published accuracy is protocol? | Random 0.979 vs LOBO 0.927 (TD-All); oracle 0.992 → 0.663 |
 | How much is the capacity proxy? | 0.927 (TD-All) → 0.490 (Clean-6); Clean-8 recovers 0.810 |
 | Unseen-battery, proxy-audited number | Clean-8 = 0.810 (nested LOBO, 5 seeds) |
 | Does the AE help? | No — negative result on both modalities |
