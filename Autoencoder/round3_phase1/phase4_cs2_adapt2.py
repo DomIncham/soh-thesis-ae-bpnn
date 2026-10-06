@@ -21,13 +21,15 @@ ROOM = ["B0005", "B0006", "B0007", "B0018"]
 SEEDS = [42, 123, 2024, 7, 99]
 
 
-def warm_fit(bp0, dims, l2, Xfit, yfit, mu, sd, seed, epochs):
-    """Continue training bp0's weights on (Xfit, yfit) already normalised with mu/sd."""
+def warm_fit(bp0, dims, l2, Xfit, yfit, mu, sd, seed, epochs, lr=1e-4):
+    """Continue training bp0's weights on (Xfit, yfit) already normalised with mu/sd.
+    Low LR + gradient clipping: CS2 features fall partly OUTSIDE the NASA min-max range, so the
+    source-scale loss can spike; 1e-3 diverges, 1e-4 with clipping is stable (tested)."""
     torch.manual_seed(seed)
     np.random.seed(seed)
-    bp = rc.BPNN(dims, l2).to(rc.DEVICE)
+    bp = rc.BPNN([Xfit.shape[1]] + dims, l2).to(rc.DEVICE)
     bp.load_state_dict({k: v.clone() for k, v in bp0.state_dict().items()})
-    opt = torch.optim.Adam(bp.parameters(), lr=1e-3, weight_decay=l2)
+    opt = torch.optim.Adam(bp.parameters(), lr=lr, weight_decay=l2)
     loader = torch.utils.data.DataLoader(
         torch.utils.data.TensorDataset(
             torch.tensor(np.asarray(Xfit), dtype=torch.float32, device=rc.DEVICE),
@@ -39,6 +41,7 @@ def warm_fit(bp0, dims, l2, Xfit, yfit, mu, sd, seed, epochs):
             opt.zero_grad()
             loss = torch.nn.functional.mse_loss(bp(zb), tb)
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(bp.parameters(), 1.0)
             opt.step()
     bp.eval()
     return bp
