@@ -19,14 +19,14 @@ confirmed verbatim. One question remains for the advisor: thesis title phrasing.
 
 - `refit_on_3`: after inner selection, the final model is re-fitted on all three training
   batteries. Mean per-fold R² (TD-All): **0.848 → 0.923**; median 0.789 → 0.950.
-  (Source: [`inner_loop_lobo3_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/inner_loop_lobo3_results.csv), re-aggregated 2026-10-06.)
+  (Source: [`inner_loop_lobo3_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/inner_loop_lobo3_results.csv), re-aggregated 2026-10-06.)
 - Reporting standard applied everywhere: per-fold mean R² + pooled R², MAE/RMSE in %SOH,
-  MAPE, RMSE in Ah. (Source: [`phase1_pooled_metrics.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/phase1_pooled_metrics.csv) — pooled TD-All refit 0.936,
+  MAPE, RMSE in Ah. (Source: [`phase1_pooled_metrics.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase1_pooled_metrics.csv) — pooled TD-All refit 0.936,
   MAE 2.20%SOH, MAPE 2.71%.)
 
 ## 2. C2 — Protocol-gap experiment ✅ (becomes Ch.4 §4.2)
 
-Same features, same model, only the split changes (verified: [`protocol_gap_verify.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/protocol_gap_verify.py) 23/23):
+Same features, same model, only the split changes (verified: [`protocol_gap_verify.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/protocol_gap_verify.py) 23/23):
 
 | Split | Oracle-proxy | TD-All | TD-Proxy-Free |
 |---|---|---|---|
@@ -47,8 +47,8 @@ Same features, same model, only the split changes (verified: [`protocol_gap_veri
 - `dis_duration` is a direct proxy (CC discharge: capacity = I × t). Removed → Proxy-Free.
 - `dis_mean_V` is collinear with it (within-battery r = 0.941) and alone explains 94.8 % of
   within-battery capacity variance. Also removed → Clean-6.
-- Full classification with code paths and formulas: [`r3c3_feature_classification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/r3c3_feature_classification.md) +
-  [`r3c3_feature_classes.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/r3c3_feature_classes.csv) (verified: [`phase3_feature_audit.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/phase3_feature_audit.py) 50/50).
+- Full classification with code paths and formulas: [`r3c3_feature_classification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c3_feature_classification.md) +
+  [`r3c3_feature_classes.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c3_feature_classes.csv) (verified: [`phase3_feature_audit.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_feature_audit.py) 50/50).
 
 ## 4. C5 — Proxy-free improvements ✅ (Ch.4 §4.3–4.4)
 
@@ -93,7 +93,7 @@ pipeline proceeds without it." Recorded in [`advisor_directives.md`](https://git
 
 ## 7. C9 — Citation verification: all 13 studies ✅
 
-Full table: [`r3c9_citation_verification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/r3c9_citation_verification.md). Verified from full PDFs (all 13 downloaded):
+Full table: [`r3c9_citation_verification.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c9_citation_verification.md). Verified from full PDFs (all 13 downloaded):
 
 - [11] Sardar: random-split ET R² **0.9788** → strict battery-wise **0.7855** — confirmed verbatim.
 - [9] Chen: B0006 LOCO R² **0.2464 → 0.5286** — confirmed (audit said 0.25 → 0.53). Their protocol:
@@ -152,7 +152,7 @@ an explicit row-set note was added to Ch.4 to prevent a cross-row-set comparison
 
 ## 9. Draft status
 
-- **Ch.4 (Results) draft v0.1**: [`thesis_ch4_protocol_draft.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/round3_phase1/thesis_ch4_protocol_draft.md) — setup, protocol axis, proxy
+- **Ch.4 (Results) draft v0.1**: [`thesis_ch4_protocol_draft.md`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch4_protocol_draft.md) — setup, protocol axis, proxy
   axis, 5.1–5.5 verdicts, wider validation, AE negative result, headline table, limitations.
 - Ch.5 (Discussion), Ch.3 (Methodology), Ch.1 (Introduction), Appendix (negative results):
   drafting in progress.
