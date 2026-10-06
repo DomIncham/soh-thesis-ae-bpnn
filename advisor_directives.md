@@ -179,3 +179,29 @@ Yellow rows in the audit = strict unseen-battery (LOBO/LOCO) protocol; green row
 
 *Last updated: 2026-09-29 — Round 2 marked resolved (Steps 1–18, 2026-09-25); Round 3 (Literature Gap Audit, 2026-09-26) appended as R3-C1…C9; Forbidden Claim #16 added.*
 *Next update: Append Round 4 as new section.*
+---
+
+## R3-C7 Outcome (Appended 2026-10-06 — Phase 5, item 7.4)
+
+### The AE Is Demoted to a Documented Negative Result (measured, not assumed)
+
+Per the advisor's R3-C7 directive ("move the AE to the ablation / negative-result section"), the
+evidence below is complete and the demotion is now a standing directive:
+
+| Evidence | Numbers |
+|---|---|
+| AE-on-TD vs raw TD features (BPNN, same LOBO) | R² 0.43 vs **0.85** — AE features strictly worse |
+| AE on EIS vs PCA on EIS (R² gain over raw) | AE **+0.08** vs PCA **+0.61** — AE loses to a linear projection |
+| AE reconstruction target | the interpolated 256-dim input, not the measurement (+0.1 mΩ offset; B0006 anomaly is AE-specific) |
+| E_fusion (EIS latent anchored by TD) | R² +0.73 < TD-only 0.85 — the EIS latent adds nothing once TD features are present |
+
+**Claim (approved phrasing for the thesis):** "the autoencoder bottleneck adds no measurable value
+on either modality; its latent space reconstructs the interpolation grid rather than the impedance
+measurement; PCA is the stronger EIS reducer. The AE is reported as a negative result and the
+pipeline proceeds without it."
+
+**Consequences:**
+1. Thesis direction = **proxy-audited, partial-window, unseen-battery SOH estimation** (TD-BPNN main pipeline). The title no longer needs "Autoencoder".
+2. AE material goes to the Appendix / negative-results section: AE on EIS, AE on TD, interpolation ablation, tolerance ablation.
+3. Advisor email (2 questions: EWDC [10] reference; title qualification) blocks **citations/title only** — Ch. 4–5 drafting proceeds without it.
+4. Chapter 2 literature numbers must not be quoted until R3-C9 verification is done.
