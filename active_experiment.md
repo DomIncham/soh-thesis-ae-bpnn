@@ -33,7 +33,7 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 | 2 | protocol-gap experiment | R3-C2 | ✅ complete |
 | 3 | proxy-free improvements | R3-C5 (5.1–5.5) | ✅ complete |
 | 4 | wider validation | R3-C6 (6.1–6.3) | ✅ complete (2026-10-05) |
-| 5 | EIS/AE role + documentation | R3-C7 | ⬜ next — the 7.3 demote-AE draft claim is already written in the advisor doc |
+| 5 | EIS/AE role + documentation | R3-C7 | ◐ 7.4 done + Ch.4 draft; Ch.5/1–3 next |
 | 6 | citation verification | R3-C9 | ⬜ blocked on the EWDC [10] reference |
 
 Thesis direction: **proxy-audited, partial-window, unseen-battery SOH estimation** (qualify "proxy-
@@ -87,11 +87,14 @@ reporting, integrity proven (determinism, 840 leakage asserts, 4-cell reproducti
 **6.3 CS2:** four arms — frozen −37 / scratch-1-cell −68 / warm-1-cell −31 / **within-CS2 control
 0.59** — failure is domain shift from per-cell label offset. **R3-C6 closed (6.1+6.2+6.3).**
 
-### Phase 5 ⬜ (next)
+### Phase 5 ◐ (2026-10-06)
 
-7.3 demote AE — draft claim already in `round3_status_for_advisor.md` (AE-on-TD 0.43 vs TD 0.85;
-AE+0.08 vs PCA+0.61 on EIS; E_fusion 0.73 < TD 0.85). Then `advisor_directives.md` append-only
-update (7.4), then chapter drafts (recommended order: Ch. 4 protocol → Ch. 5 results → Ch. 1–3).
+- **(7.4) DONE** — `advisor_directives.md` appended with the R3-C7 outcome: AE demoted to a
+  documented negative result (commit `4f3feec`).
+- **Ch. 4 draft v0.1 DONE** — `round3_phase1/thesis_ch4_protocol_draft.md` (commit `edd66f0`):
+  protocol axis, proxy axis, 5.1–5.5 verdicts, wider validation, AE negative result, headline table.
+  Dom reviews → converts to PDF in Antigravity.
+- **Remaining:** advisor email (2 questions + demote-AE confirmation) — Dom sends; then Ch. 5 → Ch. 1–3; Ch. 2 blocked on R3-C9.
 
 ### Phase 6 ⬜ (blocked on EWDC [10])
 
@@ -247,6 +250,6 @@ point the advisor to `round3_status_for_advisor.md` (it now covers Phases 1–4 
 
 ---
 
-*Last updated: 2026-10-05 — Phase 4 closed (6.1: 420 runs + integrity checks; 6.3: four arms +
+*Last updated: 2026-10-06 — Phase 5: 7.4 + Ch.4 draft v0.1 done (commits 4f3feec, edd66f0). Was: Phase 4 closed (6.1: 420 runs + integrity checks; 6.3: four arms +
 within-CS2 control; all verified and pushed, HEAD `6a8ada2`). Working rule added: commit + push
 after every verified step. Next: Phase 5.*
