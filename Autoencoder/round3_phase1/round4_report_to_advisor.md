@@ -68,9 +68,11 @@ Same features, same model, only the split changes (verified: `protocol_gap_verif
 
 ## 5. C6 — Wider validation ✅
 
-- **6.1** Learning curve, NASA B0025–B0056 (420 runs + integrity checks): adding cells does not
-  help — only B0025–28 share the 24 °C/4-A condition; cross-condition LOBO mean R² −12 at k = 13.
-  Heterogeneous training helps out-of-domain slightly but hurts in-domain (0.933 → 0.75).
+- **6.1** Learning curve, NASA B0025–B0056 (420 runs + integrity checks): adding heterogeneous
+  cells does not help — pulsed-4A cells are catastrophic (B0027 R² −132.8 at k = 13; Clean-8
+  mean −12.5, median +0.32), and widening the pool hurts same-condition tests (room-2A
+  protocol reproduction 0.933 at k = 3 → 0.63–0.85 at k = 13). Within-condition curves stay
+  positive (medians −1.25 → +0.15 → +0.32 for k = 3 → 7 → 13). Claim stated per condition.
 - **6.3** NASA → CALCE CS2, four arms: frozen median R² −37 (does not transfer); 1-cell scratch
   ≈ −68; 1-cell warm-adapt ≈ −31; **within-CS2 control 0.39–0.68 on 6/8 cells** — the failure is
   domain shift (per-cell label offset, charge 0.5C vs 0.75C), not data or feature quality.

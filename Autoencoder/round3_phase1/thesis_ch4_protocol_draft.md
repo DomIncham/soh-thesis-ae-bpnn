@@ -87,11 +87,13 @@ every length. The defensible phrasing is "proxy-audited, partial-window".
 ## 4.5 Wider validation (R3-C6)
 
 **6.1 Learning curve (within NASA).** Adding cells B0025–B0056 under mixed conditions does not
-help: only B0025–28 share the 24 °C 4-A pulsed condition; the rest are 43 °C / 4 °C / corrupt.
-Cross-condition LOBO (14 cells) reaches mean R² −12 at k = 13 (B0027 alone: −133). Heterogeneous
-training helps out-of-domain slightly (all-13 median −24 vs room-only −37) but hurts in-domain
-(room 0.933 → 0.75). Report per-condition. The premise "add B0025–B0056 (similar conditions)" is
-not supported by the data.
+help: only B0025–28 share the original 24 °C condition; the rest are 43 °C, 4 °C, or pulsed-4A.
+The pulsed-4A cells are catastrophic under every setting (B0027 R² −132.8 at k = 13; Clean-8
+mean −12.5, median +0.32 at k = 13). Widening the pool hurts same-condition tests: the room-2A
+protocol reproduction scores 0.933 at k = 3 and degrades to 0.63–0.85 at k = 13. Within-condition
+curves stay positive (Clean-8 medians −1.25 → +0.15 → +0.32 for k = 3 → 7 → 13). The premise
+"add B0025–B0056 (similar conditions)" is not supported by the data; the claim is stated per
+condition (Ch.5 §5.2).
 
 **6.3 Cross-dataset (NASA → CALCE CS2), four arms:**
 
