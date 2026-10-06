@@ -205,3 +205,28 @@ pipeline proceeds without it."
 2. AE material goes to the Appendix / negative-results section: AE on EIS, AE on TD, interpolation ablation, tolerance ablation.
 3. Advisor email (2 questions: EWDC [10] reference; title qualification) blocks **citations/title only** — Ch. 4–5 drafting proceeds without it.
 4. Chapter 2 literature numbers must not be quoted until R3-C9 verification is done.
+
+### R3-C9 Resolution Part 1 — EWDC [10] identified and verified (2026-10-06)
+
+**Source verified:** Zhao, J.; Qian, X.; et al. "Unseen-Cell SOH Prediction via Energy-Aware
+Warm-Up and Degradation-Consistency Constraints." *Energies* 2026, 19, 4326.
+DOI 10.3390/en19184326. Local PDF: `Journal Discovery/Journal Prof Recommend/`.
+
+Verified facts (read from the full paper, not the audit summary):
+1. **The 0.975 is NOT a random-split number.** Protocol = within-dataset, source-only LOBO
+   (3 source cells train, 1 held out), same batteries as ours: B0005/06/07/18 + CS2-35..38.
+   Average R2 0.975 / RMSE 1.21% / MAE 0.65% over the 8 held-out cells, 10 runs.
+2. **But the comparison to our proxy-free numbers is still not direct**, for three reasons:
+   (a) Feature set = 17 charge-segment HIs **including the cycle index** and cumulative charged
+       quantity - proxy-laden by our R3-C3 standard (comparable arm is our TD-All, not Clean-6/8).
+   (b) SOH definition = Q/Q0 with y1 = 1 by definition, and the recursive predictor is
+       **anchored at yhat1 = 1**. Our 5.4 dSOH test was rejected (0.810 -> -4.785) under Q/Qref
+       without that anchor - the anchor, not the recursion, is the difference.
+   (c) Their ablation "None" (graph + dSOH recursion, no warm-up/constraints) = R2 0.934,
+       worse than the direct GNN baseline 0.950 - the recursion alone is not the win.
+3. Per-cell: B0018 fold R2 0.946 (no B0018 collapse - consistent with cycle-index + anchor
+   features carrying per-battery scale).
+4. **Consequence for the thesis:** compare EWDC 0.975 against our TD-All 0.927 (same LOBO
+   protocol), noting (a)-(c). Never against Clean-8 0.810 as if like-for-like.
+5. Advisor question 1 is now ANSWERED locally - the email question reduces to the title
+   question only. Citation usable in Ch.2 after journal-quartile check (Energies).
