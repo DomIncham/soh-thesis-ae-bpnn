@@ -202,8 +202,11 @@ load-bearing component.
 
 ## Next
 
-- **R3-C6 (6.3)** cross-dataset: freeze Clean-8, test on CALCE CS2 — the right venue for a pooled
-  claim; starts now.
+- **R3-C6 (6.3)** cross-dataset: **done** — NASA→CALCE CS2 with four arms (frozen / 1-cell scratch /
+  1-cell warm-adapt / within-CS2 control): frozen does not transfer (median R² −37); 1-cell
+  adaptation equalises to ~−50 without a single positive cell; the within-CS2 control reaches
+  0.39–0.68 on 6/8 cells, proving the failure is domain shift (per-cell label offset), not data or
+  feature quality. Full numbers: `phase4_cs2_summary.md`. This closes R3-C6 (both 6.1 and 6.2).
 - **R3-C7** (demote AE — draft above) and **R3-C9** (citation verification — blocked on the EWDC
   reference) follow.
 
