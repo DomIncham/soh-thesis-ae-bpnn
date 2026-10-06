@@ -230,3 +230,21 @@ Verified facts (read from the full paper, not the audit summary):
    protocol), noting (a)-(c). Never against Clean-8 0.810 as if like-for-like.
 5. Advisor question 1 is now ANSWERED locally - the email question reduces to the title
    question only. Citation usable in Ch.2 after journal-quartile check (Energies).
+
+### R3-C9 Resolution Part 2 — all 13 studies verified (2026-10-06)
+
+Full table: `Autoencoder/round3_phase1/r3c9_citation_verification.md`. Summary of verified facts:
+
+1. [11] Sardar: random ET R2 0.9788 -> battery-wise 0.7855 CONFIRMED verbatim from the PDF.
+2. [9] Chen: B0006 LOCO R2 0.2464 -> 0.5286 CONFIRMED (audit said 0.25 -> 0.53). They use 3 cells,
+   SOH = Q(c)/Q(1), and cycle index as an explicit input; conformal intervals self-declared
+   "not fully calibrated under severe domain shift".
+3. [10] EWDC 0.975 = within-dataset LOBO (Part 1 above); compare only with our TD-All 0.927.
+4. [3] Q(k-1) explicit input; [4] previous-cycle capacity + cycle number inputs; [9]/[10] cycle
+   index. Every strong unseen-battery claim in the list is proxy-laden -> supports Clean-8 framing.
+5. [7] is the only cross-battery R2 ~0.98 result (Oxford, 1-train/rest-test, per-cell capacity
+   ratio) — smallest, cleanest scope; annotate in Ch.2.
+6. B0006 is the common wall across [9], us, and (softly) [10] B0018.
+
+**Ch.2 citation table is UNBLOCKED.** Advisor email now has one question left (title phrasing).
+Quartiles: confirm on JCR/SJR before finalising the thesis PDF (approximate list in the file).
