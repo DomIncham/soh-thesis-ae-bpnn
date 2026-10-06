@@ -109,6 +109,7 @@ P1 Extract → P2 Debate → [4-Rule Gate] → /new + active_experiment.md
 6. **Hybrid:** Capi รัน script <50 บรรทัด/ไม่ใช้ GPU · Dom รัน training + sweep
 7. **Token hygiene:** ตอบสั้น ไม่ verbose
 8. **Antigravity for PDF** — ไม่ใช้ pandoc/MiKTeX
+9. **Figures = Capi's job**: Capi plots → saves PNG/SVG → patches into .md with `![caption](path)`. Antigravity only exports the complete .md to PDF.
 
 ---
 
