@@ -78,7 +78,17 @@ These files exist locally but are excluded from Git:
 C:\Master Degree\Thesis\Dataset_1_NCA_battery.zip
 C:\Master Degree\Thesis\Dataset_2_NCM_battery.zip
 C:\Master Degree\Thesis\Impedance raw data and fitting data.zip
+C:\Master Degree\Thesis\CALCE\
 ```
+
+**CALCE Battery Dataset (CS2 cells)**
+- Local path: `C:\Master Degree\Thesis\CALCE\`
+- Size: ~313 MB (8 cells: CS2_21, CS2_33, CS2_34, CS2_35, CS2_36, CS2_37, CS2_38, CS2_8)
+- Format: Text files (.txt) — charge/discharge cycle data per cell
+- Source: CALCE (Center for Advanced Life Cycle Engineering), University of Maryland
+- Status: **Excluded from Git** — to be archived on Zenodo/Figshare with DOI (TBD)
+- DOI: *pending upload*
+- Download: *pending upload*
 
 Observed during audit:
 
