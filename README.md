@@ -24,7 +24,7 @@ Raw datasets, large external archives, generated tensors, and model checkpoints 
 Autoencoder/                       # Stage-1 AE, BPNN, preprocessing, metrics, figures
 Comment Prof and Report/           # Separated advisor comments and Dom's reports
 Journal Discovery/literature review by dom/ # Dom-authored literature review materials to keep in Git
-examples/                          # LaTeX practice examples, ignored by Git for now
+advisor_rounds/                    # Historical advisor-round records
 NASA DataSet/                      # Raw datasets, ignored by Git
 ```
 
@@ -32,6 +32,7 @@ NASA DataSet/                      # Raw datasets, ignored by Git
 
 ```text
 advisor_directives.md              # Advisor directives and methodology constraints
+active_experiment.md               # Current session handoff and state card
 advisor_rounds/                     # Round index and historical advisor records
 end_to_end_research_workflow_v2.md # End-to-end research workflow
 E2E Research Workflow.html         # HTML version of workflow
