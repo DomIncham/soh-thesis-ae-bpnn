@@ -1,12 +1,10 @@
-# ACTIVE EXPERIMENT — Round 3 Complete (C1–C9), drafting chapters
+# Active Experiment — Session Handoff and Pruning State Card
 
-> **READ THIS FIRST (new session):** load skill `soh-research` → read `advisor_directives.md` (SSOT) →
-> read `end_to_end_research_workflow_v2.md` → then this file. Use `read_file` with `offset`/`limit` for
-> the thesis `.md` files; **never `skill_view`** on them (compression + cache loop).
+> **Session pruning card:** read this after `advisor_directives.md`. This file is intentionally short and is updated only when current state, blocker, objective, or next action changes. Load detailed files only for the task at hand.
 >
-> **Updated:** 2026-10-07 · **Status:** **Round 3 ALL items (C1–C9) done and verified.** All chapter
-> drafts at v0.1 except Ch. 2. **Blocked on:** the advisor's reply on the thesis title only —
-> Ch. 2 waits on that (citation verification itself is done).
+> **Normal session mode:** Dom combines reasoning, planning, implementation, and coding in one session. Thesis drafting is out of scope until the advisor direction and title are settled.
+>
+> **Current state:** Round 3 is complete. Round 4 is awaiting advisor feedback. This status is mutable and must be updated when the advisor round changes.
 >
 > **Advisor:** Y.F. Luo (YF.Luo@mail.ntust.edu.tw) — collaborator on the private repo
 > `github.com/DomIncham/soh-thesis-ae-bpnn`; all progress is pushed to `main` for review.
@@ -29,7 +27,74 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 ---
 
-## 1. Where we are
+## 1. Current Project State
+
+- Current advisor round: Round 4
+- Advisor status: awaiting feedback
+- Current work phase: post-Round-3 maintenance and preparation
+- Current objective: continue verified research/code work without inferring new advisor requirements
+- Current blocker: advisor feedback may change the next scope
+- Thesis drafting: out of current scope until the advisor direction and title are settled
+
+When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
+
+## 2. Previous Session Handoff
+
+> At the end of every session, replace the contents of this handoff section with the latest factual summary. Keep only the latest handoff here; use Git history and experiment summaries for older sessions.
+
+Record only the latest session's handoff. Do not paste full logs or historical detail here.
+
+### Completed
+
+- Round 3 C1–C9 complete and documented.
+- Round 3 historical record and round index created.
+
+### Evidence
+
+- Detailed phase history and verification: `Autoencoder/round3_phase1/PROJECT_STATE.md`
+- Citation verification: `Autoencoder/round3_phase1/r3c9_citation_verification.md`
+
+### Decisions
+
+- Main direction: proxy-audited, partial-window, unseen-battery SOH estimation.
+- Main pipeline: TD-BPNN.
+- AE: documented negative result unless a later advisor directive changes this.
+
+### Unresolved
+
+- Round 4 advisor feedback.
+- Final thesis title.
+
+### Files changed
+
+- Update after each session; list only files changed in that session.
+
+### Verification
+
+- Update after each session with the real test, check, or review result.
+
+## 3. Next Session Task
+
+### Objective
+
+- Read the current state above and continue the smallest useful action.
+
+### First action
+
+- Check the advisor source folder and then inspect only the files required for the current task.
+
+### Required files
+
+- `advisor_directives.md`
+- `active_experiment.md`
+- Task-specific source, summary, script, or verification file only
+
+### Stop conditions
+
+- Stop before a major experiment, protocol change, feature-policy change, or thesis-direction change unless a PAEV plan has been approved.
+- Stop if a result cannot be tied to its row set, unit, protocol, feature set, and source artifact.
+
+## 4. Where we are
 
 | Phase | scope | advisor items | status |
 |---|---|---|---|
@@ -49,7 +114,7 @@ not our novelty).
 
 ---
 
-## 2. What Round 3 measured (headline numbers)
+## 5. Headline results needed for current decisions
 
 **Protocol axis (TD-All, nested LOBO):** random 0.979 / ours 0.927 / chronological −1.028 per-fold
 (+0.850 pooled). Oracle 0.992 same-battery vs 0.663 LOBO (phase-1, refit_on_3; the phase-2 run gives
@@ -82,7 +147,13 @@ condition.
 
 ---
 
-## 3. Round 3 work plan and status (all phases done)
+## 6. Completed work pointer
+
+Detailed Round 3 phase history, verification ledger, bug log, data notes, environment facts, and artifact map live in `Autoencoder/round3_phase1/PROJECT_STATE.md` and the phase summary files. Do not copy that detail into this card.
+
+## 7. Round 3 work plan and status (all phases done)
+
+> This section is retained as a compact transition record. For normal pruning, load only sections 1–3, 11, and 12; load the detailed sections only when coding, verification, or artifact lookup requires them.
 
 ### Phases 1–3 ✅ (detail in PROJECT_STATE.md)
 
@@ -120,7 +191,7 @@ per-cell label offset. **R3-C6 closed.**
 
 ---
 
-## 4. Artifacts map (all tracked and pushed; HEAD `248d5b8`)
+## 8. Artifacts map (all tracked and pushed; HEAD `248d5b8`)
 
 | path | content |
 |---|---|
@@ -153,7 +224,7 @@ per-cell label offset. **R3-C6 closed.**
 
 ---
 
-## 5. Verification ledger
+## 9. Verification ledger
 
 **Phases 1–3: 210 checks** (61+23+7+26+8+9+7+7+12+50) — re-run 2026-10-06 from `round3_phase1/`,
 **all pass**:
@@ -177,7 +248,7 @@ everywhere; provenance matches the advisor's audit (69.9 / 57.2 / 74.4 / 72.9).
 
 ---
 
-## 6. Data format notes (needed when writing code)
+## 10. Data format notes (needed when writing code)
 
 **NASA**
 - Battery ids 1/2/3/4 = B0005/B0006/B0007/B0018 (`BATT` dict; id ≠ NASA name)
@@ -210,7 +281,7 @@ marks the 9 structural-NaN rows.
 
 ---
 
-## 7. Environment facts (this machine)
+## 11. Environment facts (this machine)
 
 - Dom's Python 3.11.6 (scipy / numpy / pandas / matplotlib / torch 2.5.1+cu121 / sklearn / reportlab
   / pypandoc / openpyxl):
@@ -229,7 +300,7 @@ marks the 9 structural-NaN rows.
 
 ---
 
-## 8. Lessons (carry forward — full list in PROJECT_STATE.md)
+## 12. Lessons (carry forward — full list in PROJECT_STATE.md)
 
 Round 3 meta-lesson: **verification is where the bugs are, not the pipeline.** Phase 1–3 rules:
 assert at the claim's aggregation level; NaN-safe helpers; compute expected values, never type them;
@@ -262,7 +333,7 @@ check the metric before believing it (R² dies when the test range collapses).
 
 ---
 
-## 9. Open items carried forward
+## 13. Open items carried forward
 
 | item | status |
 |---|---|
@@ -275,23 +346,91 @@ check the metric before believing it (R² dies when the test range collapses).
 
 ---
 
-## 10. What the next session should do
+## 14. What the next session should do
 
-**Immediate:** git is clean, everything pushed (HEAD `248d5b8`). Nothing to clean up. Dom sends
-`round4_report_to_advisor.md` (or its Antigravity PDF) to the advisor — one question inside (title).
-
-**Then:**
-1. When the advisor answers the title question → remove the placeholder in Ch.1, resolve the
-   [TITLE-DEPENDENT] marks, then draft **Ch. 2** from `r3c9_citation_verification.md` (13 papers,
-   five groups, unit+protocol per row).
-2. Reviewer pass over Ch.1/3/4/5 + Appendix v0.1 before expanding them (numbers already verified).
-3. Optional pre-gate: re-run the verification suite (210 + 20 + CS2 checks) before any new numbers.
-
-**Working rules:** PAEV; **commit + push after every verified step**; keep this card updated;
-session-start prompt unchanged (skill → SSOT → workflow → this card).
+This section is a mutable legacy transition section. The authoritative next-session handoff is Section 3. Update or remove this section after the first verified post-migration session.
 
 ---
 
-*Last updated: 2026-10-07 — Round 3 fully closed (C1–C9); chapter drafts v0.1 (Ch.1/3/4/5 + Appendix);
-Round 4 report humanized and ready to send; C9 done (13/13 papers verified from full PDFs).
-Was: Phase 5 ◐ (2026-10-06). Next: advisor's title answer → Ch.2.*
+## 16. Final report workflow
+
+After the work requested by an advisor round is completed, create a final round report as a Markdown file. The report is a human-readable evidence record, not a raw log.
+
+### Report requirements
+
+1. Link every important result, script, table, verification file, and relevant artifact to its exact GitHub path or commit so the advisor can inspect the evidence.
+2. Write from the verified evidence. Preserve the correct row set, unit, protocol, feature set, and proxy status next to every metric.
+3. Perform a detailed humanize pass before delivery. The prose must read as Dom's own writing, with no unexplained AI-written style, inflated claims, unnecessary adverbs, or excessive `-ly` wording.
+4. Prefer direct sentences and measured claims. Do not add conclusions that are not supported by the experiment or verification output.
+5. Keep the final `.md` as the content source of truth.
+
+### Antigravity handoff
+
+After Capi completes the Markdown report and humanize pass, Dom sends the `.md` to Antigravity. Antigravity may convert it to PDF and apply visual styling, but must preserve the Markdown content exactly: no additions, deletions, reinterpretation, or new claims.
+
+### Naming convention
+
+Use one final report per advisor round:
+
+```text
+advisor_round_03_final_report.md
+advisor_round_04_final_report.md
+advisor_round_05_final_report.md
+```
+
+Store the report with the round's research records or in the existing report folder, then add its path to `advisor_rounds/README.md` and the current handoff.
+
+---
+
+## 15. Session-start pruning protocol
+
+Use this prompt at the start of every new research/coding session:
+
+```text
+Load the `soh-research` skill first.
+Read these two live files with explicit offset/limit pagination:
+1. `C:\Master Degree\Thesis\advisor_directives.md`
+2. `C:\Master Degree\Thesis\active_experiment.md`
+
+This is a combined reasoning + implementation/coding session.
+Continue from the latest session handoff in `active_experiment.md`.
+Do not assume that any particular advisor round is pending, active, or complete; read the current round and status from the state card and source files.
+Do not infer advisor requirements that are not present in the source files.
+
+Before acting:
+1. State the current objective, blocker, and smallest useful next step.
+2. Decide whether the task is reasoning, coding, verification, or a combination.
+3. Load only the specific workflow section, summary, script, data contract, or verification file needed for that step.
+4. If a file is over 200 lines, find headings first and read only the relevant line window.
+
+During work:
+- Keep reasoning and coding in the same session.
+- Follow PAEV: plan → approval when required → execute → verify → ablation log if applicable → commit/push.
+- Do not start a major experiment, change protocol, change feature policy, or change advisor/thesis direction without an explicit plan and approval.
+- Small maintenance, targeted inspection, smoke tests, and verification may proceed directly.
+- Never use `git add -A`; stage explicit paths only.
+- Preserve row-set, unit, protocol, feature set, and proxy labels next to every metric.
+- Never overwrite original advisor comment files.
+
+At the end:
+1. Verify the real output or test result.
+2. Update `active_experiment.md` as the latest handoff: current state, completed work, evidence, decisions, unresolved items, changed files, verification, next action, required files, and stop conditions.
+3. If a final advisor-round report was completed, verify its GitHub links and complete the humanize check before handing the `.md` to Antigravity.
+4. Keep the handoff factual and concise; do not copy full logs or historical detail.
+5. Commit and push verified work using explicit paths.
+6. Report the next session's smallest useful action.
+```
+
+### Loading rules for this mode
+
+- Normal session: `advisor_directives.md` + `active_experiment.md`.
+- Coding/experiment planning: add the relevant section of `end_to_end_research_workflow_v2.md` and the relevant phase summary.
+- Coding implementation: add only the target script and its direct verification script.
+- Verification: add the relevant summary, verification script, and result file.
+- Historical advisor question: add the relevant file under `advisor_rounds/` only.
+- Do not load `advisor_rounds/advisor_directives_archive.md` during a normal session.
+- Do not load thesis chapter drafts unless the task explicitly changes scope to thesis writing.
+
+---
+
+*Last updated: 2026-10-08 — Session handoff/pruning template updated; Round 3 remains closed and Round 4 is the current pending advisor round. Final report workflow and Antigravity handoff rules added.*

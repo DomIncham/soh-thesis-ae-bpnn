@@ -1,7 +1,6 @@
-# Advisor Directives — SOH Estimation of Li-Ion Batteries via Two-Stage AE + BPNN
+# Advisor Directives — Live
 
-> **Single Source of Truth.** All advisor comments, rules, prohibitions, and required steps.  
-> **Update:** Append only. Each new round extends this file.
+> This file contains active rules and current constraints only. Historical detail is kept in `advisor_rounds/advisor_directives_archive.md` and the round records in `advisor_rounds/`.
 
 ---
 
@@ -59,7 +58,17 @@ These justifications must appear in the Methodology and Experimental Setup secti
 
 ---
 
-## Round 3 (Current — Literature Gap Audit, Received 2026-09-26)
+## Round 1–2 Historical Archive
+
+The resolved Round 1–2 record is maintained in `advisor_rounds/advisor_directives_archive.md`. It is not loaded during normal sessions.
+
+## Round 3 Historical Record
+
+Round 3 is resolved. Its detailed record is `advisor_rounds/round_03_literature_gap_audit.md`.
+
+The active consequences are: nested LOBO for unseen-battery evaluation; explicit target-proxy auditing; row-set discipline; full-paper citation verification; and reporting the AE as a documented negative result unless new evidence or an explicit advisor directive changes the direction.
+
+## Round 3 (Historical Detail — retained below for traceability; load the separate round record for normal historical review)
 **Source:** `Comment Prof and Report/Literature_Gap_Audit_NASA_SOH.pdf` — Advisor's audit, basis: Round 2 Progress Report (2026-09-25) + 2022–2026 literature search.
 **Status:** ⏳ NOT YET ADDRESSED
 **Advisor's verdict:** No data-processing error found in our pipeline (capacity data matches original NASA files: 168/168/168/132 cycles; min SOH 69.9/57.2/74.4/72.9%). Our lower scores come from a **stricter protocol and different inputs, not mistakes**. Core message: convert our strictness into novelty.
@@ -181,7 +190,7 @@ Yellow rows in the audit = strict unseen-battery (LOBO/LOCO) protocol; green row
 *Next update: Append Round 4 as new section.*
 ---
 
-## R3-C7 Outcome (Appended 2026-10-06 — Phase 5, item 7.4)
+## R3-C7 Outcome (Historical Detail — Appended 2026-10-06 — Phase 5, item 7.4)
 
 ### The AE Is Demoted to a Documented Negative Result (measured, not assumed)
 
@@ -206,7 +215,7 @@ pipeline proceeds without it."
 3. Advisor email (2 questions: EWDC [10] reference; title qualification) blocks **citations/title only** — Ch. 4–5 drafting proceeds without it.
 4. Chapter 2 literature numbers must not be quoted until R3-C9 verification is done.
 
-### R3-C9 Resolution Part 1 — EWDC [10] identified and verified (2026-10-06)
+### R3-C9 Resolution Part 1 — EWDC [10] identified and verified (Historical Detail — 2026-10-06)
 
 **Source verified:** Zhao, J.; Qian, X.; et al. "Unseen-Cell SOH Prediction via Energy-Aware
 Warm-Up and Degradation-Consistency Constraints." *Energies* 2026, 19, 4326.
@@ -231,7 +240,7 @@ Verified facts (read from the full paper, not the audit summary):
 5. Advisor question 1 is now ANSWERED locally - the email question reduces to the title
    question only. Citation usable in Ch.2 after journal-quartile check (Energies).
 
-### R3-C9 Resolution Part 2 — all 13 studies verified (2026-10-06)
+### R3-C9 Resolution Part 2 — all 13 studies verified (Historical Detail — 2026-10-06)
 
 Full table: `Autoencoder/round3_phase1/r3c9_citation_verification.md`. Summary of verified facts:
 
