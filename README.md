@@ -50,7 +50,7 @@ Recommended Git contents:
 - Methodology/workflow notes: `*.md`, `*.html`
 - Advisor/professor reports and Dom-authored review documents
 - `Comment Prof and Report/Comment Prof/` contains original advisor comments and source files.
-- `Comment Prof and Report/Report/` contains Antigravity-converted PDF deliverables; final Markdown sources remain with the relevant research work.
+- `Comment Prof and Report/Report/` contains Antigravity-converted PDF deliverables; final Markdown sources remain with the relevant research work under `Autoencoder/`.
 - LaTeX source files: `*.tex`, `*.bib`
 
 ## What Should Not Be Committed
