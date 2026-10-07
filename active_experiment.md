@@ -2,9 +2,9 @@
 
 > **Session pruning card:** read this after `advisor_directives.md`. This file is intentionally short and is updated only when current state, blocker, objective, or next action changes. Load detailed files only for the task at hand.
 >
-> **Normal session mode:** Dom combines reasoning, planning, implementation, and coding in one session. Thesis drafting is out of scope until the advisor direction and title are settled.
+> **Normal session mode:** Dom combines reasoning, planning, implementation, and coding in one session. The current scope is read from Section 1 and the latest handoff; never hard-code a round, phase, blocker, or thesis-writing status in the start prompt.
 >
-> **Current state:** Round 3 is complete. Round 4 is awaiting advisor feedback. This status is mutable and must be updated when the advisor round changes.
+> **Current state:** This is mutable session state. Read Section 1 for the current advisor round, work phase, objective, blocker, and scope; do not treat this line as a permanent instruction.
 >
 > **Advisor:** Y.F. Luo (YF.Luo@mail.ntust.edu.tw) — collaborator on the private repo
 > `github.com/DomIncham/soh-thesis-ae-bpnn`; all progress is pushed to `main` for review.
@@ -29,6 +29,8 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 ## 1. Current Project State
 
+> This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
+
 - Current advisor round: Round 4
 - Advisor status: awaiting feedback
 - Current work phase: post-Round-3 maintenance and preparation
@@ -40,7 +42,7 @@ When a new advisor round starts, update these fields. Never leave a previous rou
 
 ## 2. Previous Session Handoff
 
-> At the end of every session, replace the contents of this handoff section with the latest factual summary. Keep only the latest handoff here; use Git history and experiment summaries for older sessions.
+> Replace this section's mutable fields after every session. Keep only the latest factual handoff here; use Git history and experiment summaries for older sessions.
 
 Record only the latest session's handoff. Do not paste full logs or historical detail here.
 
@@ -74,6 +76,8 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 - Update after each session with the real test, check, or review result.
 
 ## 3. Next Session Task
+
+> Replace this section after each session so the next session can start without an additional setup prompt.
 
 ### Objective
 
@@ -382,9 +386,9 @@ Keep the final Markdown source with the research work so it is easy to update al
 
 ---
 
-## 15. Session-start pruning protocol
+## 15. Permanent session-start pruning protocol
 
-Use this prompt at the start of every new research/coding session:
+Use this unchanged prompt at the start of every new research, coding, experiment, verification, or thesis session:
 
 ```text
 Load the `soh-research` skill first.
@@ -392,9 +396,9 @@ Read these two live files with explicit offset/limit pagination:
 1. `C:\Master Degree\Thesis\advisor_directives.md`
 2. `C:\Master Degree\Thesis\active_experiment.md`
 
-This is a combined reasoning + implementation/coding session.
+This is a combined reasoning + implementation/coding session. If the current state says thesis writing is active, include thesis drafting; otherwise follow the current scope in `active_experiment.md`.
 Continue from the latest session handoff in `active_experiment.md`.
-Do not assume that any particular advisor round is pending, active, or complete; read the current round and status from the state card and source files.
+Do not assume that any particular advisor round, phase, blocker, or work type is pending, active, or complete; read the current state from the state card and source files.
 Do not infer advisor requirements that are not present in the source files.
 
 Before acting:
