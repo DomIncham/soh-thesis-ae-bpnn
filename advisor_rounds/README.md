@@ -12,10 +12,12 @@
 
 ## Reports
 
-Final round reports and Antigravity-converted deliverables belong in `Comment Prof and Report/Report/`.
+Final Markdown reports remain with the relevant research work, normally under `Autoencoder/round3_phase1/`. `Comment Prof and Report/Report/` is the deliverable folder for Antigravity-converted PDF files; HTML is optional.
 
-- Round 3 report: `Comment Prof and Report/Report/Progress_Report_Steps1-18_Round3.pdf` (with its source/report variants where applicable)
-- Round 4 report: `Comment Prof and Report/Report/round4_report_to_advisor.pdf` (source Markdown should be added when finalized)
+- Round 3 Markdown/report sources: `Autoencoder/round3_phase1/round3_status_for_advisor.md` and related report files
+- Round 3 PDF deliverables: `Comment Prof and Report/Report/Progress_Report_Steps1-18_Round3.pdf`
+- Round 4 Markdown source: `Autoencoder/round3_phase1/round4_report_to_advisor.md`
+- Round 4 PDF deliverable: `Comment Prof and Report/Report/round4_report_to_advisor.pdf`
 
 ## Rules
 
