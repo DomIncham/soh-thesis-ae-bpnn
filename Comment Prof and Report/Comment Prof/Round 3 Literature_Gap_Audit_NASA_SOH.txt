@@ -1,0 +1,294 @@
+Literature Gap Audit and Next-Step Plan
+SOH Estimation of Lithium-Ion Batteries on the NASA Dataset — Why Our Scores Differ from
+Published Results, a 2022–2026 Literature Comparison, and Recommended Next Steps
+Prepared for: Don (M11452803), Master's student | Advisor: Y.F. Luo, NTUST | Date: 26 September 2026
+Basis: Round 2 Progress Report (Steps 1–18, 25 Sep 2026) and a literature search of 2022–2026 journal papers using the
+NASA battery dataset.
+Summary in one paragraph. Our lower scores are mainly caused by a stricter evaluation
+protocol and different input features, not by a data-processing error. Almost every NASA
+paper that reports R² > 0.95 uses at least one of: (a) a random or chronological split inside the
+same battery; (b) inputs that are indirect capacity proxies (previous-cycle capacity, cycle index,
+accumulated Ah, discharge duration); or (c) 34 NASA cells with R² pooled over many batteries.
+Under a strict unseen-battery protocol with only B0005/06/07/18, recent 2026 papers report R² ≈
+0.53–0.88 and RMSE ≈ 4–7 %SOH. Our TD-BPNN result (R² ≈ 0.85, RMSE 3.59 %SOH) is at
+the same level or slightly better. However, R² = 0.85 is not yet a novelty claim: (1) the
+time-domain features have not been audited for capacity proxies; (2) the final model may have
+been trained on only two batteries; and (3) a 2026 paper has already combined EIS + discharge
+features + cross-battery evaluation (Section 3).
+Important — this material can go directly into your thesis. The comparison table, the
+protocol analysis, and the reference list in this document are written so that you can reuse them
+in your thesis (Literature Review, Methodology, Results and Discussion chapters). Section 6
+explains exactly where each part belongs. Before you cite any number, please open the full text
+of the paper and confirm the value, the unit, and the split protocol yourself.
+1. Current Status of Your Project (Round 2)
+Item Current result
+Data NASA BatteryAgingARC-FY08Q4: B0005, B0006, B0007, B0018 (168/168/168/132 discharge
+cycles)
+Protocol Nested 4-fold leave-one-battery-out (LOBO); inner validation = first remaining battery; 3
+seeds (42, 7, 123); fold-train-only standardization; leakage probes all PASS
+SOH definition SOH = Q / Q , Q = mean of the first five discharge capacities (in %SOH)
+ref ref
+Best model Time-domain (TD) features → BPNN: RMSE 3.59 %SOH, R² ≈ 0.85, positive R² on all four folds
+(B0018 ≈ 0.79)
+Other pipelines TD-Ridge 4.35; TD + EIS fusion 4.89 (R² 0.726); EIS-only pipelines 8.3–8.6; mean predictor
+11.5 (RMSE, %SOH)
+Negative results AE on EIS does not beat PCA; AE on TD features gives R² 0.43 vs 0.85 for raw TD features
+Declared limitations Per-point EIS frequency not recoverable (0.1 Hz–5 kHz grid is an assumption); TD features
+use a completed discharge cycle (cycle-level SOH, not mid-cycle); no
+ICA/DVA/pulse-resistance features
+2. Question 1 — Why Are Our Scores Lower on the Same NASA
+Data?
+We checked the capacity data first. The four batteries have 168/168/168/132 cycles and minimum SOH
+values of 69.9 / 57.2 / 74.4 / 72.9 %, which agree with the original NASA files. We did not find a
+data-processing error. The differences come from the factors below, ordered by expected impact.
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 1
+
+# Factor Our study Typical high-score papers Effect on scores
+1 Train/test split Nested LOBO: the test First 50–80 % of cycles of the same Largest. In the same paper,
+battery is never seen battery for training, the rest for changing a random split to a
+during training or tuning testing; or a random split battery-wise split reduced R² from
+[1],[3],[5],[6],[7] 0.979 to 0.786 [11]
+2 Capacity-proxy TD feature list not yet Previous-cycle capacity Q(k−1) [3]; Very large. Under constant-current
+inputs (label audited previous-cycle maximum capacity [4]; discharge, Capacity = I × t, so the
+shortcut) cycle number, discharge duration [11]; model is effectively given the
+accumulated charge, cycle index [10] answer
+3 Number of Only 4 batteries; inner 34 NASA cells, 24 for training [13]; 34 Large. Two batteries cannot
+training validation = one fixed cells, 1,830 samples [11] represent cell-to-cell variation
+batteries battery. If the model is
+not re-fitted after
+tuning, the final model
+is trained on only 2
+batteries
+4 Extrapolation B0006 falls to 57 %SOH; Not an issue with same-battery splits The B0006 fold requires
+(B0006) the other three stop at extrapolation. Chen et al. [9] also
+about 70–74 % report only R² = 0.25→0.53 for
+B0006
+5 How R² is Per battery (narrow SOH One R² pooled over many batteries Pooling adds between-battery
+computed range, std 8–12 %SOH), variance to the denominator, so R²
+then averaged looks higher for the same RMSE
+6 SOH definition Q/Q (first 5 cycles), in Q/2.0 Ah (nominal), Q/Q , or errors in An RMSE of 0.02 looks small but
+ref 0
+and units %SOH Ah or as a 0–1 fraction equals only about 1–2 %SOH. Units
+must be unified before comparing
+7 Different B0005 2.7 V, B0006 2.5 V, No effect with same-battery splits Features such as minimum voltage,
+discharge B0007 2.2 V, B0018 2.5 V voltage drop, and full discharge time
+cut-off voltages have different scales per battery →
+domain shift across batteries
+Points Don should check in the repository
+(cid:127) Does the TD model use all 636 discharge cycles, or only the cycles aligned with EIS (tolerance 1
+keeps only about 51 %)?
+(cid:127) TD-Ridge reaches RMSE 4.35. If full discharge duration were an input, a linear model should be almost
+perfect, so a direct duration feature is probably not present — but every feature must still be listed
+and checked (Section 5-B).
+(cid:127) After inner validation selects the hyper-parameters, is the model re-trained on all three training
+batteries?
+3. The Closest Published Paper (Verified)
+S. A. Sardar, F. Akhtar, W. Ali, W. Y. Kim, “Multi-Source Impedance and Discharge Feature
+Learning for Cross-Battery State-of-Health Estimation of Lithium-Ion Batteries,” Batteries,
+vol. 12, no. 8, p. 291, 2026. DOI: 10.3390/batteries12080291 (published 6 Aug 2026).
+Aspect Sardar et al. 2026 [11] This thesis (current)
+Data NASA, 34 cells, 1,830 EIS–SOH pairs NASA, 4 cells (B0005/06/07/18)
+EIS features Re/Im statistics, slopes, Nyquist area, resampled Rectified_Impedance → PCHIP 256-dim → PCA
+points, NASA-provided Re and Rct / AE
+Time-domain Mean voltage, voltage drop, discharge TD features (audit pending)
+features duration, current/temperature, cycle number,
+EIS index
+Model RF / ET / GB / HGB / XGBoost BPNN, Ridge
+Validation Random split; battery-wise (7 unseen cells); Nested 4-fold LOBO × 3 seeds with leakage
+repeated battery-wise (5 partitions) probes
+Results Random: R² 0.979. Strict battery-wise: R² 0.786, R² 0.85, RMSE 3.59 %SOH
+RMSE 7.37 %. Repeated: R² 0.881
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 2
+
+Aspect Sardar et al. 2026 [11] This thesis (current)
+Stated limitations Discharge duration and cycle number act as EIS frequency is an assumption; cycle-level
+indirect SOH proxies; EIS resampling not only
+frequency-aligned
+Assessment. The combination “EIS + discharge features + cross-battery evaluation” has
+already been published, so it cannot be our novelty. At present, our differences are a stricter
+nested protocol, the PCHIP / frequency-assumption analysis, and complete evidence that EIS-only
+models fail on unseen batteries. These show good research quality, but they are not yet a new
+contribution. Sardar et al. admit proxy leakage themselves and do not report a
+proxy-free version. This is the gap we can target.
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 3
+
+4. Question 2 — Comparison of NASA-Based SOH Studies (2022–2026)
+Yellow rows use a strict unseen-battery (LOBO/LOCO) protocol; the green row is this thesis. Bracketed numbers refer to the reference list in Section 7. “–” means the value was not reported
+in the part of the paper we could access.
+# Study (journal, year) Data Algorithm Input features Validation R² RMSE MAE Notes
+1 Zhang D. et al., TCN (Front. NASA B5/7/18 TCN Temperature-variation-rate HI Same battery, – ≤1.80 % ≤1.46 % Same-battery split
+Energy Res., 2022) chronological (start
+at cycle 90)
+2 Dong H. et al., improved Two public GPR + combined dQ/dV, dV/dT features Not stated – error <1.5 % – Abstract-level
+GPR (Int. J. Electrochem. datasets kernel + PCA information only
+Sci., 2022)
+3 Xu G. et al., STL-LSTM NASA B5/6/7 LSTM + Charge time in 3.9–4.0 / Same battery, first – ~0.016–0.01 ~0.012–0.0 Uses previous-cycle
+(PLOS ONE, 2024) spatio-temporal 4.0–4.1 V; moving averages of 50/70 % 9 Ah 15 Ah capacity
+attention capacity; Q(k−1)
+4 Giuliano A. et al., NASA 34 cells → Transformer transfer V/I/T/time, cycle number, Pre-train on NASA; – 0.0146 – Cross-dataset, but with
+Transformer TL (Energies, Oxford learning previous-cycle capacity 1-epoch fine-tune on proxies
+2025) Oxford
+5 Salem N. et al., short-term NASA 4 cells LSTM / BiLSTM-MHSA Per-cycle mean V/I/T; Chronological 80/20 0.90 (full); 0.030 / 0.014 / Partial window, no
+discharge (Energy Reports, / CNN / CatBoost 10/20/30-min discharge 0.94 (10 0.023 0.011 cross-battery test
+2026) windows min)
+6 Okour M. et al., limited NASA 4 cells + RF / FNN N early-discharge voltage Random 80/20 0.92–0.96 1.28–2.87 – Only 5 voltage points,
+voltage (JLPEA, 2026) PyBaMM samples (1-min sampling) %SOH but random split
+7 Zhao Y. et al., NASA 4 cells + GAF-CNN + IC curves from CC charging Same battery, 50 % ~0.995 ≤0.004 ≤0.004 Same-battery split
+GAF-CNN-LSTM (Sci. Rep., Oxford cross-attention + training
+2026) LSTM
+8 Mohamud N. M. et al., NASA 4 cells + Attention-BiLSTM + Wavelet-denoised V/I/T, ICA, LOBO-CV – 0.0229 – LOBO; only partial results
+BiLSTM–RF (Batteries, Oxford RF PCA (B0007) listed
+2026)
+9 Chen B. et al., NASA B5/6/7 Monotone LightGBM 13 HIs (CC-charge time, LOCO (2 train, 1 test) B0006: mean 0.049 – Closest to our
+physics-consistent + covariance IC-peak voltage, CV time…) + 0.25→0.53 9→0.0425 conditions; similar
+domain-aware (Batteries, alignment + cycle index level
+2026) conformal
+10 Zhao J. et al., EWDC NASA 4 + GCN + recursive 17 partial CC-CV charge HIs LOBO (within each 0.975 1.21 % 0.65 % Recursion from ŷ =1
+1
+(Energies, 2026) CALCE CS2 4 degradation (incl. accumulated charge, dataset) gives a monotonic prior;
+increments + cycle index) averaged over 8 cells
+consistency
+constraints
+11 Sardar S. A. et al. NASA 34 cells RF / ET / GB / XGB EIS statistics + discharge Random / 0.979 / 0.7 2.18 % / 3.22 % (RF, Closest to this thesis
+(Batteries, 2026) duration + cycle battery-wise 86–0.881 7.37 % repeated)
+12 Meng Y. et al., NASA Mamba + Q-former Discharge V/I/T sequence + Not detailed; – – 0.89 / 1.46 / MAE 2.7 % at the 4-cell
+HSSA-Mamba (Batteries, (11/5/4-cell fusion EIS out-of-sample B28 2.71 % scale
+2026) scales)
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 4
+
+# Study (journal, year) Data Algorithm Input features Validation R² RMSE MAE Notes
+13 Shi X. et al., NASA 34 cells, Dual-stream Full-discharge V/I/T Battery-wise 24/5/5 0.978 1.67 % 1.24 % Full sequence implicitly
+DS-Transformer (Sci. Rep., 2,794 pairs Transformer + sequence (~490 steps) + cells (pooled) contains discharge time;
+2026) cross-attention Re/Rct pooled R²
+— This thesis: TD-BPNN NASA 4 cells BPNN TD features (audit pending) Nested 4-fold 0.85 3.59 %SOH – Strictest protocol
+LOBO × 3 seeds
+MRE/MAPE: most papers do not report it (DS-Transformer: MAPE 1.51 %), so it is not a separate column. Please add MAPE to your own results so that readers can compare. Journal
+quartiles (Q1/Q2) are not listed; check them in JCR/SJR. A Sci. Rep. 2025 paper (“Cycle based state of health estimation of lithium ion cells using deep learning architectures”) could not be
+accessed (rate-limited) and is not included yet.
+Pattern in the table Typical R²
+Same-battery split or random split 0.95–0.99
+Strict cross-cell, only 3–4 cells, no capacity-proxy inputs 0.53–0.88
+LOBO but still very high (EWDC 0.975; DS-Transformer 0.978) These use accumulated charge, cycle index, full-discharge sequences, or
+many pooled cells
+This thesis (strictest protocol) 0.85 (RMSE 3.59 %SOH)
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 5
+
+5. Question 3 — Recommended Next Steps for Don
+A. Fix the evaluation protocol first (within 1 week; may improve scores without
+changing the model)
+(cid:127) Re-fit: after the inner validation selects the hyper-parameters, re-train on all three training
+batteries before testing. Alternatively, make the inner loop a 3-fold LOBO. This should help the B0006
+fold most.
+(cid:127) Report R² in two ways: per-fold mean and pooled. Report RMSE in both %SOH and Ah, and add
+MAPE. This allows a fair comparison with the literature.
+(cid:127) Protocol-gap experiment: with the same features and the same model, run (i) a random split, (ii) a
+chronological split within each battery, and (iii) nested LOBO. We expect (i) to reach R² > 0.97. This
+directly shows that the gap is caused by the protocol, and it can become a full section of the thesis.
+B. Target-proxy audit (the most important scientific question)
+(cid:127) List every TD feature and label it safe or proxy. Proxies include discharge duration, end-of-discharge
+time, ∫I dt (accumulated Ah), cycle index, and previous-cycle capacity.
+(cid:127) Run three settings under the same nested LOBO × 3 seeds: TD-All, TD-Proxy-Free, and an
+Oracle-proxy baseline (I × t only). The oracle should give R² ≈ 1 and explains where high published
+scores come from.
+C. Improve proxy-free accuracy (ordered by expected benefit / effort)
+(cid:127) Use charging-segment features. All four batteries use the same charge protocol (CC 1.5 A → 4.2 V
+→ CV), while their discharge cut-off voltages differ. Use CC-charge time in fixed voltage windows
+(3.9–4.0 V, 4.0–4.1 V), CV-phase time, and IC-peak voltage/height. These features are naturally
+aligned across batteries and are partial-window by design (the approach used in [9] and [10]).
+(cid:127) Fixed voltage window for discharge features, e.g. 4.0 → 3.6 V (all batteries pass through it),
+instead of whole-cycle minimum voltage or total time.
+(cid:127) Self-referenced normalization: divide (or subtract) each feature by the value from the same
+battery's first cycle. No label is needed at deployment, and it removes initial cell-to-cell offsets (e.g.
+B0006 starts at 2.035 Ah; the others at about 1.86 Ah). Low cost, potentially large gain.
+(cid:127) Monotonic / physical prior: predict the degradation increment ΔSOH and accumulate it (as in
+EWDC [10]), or add a monotonicity penalty to the BPNN.
+(cid:127) Window-length curve: plot RMSE versus window length (5/10/20/30 min, or ΔV = 0.1/0.2/0.3 V).
+This answers “how little data is enough?” and is the key figure for a partial-cycle contribution.
+D. Wider validation
+(cid:127) Within NASA: add B0025–B0056 cells with similar conditions so that training grows from 3 to 10+
+batteries, and show a learning curve of LOBO performance versus the number of training batteries.
+(cid:127) Cross-dataset: develop and freeze the model on NASA, then test directly on CALCE CS2 (the dataset
+used by EWDC, so results are comparable), and later Oxford if time allows.
+E. Role of EIS and the autoencoder
+(cid:127) Replace the 256-dim interpolated spectrum with a few scalars (NASA-provided Re and Rct, |Z| range,
+arc height) and use them as auxiliary fusion features. Keep fusion in the main method only if it clearly
+beats TD-only.
+(cid:127) Move the AE to the ablation / negative-result section (AE-TD R² 0.43 vs TD 0.85). Do not keep the AE
+just to match the old thesis title.
+Suggested new thesis title
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 6
+
+Proxy-Controlled, Cross-Battery SOH Estimation from Partial Charge/Discharge
+Windows: Quantifying the Protocol Gap on the NASA Dataset
+(If cross-dataset validation succeeds, “Cross-Battery” can become “Cross-Dataset”.)
+Three claimable contributions: (1) quantify how much of the high published accuracy comes from
+the evaluation protocol and capacity-proxy features (protocol gap + oracle proxy); (2) keep
+unseen-battery accuracy under proxy-free, partial-window conditions; (3) cross-dataset
+validation.
+Information Don should send back
+(cid:127) The complete definition of every TD feature (code path and formula).
+(cid:127) Whether the model is re-fitted on three batteries after inner selection.
+(cid:127) Per-fold R² / RMSE, and the pooled R².
+(cid:127) The number of TD samples, and whether only EIS-aligned cycles are used.
+6. How to Use This Material in Your Thesis
+All comparisons and references in this document are meant to be reused in your thesis. The table
+below shows where each part fits.
+Thesis chapter What to include from this document
+Ch. 1 Introduction The research gap in Section 3: EIS + discharge + cross-battery already exists [11]; the
+open problem is proxy-free, partial-window, unseen-battery SOH estimation. State your
+contributions (Section 5, title box).
+Ch. 2 Literature The comparison table in Section 4 (update and extend it to 20–30 papers). Group the
+Review studies by (A) time-domain, (B) EIS, (C) fusion, (D) cross-battery, (E) cross-dataset, (F)
+partial-cycle. Use the “pattern” table to explain why published R² values vary so much.
+Ch. 3 Methodology Justify nested LOBO, fold-train-only normalization, leakage probes, the SOH definition, and
+the proxy-feature definitions (Section 5-B), citing the papers that use weaker protocols as
+motivation.
+Ch. 4 Results Protocol-gap experiment (random vs chronological vs LOBO), TD-All vs TD-Proxy-Free vs
+oracle, window-length curve, and a final table placing your results next to the literature
+(with the same units).
+Ch. 5 Discussion & Section 2 (why scores differ: split, proxies, training cells, B0006 extrapolation, R² pooling,
+Limitations units, cut-off voltages); the EIS frequency assumption; cycle-level vs real-time estimation.
+Appendix Negative results: AE on EIS and on TD features; interpolation ablation; tolerance ablation.
+Before citing, please check: (1) open the full paper and confirm every number, unit, and split
+protocol; (2) cite the original paper, not this summary; (3) when you compare numbers, convert
+all of them to the same unit (%SOH) and note the protocol next to each value; (4) record the
+journal quartile from JCR/SJR.
+7. References (IEEE style, ready for the thesis)
+[1] D. Zhang, W. Zhao, L. Wang, X. Chang, X. Li, and P. Wu, “Evaluation of the state of health of lithium-ion battery
+based on the temporal convolution network,” Frontiers in Energy Research, 2022, doi:
+10.3389/fenrg.2022.929235.
+[2] H. Dong, L. Mao, K. Qu, J. Zhao, F. Li, and L. Jiang, “State of health estimation for Li-ion batteries using improved
+Gaussian process regression and multiple health indicators,” International Journal of Electrochemical Science,
+2022, doi: 10.20964/2022.08.34.
+[3] G. Xu, J. Xu, and Y. Zhu, “LSTM-based estimation of lithium-ion battery SOH using data characteristics and
+spatio-temporal attention,” PLOS ONE, 2024, doi: 10.1371/journal.pone.0312856.
+[4] A. Giuliano, Y. Wu, J. Yawney, and S. A. Gadsden, “Transformer-based transfer learning for battery state-of-health
+estimation,” Energies, vol. 18, no. 20, p. 5439, 2025, doi: 10.3390/en18205439.
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 7
+
+[5] N. M. Salem, K. Sayed, M. M. Elsayed, D. Kirakosian, and A. A. Mohamed, “Short-term discharge-based state of
+health estimation of lithium-ion batteries,” Energy Reports, 2026, doi: 10.1016/j.egyr.2025.108931.
+[6] M. Okour et al., “Efficient battery state of health estimation using lightweight ML models based on limited voltage
+measurements,” Journal of Low Power Electronics and Applications, vol. 16, no. 2, p. 16, 2026, doi:
+10.3390/jlpea16020016.
+[7] Y. Zhao, L. Geng, W. Meng, J. Meng, C. Wu, X. Hu, and Z. Du, “Cross-attention-based hybrid feature fusion network
+for state-of-health estimation of lithium-ion batteries,” Scientific Reports, 2026, doi:
+10.1038/s41598-026-48317-5.
+[8] N. M. Mohamud et al., “Lithium-ion battery state of health prediction using a hybrid BiLSTM–random forest
+framework,” Batteries, vol. 12, no. 6, p. 210, 2026, doi: 10.3390/batteries12060210.
+[9] B. Chen, S. Li, N. Zhou, Y. Li, and Q. Zhang, “Physics-consistent domain-aware SOH estimation for cross-cell
+battery health prediction,” Batteries, vol. 12, no. 9, p. 340, 2026, doi: 10.3390/batteries12090340.
+[10] J. Zhao, X. Qian, Y. Zhang, Y. Mu, B. Wang, and H. Xiao, “Unseen-cell SOH prediction via energy-aware warm-up
+and degradation-consistency constraints,” Energies, vol. 19, no. 18, p. 4326, 2026, doi: 10.3390/en19184326.
+[11] S. A. Sardar, F. Akhtar, W. Ali, and W. Y. Kim, “Multi-source impedance and discharge feature learning for
+cross-battery state-of-health estimation of lithium-ion batteries,” Batteries, vol. 12, no. 8, p. 291, 2026, doi:
+10.3390/batteries12080291.
+[12] Y. Meng et al., “Multimodal state of health prediction for lithium-ion batteries via Mamba-based fusion of
+discharge curves and impedance spectra,” Batteries, vol. 12, no. 6, p. 196, 2026, doi:
+10.3390/batteries12060196.
+[13] X. Shi, J. Zeng, and J. Zhang, “DS-transformer: A dual-stream transformer for lithium-ion battery state-of-health
+estimation via cross-attention fusion of discharge curves and impedance features,” Scientific Reports, 2026, doi:
+10.1038/s41598-026-52202-6.
+[14] B. Saha and K. Goebel, “Battery data set,” NASA Ames Prognostics Data Repository, NASA Ames Research
+Center, Moffett Field, CA, 2007. [Dataset]
+Literature Gap Audit — NASA SOH Estimation | Advisor: Y.F. Luo (NTUST) | Student: Don (M11452803) Page 8

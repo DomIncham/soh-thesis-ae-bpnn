@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Round 4 Report to Advisor — R3-C1…C9 Complete</title>
+<style>
+
+@page {
+  size: A4 portrait;
+  margin: 13.5mm 15mm 13.5mm 15mm;
+}
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 9.15pt;
+  line-height: 1.40;
+  color: #1e293b;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.report-header {
+  border-bottom: 2.5px solid #0f2a4a;
+  padding-bottom: 5px;
+  margin-bottom: 7px;
+}
+
+.report-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.report-subtitle {
+  font-size: 8.2pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1e3a5f;
+  font-weight: 700;
+}
+
+.report-badge {
+  font-size: 7.5pt;
+  background-color: #0f2a4a;
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+h1 {
+  font-size: 12.8pt;
+  font-weight: 800;
+  color: #0f2a4a;
+  line-height: 1.28;
+  margin: 0;
+}
+
+h2 {
+  font-size: 10.6pt;
+  font-weight: 700;
+  color: #1e3a5f;
+  line-height: 1.25;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  border-bottom: 1.3px solid #cbd5e1;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h3 {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.25;
+  margin-top: 6px;
+  margin-bottom: 3px;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 4px;
+  text-align: justify;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 4.5px;
+  padding-left: 17px;
+}
+
+li {
+  margin-bottom: 2px;
+  text-align: justify;
+}
+
+strong {
+  font-weight: 700;
+  color: #0f2a4a;
+}
+
+a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 1.5px;
+  text-decoration-color: #93c5fd;
+}
+
+/* Metadata Card */
+.meta-card {
+  background-color: #f8fafc;
+  border: 1.2px solid #cbd5e1;
+  border-left: 4.5px solid #0f2a4a;
+  border-radius: 5px;
+  padding: 6.5px 10px;
+  margin-bottom: 7px;
+  font-size: 8.5pt;
+  line-height: 1.36;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 2px;
+  column-gap: 14px;
+  margin-bottom: 4px;
+}
+
+.meta-label {
+  font-weight: 700;
+  color: #0f2a4a;
+}
+
+.meta-val {
+  color: #334155;
+}
+
+.meta-verify-banner {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 4px;
+  padding: 3px 6.5px;
+  margin-top: 2px;
+}
+
+.verify-badge {
+  background-color: #16a34a;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 6.8pt;
+  padding: 1.5px 5px;
+  border-radius: 3px;
+  margin-right: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.meta-verify-text {
+  font-size: 7.8pt;
+  color: #166534;
+  line-height: 1.25;
+}
+
+/* Summary Card */
+.summary-card {
+  background-color: #f0f7ff;
+  border: 1.2px solid #bfdbfe;
+  border-left: 4.5px solid #2563eb;
+  border-radius: 5px;
+  padding: 6.5px 10px;
+  margin-bottom: 7px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.summary-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.summary-title-badge {
+  background-color: #1e40af;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 7pt;
+  padding: 1.5px 5px;
+  border-radius: 3px;
+  margin-right: 6px;
+  letter-spacing: 0.06em;
+}
+
+.summary-subtitle {
+  font-size: 8.2pt;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+.summary-text {
+  font-size: 8.8pt;
+  line-height: 1.40;
+  color: #1e293b;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Tables with complete border grid styling */
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 4.5px 0 7px 0;
+  font-size: 8.3pt;
+  line-height: 1.30;
+  border: 1.5px solid #475569;
+}
+
+thead {
+  display: table-header-group;
+}
+
+th {
+  background-color: #e2e8f0;
+  color: #0f2a4a;
+  font-weight: 700;
+  text-align: left;
+  padding: 3.5px 5.5px;
+  border: 1px solid #cbd5e1;
+  border-bottom: 2.2px solid #0f2a4a;
+}
+
+td {
+  padding: 3px 5.5px;
+  border: 1px solid #cbd5e1;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+tr:nth-child(even) td {
+  background-color: #f8fafc;
+}
+
+tr:nth-child(odd) td {
+  background-color: #ffffff;
+}
+
+tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 1px 4.5px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 7.2pt;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badge-supported {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.badge-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.badge-info {
+  background-color: #e0f2fe;
+  color: #075985;
+  border: 1px solid #7dd3fc;
+}
+
+.badge-subtext {
+  font-size: 7.6pt;
+  color: #475569;
+}
+
+.badge-check {
+  display: inline-block;
+  background-color: #f0fdf4;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 7.6pt;
+  padding: 0.5px 4px;
+  border-radius: 3px;
+  border: 1px solid #bbf7d0;
+}
+
+.cite-badge {
+  display: inline-block;
+  background-color: #0f2a4a;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 7.2pt;
+  padding: 0.8px 3.5px;
+  border-radius: 3px;
+  margin-right: 2.5px;
+  letter-spacing: 0.03em;
+  vertical-align: baseline;
+}
+
+/* Code */
+code {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 7.8pt;
+  background-color: #f1f5f9;
+  color: #0f2a4a;
+  padding: 0.8px 2.8px;
+  border-radius: 3px;
+  border: 1px solid #cbd5e1;
+  word-break: break-all;
+}
+
+/* Callout Boxes */
+.callout-box {
+  border-radius: 5px;
+  padding: 5.5px 9px;
+  margin: 6px 0;
+  font-size: 8.7pt;
+  line-height: 1.36;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.callout-title {
+  font-size: 7.2pt;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.negative-box {
+  background-color: #fff7ed;
+  border: 1.2px solid #fed7aa;
+  border-left: 4.5px solid #ea580c;
+}
+
+.negative-box .callout-title {
+  color: #c2410c;
+}
+
+.claim-quote {
+  font-style: italic;
+  color: #7c2d12;
+  margin-bottom: 3px;
+}
+
+.callout-meta {
+  font-size: 7.6pt;
+  color: #9a3412;
+}
+
+.question-box {
+  background-color: #f5f3ff;
+  border: 1.2px solid #ddd6fe;
+  border-left: 4.5px solid #7c3aed;
+}
+
+.question-box .callout-title {
+  color: #6d28d9;
+}
+
+.q-heading {
+  margin: 0 0 2px 0;
+  color: #4c1d95;
+  font-size: 9.1pt;
+}
+
+.q-body {
+  margin: 0;
+  color: #2e1065;
+}
+
+/* Student Signature Block */
+.student-signature-block {
+  margin-top: 8px;
+  padding: 5px 9px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0f2a4a;
+  border-radius: 4px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.sig-name {
+  font-size: 9.2pt;
+  font-weight: 800;
+  color: #0f2a4a;
+}
+
+.sig-meta {
+  font-size: 8pt;
+  color: #475569;
+  margin-top: 1px;
+}
+
+.page-break {
+  page-break-after: always;
+  break-after: page;
+}
+
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="report-top-meta">
+    <div class="report-subtitle">National Taiwan University of Science and Technology • Master's Thesis</div>
+    <div class="report-badge">Round 4 — R3-C1…C9 Complete</div>
+  </div>
+  <h1>Round 4 Report — Resolution of Literature Gap Audit (R3-C1…C9)</h1>
+</div>
+
+<div class="meta-card">
+  <div class="meta-grid">
+    <div class="meta-item"><span class="meta-label">Student:</span> <span class="meta-val">Padipat Aincham (Dom)</span></div>
+    <div class="meta-item"><span class="meta-label">Student ID:</span> <span class="meta-val">M11452803</span></div>
+    <div class="meta-item"><span class="meta-label">Institute:</span> <span class="meta-val">Graduate Institute of A.I. Cross-disciplinary Technology, NTUST</span></div>
+    <div class="meta-item"><span class="meta-label">Advisor:</span> <span class="meta-val">Prof. Y.F. Luo (NTUST)</span></div>
+    <div class="meta-item"><span class="meta-label">Document:</span> <span class="meta-val">Round 4 Progress Report (R3-C1…C9 Complete)</span></div>
+    <div class="meta-item"><span class="meta-label">Audit Cycle:</span> <span class="meta-val">Literature Gap Audit (Resolution)</span></div>
+  </div>
+  <div class="meta-verify-banner">
+    <span class="verify-badge">VERIFIED PASS</span>
+    <span class="meta-verify-text">All numbers re-checked on 2026-10-06: full check suite passes <strong>210/210 checks</strong> (+26/26 data-provenance checks, max|leakage| = 0.00e+00). Every headline number was re-read from result CSVs before inclusion.</span>
+  </div>
+</div>
+
+
+<div class="summary-card">
+  <div class="summary-card-header">
+    <span class="summary-title-badge">EXECUTIVE SUMMARY</span>
+    <span class="summary-subtitle">Section 0 — Headline Findings & Literature Gap Resolution</span>
+  </div>
+  <p class="summary-text">All nine items (C1-C9) from the Literature Gap Audit are addressed.
+On identical features and model, the split protocol alone moves R2 from
+-1.03 to +0.99. Removing capacity proxies moves it from 0.93 to 0.49;
+adding back two safe charge-segment features recovers it to 0.81. The AE
+did not add value on either modality, so it is reported as a negative
+result and the pipeline proceeds without it. Cross-dataset transfer to
+CALCE CS2 fails; a within-CS2 control shows the cause is domain shift,
+not data or feature quality. All 13 audit papers were verified from
+their full PDFs, and the two anchor numbers of the audit match the
+originals. One question remains: the thesis title phrasing (Section
+10).</p>
+</div>
+
+<h2 id="c1---evaluation-protocol-fixes">1. C1 - Evaluation protocol
+fixes</h2>
+<ul>
+<li><code>refit_on_3</code>: after inner selection, the final model is
+re-fitted on all three training batteries. Mean per-fold R2 (TD-All):
+0.848 -&gt; 0.923; median 0.789 -&gt; 0.950. (Source: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/inner_loop_lobo3_results.csv"><code>inner_loop_lobo3_results.csv</code></a>,
+re-aggregated 2026-10-06.)</li>
+<li>Reporting standard now applied in all tables: per-fold mean R2 and
+pooled R2, MAE and RMSE in %SOH, MAPE, and RMSE in Ah. (Source: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase1_pooled_metrics.csv"><code>phase1_pooled_metrics.csv</code></a>
+- pooled TD-All refit 0.936, MAE 2.20 %SOH, MAPE 2.71 %.)</li>
+</ul>
+<h2 id="c2---protocol-gap-experiment-becomes-ch.4-section-4.2">2. C2 -
+Protocol-gap experiment (becomes Ch.4 section 4.2)</h2>
+<p>Same features, same model, only the split changes (verified: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/protocol_gap_verify.py"><code>protocol_gap_verify.py</code></a>,
+23/23):</p>
+<table>
+<colgroup><col style="width: 34%;" /><col style="width: 22%;" /><col style="width: 22%;" /><col style="width: 22%;" /></colgroup>
+<thead>
+<tr>
+<th>Split</th>
+<th>Oracle-proxy</th>
+<th>TD-All</th>
+<th>TD-Proxy-Free</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random, same battery</td>
+<td class="text-center">0.992</td>
+<td class="text-center">0.979</td>
+<td class="text-center">0.978</td>
+</tr>
+<tr>
+<td>Random, pooled</td>
+<td class="text-center">0.815</td>
+<td class="text-center">0.989</td>
+<td class="text-center">0.978</td>
+</tr>
+<tr>
+<td>Nested LOBO, unseen battery</td>
+<td class="text-center">0.663</td>
+<td class="text-center">0.927</td>
+<td class="text-center">0.854</td>
+</tr>
+<tr>
+<td>Chronological, same battery</td>
+<td class="text-center">0.179</td>
+<td class="text-center">-1.028</td>
+<td class="text-center">-5.234</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The R3-C2 prediction (random split above 0.97) is met: 0.979.</li>
+<li>Pooling inflates R2. The chronological split scores -1.028 per fold
+but +0.850 pooled. This is audit factor 5, shown on a fixed
+representation.</li>
+<li>The LOBO numbers above come from the phase-1 audit run (refit_on_3,
+3 seeds). The phase-2 protocol-gap experiment (pre-refit stage) produced
+its own LOBO numbers (0.634/0.891/0.680) on a different row set; Ch.4
+quotes them separately with a note, and the two are not compared to each
+other.</li>
+</ul>
+<div class="page-break"></div>
+<h2 id="c3---feature-and-proxy-audit">3. C3 - Feature and proxy
+audit</h2>
+<ul>
+<li><code>dis_duration</code> is a direct proxy. In CC discharge,
+capacity = I x t, so the feature carries the label. It was removed to
+form the Proxy-Free set.</li>
+<li><code>dis_mean_V</code> is collinear with it (within-battery r =
+0.941) and alone explains 94.8 % of within-battery capacity variance. It
+was also removed, giving Clean-6.</li>
+<li>The full classification, with code paths and formulas, is in <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c3_feature_classification.md"><code>r3c3_feature_classification.md</code></a>
+and <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c3_feature_classes.csv"><code>r3c3_feature_classes.csv</code></a>
+(verified by <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_feature_audit.py"><code>phase3_feature_audit.py</code></a>,
+50/50).</li>
+</ul>
+<h2 id="c5---proxy-free-improvements-ch.4-sections-4.3-4.4">4. C5 -
+Proxy-free improvements (Ch.4 sections 4.3-4.4)</h2>
+<table>
+<colgroup><col style="width: 30%;" /><col style="width: 48%;" /><col style="width: 22%;" /></colgroup>
+
+<thead>
+<tr>
+<th>Item</th>
+<th>Result</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.1 <code>ic_peak_V</code> (charge segment)</td>
+<td>Clean-7 0.772 vs Clean-6 0.490 (15/20 folds)</td>
+<td><span class="badge badge-supported">Supported</span></td>
+</tr>
+<tr>
+<td>5.2 Fixed discharge window 4.0-3.6 V</td>
+<td><code>win_dur</code> R2(cap) 0.995 vs <code>dis_duration</code>
+0.972</td>
+<td><span class="badge badge-warning">Not established</span> <span class="badge-subtext">— window features are proxies</span></td>
+</tr>
+<tr>
+<td>5.3 Self-referenced normalisation</td>
+<td>0.810 -&gt; 0.075; the B0018 reference is 6x smaller, which
+introduces a scale mismatch</td>
+<td><span class="badge badge-rejected">Rejected</span></td>
+</tr>
+<tr>
+<td>5.4 dSOH accumulation</td>
+<td>0.810 -&gt; -4.785; correlation of error with cycle position up to
++0.993</td>
+<td><span class="badge badge-rejected">Rejected</span></td>
+</tr>
+<tr>
+<td>5.5 Window length 5-30 min</td>
+<td>proxy-free flat at 0.842-0.843; proxy-laden rises 0.874 -&gt;
+0.914</td>
+<td><span class="badge badge-info">No penalty</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The defensible headline is Clean-8 = 0.810 (Clean-6 +
+<code>ic_peak_V</code> + <code>t_40_41</code>), nested LOBO, 5 seeds.
+The paired claim on identical rows is 0.664 -&gt; 0.810. The verify run
+notes that <code>t_40_41</code> alone is within noise (11/20 folds), so
+<code>ic_peak_V</code> is the supported addition; Ch.4 states this.</li>
+<li>Clean-6 = 0.490 is the strict proxy-free number. The 0.845/0.854
+Proxy-Free arms contain a proxy-equivalent feature and are not quoted as
+proxy-free anywhere.</li>
+</ul>
+<h2 id="c6---wider-validation">5. C6 - Wider validation</h2>
+<ul>
+<li>6.1 Learning curve, NASA B0025-B0056 (420 runs plus integrity
+checks): adding heterogeneous cells does not help. The pulsed-4A cells
+fail under every setting (B0027 R2 -132.8 at k = 13; Clean-8 mean -12.5,
+median +0.32), and widening the pool hurts same-condition tests (the
+room-2A protocol reproduces at 0.933 with k = 3 and falls to 0.63-0.85
+with k = 13). Within-condition curves stay positive (medians -1.25 -&gt;
++0.15 -&gt; +0.32 for k = 3, 7, 13). The claim is stated per condition.
+(Source: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_learning_curve_summary.md"><code>phase4_learning_curve_summary.md</code></a>)</li>
+<li>6.3 NASA -&gt; CALCE CS2, four arms: frozen median R2 -37 (does not
+transfer); 1-cell scratch about -68; 1-cell warm-adapt about -31;
+within-CS2 control 0.39-0.68 on 6/8 cells. The failure is domain shift:
+a per-cell label offset (CS2 SOH spans 88-114 % vs NASA 72-108 %) and a
+charge rate of 0.5 C vs 0.75 C, which doubles the charge-side feature
+scale. The data and feature quality are sound; the control shows it.
+(Source: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_summary.md"><code>phase4_cs2_summary.md</code></a>)</li>
+</ul>
+<div class="page-break"></div>
+<h2
+id="c7---ae-demoted-to-a-documented-negative-result-ch.4-section-4.6">6.
+C7 - AE demoted to a documented negative result (Ch.4 section 4.6)</h2>
+<table>
+<colgroup><col style="width: 45%;" /><col style="width: 55%;" /></colgroup>
+
+<thead>
+<tr>
+<th>Evidence</th>
+<th>Numbers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AE-on-TD vs raw TD</td>
+<td>0.43 vs 0.85</td>
+</tr>
+<tr>
+<td>AE on EIS vs PCA on EIS (gain over raw)</td>
+<td>+0.08 vs +0.61</td>
+</tr>
+<tr>
+<td>AE reconstruction</td>
+<td>the interpolation grid, not the measurement (+0.1 mOhm offset)</td>
+</tr>
+<tr>
+<td>E_fusion (EIS latent anchored by TD)</td>
+<td>0.73, below TD-only 0.85</td>
+</tr>
+</tbody>
+</table>
+<p>The E_fusion pipeline is positive on all four folds, including B0018
+(+0.67), so the precise statement is: the EIS latent adds no value on
+top of a full TD feature set, and AE features are worse than raw
+features on both modalities. The AE as a representation is the negative
+result; a small gain on weak-feature regimes remains open.</p>
+
+<div class="callout-box negative-box">
+  <div class="callout-title">APPROVED THESIS PHRASING (DOCUMENTED NEGATIVE RESULT)</div>
+  <p class="claim-quote">“the autoencoder bottleneck adds no
+measurable value on either modality; its latent space reconstructs the
+interpolation grid rather than the impedance measurement; PCA is the
+stronger EIS reducer. The AE is reported as a negative result and the
+pipeline proceeds without it.”</p>
+  <div class="callout-meta">Recorded in <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/advisor_directives.md"><code>advisor_directives.md</code></a> (R3-C7 outcome)</div>
+</div>
+
+<h2 id="c9---citation-verification-all-13-studies">7. C9 - Citation
+verification, all 13 studies</h2>
+<p>Full table: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c9_citation_verification.md"><code>r3c9_citation_verification.md</code></a>.
+All 13 papers were downloaded and read from the full PDFs.</p>
+<ul>
+<li><span class="cite-badge">[11]</span> Sardar: random-split ET R2 0.9788 -&gt; battery-wise 0.7855.
+Matches the audit.</li>
+<li><span class="cite-badge">[9]</span> Chen: B0006 LOCO R2 0.2464 -&gt; 0.5286. Matches the audit (0.25
+-&gt; 0.53). Their protocol uses 3 cells, SOH = Q(c)/Q(1), and the cycle
+index as an input; they note that their conformal intervals are not
+fully calibrated under severe domain shift. They also fail on
+B0006.</li>
+<li><span class="cite-badge">[10]</span> EWDC 0.975: a within-dataset LOBO (3 train, 1 held out; the
+same cells as ours: B0005/06/07/18 and CS2-35..38), average RMSE 1.21 %,
+MAE 0.65 %, 10 runs. The feature set is 17 charge-segment HIs including
+the cycle index and cumulative charged quantity, and the recursive
+predictor is anchored at yhat_1 = 1. The comparable number on our side
+is TD-All 0.927 (same protocol), not Clean-8.</li>
+<li><span class="cite-badge">[3]</span> uses Q(k-1) as an input; <span class="cite-badge">[4]</span> uses previous-cycle capacity and
+cycle number. Every strong unseen-battery claim in the list carries a
+proxy, which supports the Clean-8 framing.</li>
+<li><span class="cite-badge">[7]</span> is the only cross-battery result near R2 0.98: Oxford,
+1-train/rest-test, per-cell capacity ratio. It is the smallest and
+cleanest scope in the list; the Ch.2 table annotates it.</li>
+<li>The B0018 fold of <span class="cite-badge">[10]</span> has RMSE 1.91 % against their 1.21 % average,
+consistent with the B0018 behaviour in our own runs.</li>
+</ul>
+<div class="page-break"></div>
+<h2 id="b.-evidence-on-github">7b. Evidence on GitHub</h2>
+<p>All report, summary, verification and result files are in the private
+repository <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn"><code>DomIncham/soh-thesis-ae-bpnn</code></a>:</p>
+<table>
+<colgroup><col style="width: 44%;" /><col style="width: 56%;" /></colgroup>
+
+<thead>
+<tr>
+<th>What</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 1 - protocol fixes and proxy audit findings</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase1_oracle_findings.md"><code>phase1_oracle_findings.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 2 - two-axis experiment summary</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase2_summary_two_axes.md"><code>phase2_summary_two_axes.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 3 - charge features (5.1)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_charge_features_summary.md"><code>phase3_charge_features_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 3 - self-reference rejection (5.3)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_selfref_summary.md"><code>phase3_selfref_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 3 - window features (5.2/5.5)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_window_summary.md"><code>phase3_window_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 3 - dSOH rejection (5.4)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_dsoh_summary.md"><code>phase3_dsoh_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 3 - window length (5.5)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_windowlength_summary.md"><code>phase3_windowlength_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 4 - learning curve (6.1)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_learning_curve_summary.md"><code>phase4_learning_curve_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 4 - CALCE CS2 transfer (6.3)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_summary.md"><code>phase4_cs2_summary.md</code></a></td>
+</tr>
+<tr>
+<td>Phase 5 - AE negative result evidence (Round 2)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Progress_Report_Steps1-18.md"><code>Progress_Report_Steps1-18.md</code></a>,
+<a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/nested_lobo/Steps_F3_I3_B7_Ablations.md"><code>Steps_F3_I3_B7_Ablations.md</code></a></td>
+</tr>
+<tr>
+<td>R3-C9 - 13-paper verification table</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c9_citation_verification.md"><code>r3c9_citation_verification.md</code></a></td>
+</tr>
+<tr>
+<td>Thesis drafts (v0.1)</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch1_introduction_draft.md">Ch.1</a>,
+<a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch3_methodology_draft.md">Ch.3</a>,
+<a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch4_protocol_draft.md">Ch.4</a>,
+<a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch5_discussion_draft.md">Ch.5</a>,
+<a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_appendix_negative_results.md">Appendix</a></td>
+</tr>
+<tr>
+<td>State card and experiment log</td>
+<td><a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/PROJECT_STATE.md"><code>PROJECT_STATE.md</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="verification-status-re-run-2026-10-06">8. Verification status
+(re-run 2026-10-06)</h2>
+<table>
+<colgroup><col style="width: 50%;" /><col style="width: 50%;" /></colgroup>
+<thead>
+<tr>
+<th>Suite</th>
+<th>Checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>phase1_verify</td>
+<td><span class="badge-check">61/61 PASS</span></td>
+</tr>
+<tr>
+<td>protocol_gap_verify</td>
+<td><span class="badge-check">23/23 PASS</span></td>
+</tr>
+<tr>
+<td>td_clean_verify</td>
+<td><span class="badge-check">7/7 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_charge_verify</td>
+<td><span class="badge-check">8/8 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_selfref_verify</td>
+<td><span class="badge-check">9/9 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_window_verify</td>
+<td><span class="badge-check">7/7 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_dsoh_verify</td>
+<td><span class="badge-check">7/7 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_windowlength_verify</td>
+<td><span class="badge-check">12/12 PASS</span></td>
+</tr>
+<tr>
+<td>phase3_feature_audit</td>
+<td><span class="badge-check">50/50 PASS</span></td>
+</tr>
+<tr>
+<td>data_provenance_audit</td>
+<td><span class="badge-check">26/26 PASS</span></td>
+</tr>
+</tbody>
+</table>
+<p>Leakage probes: max|diff| = 0.00e+00 on every protocol and clean
+feature set.</p>
+<p>Two corrections came out of this re-verification. First, the Ch.4
+draft had quoted the Oracle LOBO as 0.671; the correct phase-1 value is
+0.663, and the draft was fixed. Second, the 0.845 and 0.854 Proxy-Free
+numbers come from different row sets, so Ch.4 now carries an explicit
+row-set note to prevent a cross-row-set comparison.</p>
+<h2 id="draft-status">9. Draft status</h2>
+<ul>
+<li>Ch.4 (Results), draft v0.1: <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/thesis_ch4_protocol_draft.md"><code>thesis_ch4_protocol_draft.md</code></a>
+- setup, protocol axis, proxy axis, the 5.1-5.5 verdicts, wider
+validation, the AE negative result, a headline table, and
+limitations.</li>
+<li>Ch.5 (Discussion), Ch.3 (Methodology), Ch.1 (Introduction) and the
+Appendix are drafted at v0.1; Ch.5 section 5.4 states the AE negative
+result with the E_fusion qualification.</li>
+<li>Ch.2 (Literature Review) is unblocked by C9. The comparison table
+can be built from <a
+href="https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3c9_citation_verification.md"><code>r3c9_citation_verification.md</code></a>
+with a unit and protocol note on each row.</li>
+</ul>
+
+<div class="callout-box question-box">
+  <div class="callout-title">ADVISOR DECISION REQUESTED — SECTION 10</div>
+  <h3 class="q-heading">Candidate Thesis Title Phrasing</h3>
+  <p class="q-body">Thesis title. A partial window is not proxy-free by construction,
+because window means are proxies at every length. I propose
+“proxy-audited, partial-window, unseen-battery SOH estimation”, which
+states the claim exactly, even though it is long. Please advise, or
+suggest a phrasing you prefer.</p>
+</div>
+
+<div class="student-signature-block">
+  <div class="sig-name">Padipat Aincham (Dom)</div>
+  <div class="sig-meta">Student ID: M11452803 • Graduate Institute of A.I. Cross-disciplinary Technology, NTUST</div>
+</div>
+
+
+</body>
+</html>

@@ -22,7 +22,7 @@ Raw datasets, large external archives, generated tensors, and model checkpoints 
 
 ```text
 Autoencoder/                       # Stage-1 AE, BPNN, preprocessing, metrics, figures
-Comment Prof and Report/           # Advisor/professor comments and reports
+Comment Prof and Report/           # Separated advisor comments and Dom's reports
 Journal Discovery/literature review by dom/ # Dom-authored literature review materials to keep in Git
 examples/                          # LaTeX practice examples, ignored by Git for now
 NASA DataSet/                      # Raw datasets, ignored by Git
@@ -32,6 +32,7 @@ NASA DataSet/                      # Raw datasets, ignored by Git
 
 ```text
 advisor_directives.md              # Advisor directives and methodology constraints
+advisor_rounds/                     # Round index and historical advisor records
 end_to_end_research_workflow_v2.md # End-to-end research workflow
 E2E Research Workflow.html         # HTML version of workflow
 README.md                          # Repository overview
@@ -48,6 +49,8 @@ Recommended Git contents:
 - Thesis/research figures: `*.png`, `*.jpg` when relevant
 - Methodology/workflow notes: `*.md`, `*.html`
 - Advisor/professor reports and Dom-authored review documents
+- `Comment Prof and Report/Comment Prof/` contains original advisor comments and source files.
+- `Comment Prof and Report/Report/` contains Dom's Markdown/PDF/HTML reports and converted deliverables.
 - LaTeX source files: `*.tex`, `*.bib`
 
 ## What Should Not Be Committed

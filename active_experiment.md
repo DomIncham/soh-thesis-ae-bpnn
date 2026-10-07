@@ -354,7 +354,7 @@ This section is a mutable legacy transition section. The authoritative next-sess
 
 ## 16. Final report workflow
 
-After the work requested by an advisor round is completed, create a final round report as a Markdown file. The report is a human-readable evidence record, not a raw log.
+After the work requested by an advisor round is completed, create a final round report as a Markdown file under `Comment Prof and Report/Report/`. The report is a human-readable evidence record, not a raw log.
 
 ### Report requirements
 
@@ -378,7 +378,7 @@ advisor_round_04_final_report.md
 advisor_round_05_final_report.md
 ```
 
-Store the report with the round's research records or in the existing report folder, then add its path to `advisor_rounds/README.md` and the current handoff.
+Store both the final Markdown report and Antigravity's converted PDF/HTML deliverables under `Comment Prof and Report/Report/`. Add the Markdown path to `advisor_rounds/README.md` and the current handoff. Keep conversion scripts in the working/research area only when they are reusable and explicitly tracked.
 
 ---
 

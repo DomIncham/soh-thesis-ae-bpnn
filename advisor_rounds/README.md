@@ -10,6 +10,13 @@
 | Round 3 | `Comment Prof and Report/Comment Prof/Round 3 Literature_Gap_Audit_NASA_SOH.pdf` and `.txt` | Resolved | `round_03_literature_gap_audit.md` |
 | Round 4 | No source received yet | Awaiting advisor feedback | Not created |
 
+## Reports
+
+Final round reports and Antigravity-converted deliverables belong in `Comment Prof and Report/Report/`.
+
+- Round 3 report: `Comment Prof and Report/Report/Progress_Report_Steps1-18_Round3.pdf` (with its source/report variants where applicable)
+- Round 4 report: `Comment Prof and Report/Report/round4_report_to_advisor.pdf` (source Markdown should be added when finalized)
+
 ## Rules
 
 - Original advisor files are read-only source material.
