@@ -1,0 +1,73 @@
+Thank you for the detailed Round 4 report and for keeping the repository, verification scripts, and working thesis drafts well organized. I have reviewed both your report and the current GitHub materials.
+At this stage, I do not want you to spend significant time polishing the thesis chapters yet. We still have approximately three months available for research development, so the priority should be to strengthen and verify the methodology and experimental results first. The current chapter drafts can remain as working documents.
+For the next round, please focus on protocol verification and method improvement.
+1. Re-check the nested LOBO implementation
+Please carefully verify the implementation of the inner LOBO procedure.
+For each outer test battery, there should be three remaining batteries. The inner validation should rotate over all three outer-training batteries, i.e., three inner folds. For example, if B0005 is the outer test battery:
+- Inner fold 1: train on B0007 + B0018, validate on B0006
+- Inner fold 2: train on B0006 + B0018, validate on B0007
+- Inner fold 3: train on B0006 + B0007, validate on B0018
+The hyperparameters should be selected using the aggregated inner-validation performance, followed by a final refit on all three training batteries before testing on the untouched outer battery.
+Please verify whether the current lobo3 implementation follows this exact procedure. If not, correct it and rerun at least:
+- TD-All
+- Clean-6
+- Clean-7
+- Clean-8
+Then compare the corrected results with the current headline values.
+2. Re-check the CALCE Clean-6T feature definition
+I noticed that the CALCE scripts currently labelled as Clean-6T appear to still include:
+- dis_duration
+- dis_mean_V
+These are the two features that your earlier proxy audit identified as proxy or proxy-equivalent features.
+Please verify this carefully.
+If Clean-6T is intended to represent Clean-8 without the two temperature features unavailable in CALCE, its feature set should remain consistent with the proxy-audited definition and should not reintroduce dis_duration or dis_mean_V.
+After confirming the correct feature definition, rerun the four CALCE experiments:
+1. Frozen NASA → CALCE
+2. One-cell scratch training
+3. One-cell warm adaptation
+4. Within-CALCE LOCO control
+This is important because the current cross-dataset conclusion may change after the feature-set correction.
+3. Re-check the source-model validation procedure
+Please also verify that, during model/hyperparameter selection, the validation battery is not included in the fitting set.
+The correct sequence should be:
+model selection: training batteries and validation battery are disjoint
+→ select architecture/hyperparameters
+→ final refit: use all available source-training batteries
+→ test on the untouched target battery.
+Please make this procedure consistent across the NASA-only and NASA→CALCE experiments.
+4. Strengthen the verification suite
+The current numerical verification is already extensive, but I would like the next version to include several structural checks, not only numerical reproduction.
+Please add checks confirming that:
+- the inner LOBO contains exactly three validation folds;
+- training and validation battery sets are disjoint during model selection;
+- the declared Clean feature set exactly matches the features passed to the model;
+- dis_duration and dis_mean_V cannot accidentally re-enter a proxy-audited feature set.
+These checks should fail automatically if the experimental definition and implementation become inconsistent.
+5. Do not optimize the autoencoder further
+The AE result is already sufficiently clear as a negative result. Please do not spend additional time tuning the AE architecture at this stage.
+6. After the protocol corrections
+Once the above points are corrected and the main results are stable, we will decide the next research direction based on the updated results.
+The likely next questions are:
+- Can physically meaningful charge-side features further improve the proxy-audited estimator?
+- Why does performance degrade across operating conditions?
+- Can the NASA→CALCE domain shift be reduced after the corrected feature definition?
+- Are the protocol and proxy effects consistent across different regression models?
+However, please do not expand into these experiments yet. First complete the protocol and implementation consistency check.
+For the next progress report, please provide a concise before/after comparison table showing:
+- original result,
+- corrected result,
+- reason for any change,
+- whether the scientific conclusion remains unchanged.
+The main objective of the next round is therefore not thesis writing, but to make sure that the experimental protocol, feature definitions, and code implementation are fully consistent before we develop the method further.
+
+
+
+For the next step, please first make sure that the evaluation protocol and feature definitions are fully corrected and consistent with the implementation. After we obtain the corrected and stable results, we will then decide whether the next research direction should focus on improving the charge-side features or addressing the domain-shift problem.
+
+
+In other words, first make the evaluation protocol and feature definitions fully correct and consistent. Then, based on the corrected results, we will decide whether to focus on improving the charge-side features or addressing the domain-shift problem.
+
+
+Please do not start the next-stage experiments yet. First send me the corrected results and the before/after comparison. After I review them, we will decide whether the next step should focus on charge-feature improvement or domain-shift mitigation.
+
+

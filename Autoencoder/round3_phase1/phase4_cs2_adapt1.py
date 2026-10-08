@@ -14,8 +14,9 @@ import pandas as pd
 import r3common as rc
 from sklearn.preprocessing import MinMaxScaler
 
-FEATS = ["dis_duration", "dis_mean_V", "dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope",
-         "t_40_41", "ic_peak_V"]
+# Clean-6T (Round 4 advisor correction) = Clean-8 minus the two temperature features unavailable
+# in CS2 logs; dis_duration and dis_mean_V are proxy/proxy-equivalent and MUST NOT be present.
+FEATS = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "t_40_41", "ic_peak_V"]
 ROOM = ["B0005", "B0006", "B0007", "B0018"]
 SEEDS = [42, 123, 2024, 7, 99]
 
@@ -85,10 +86,12 @@ def main():
     for seed in seeds:
         r = np.random.RandomState(seed)
         val_b = int(r.choice(uniq))
+        # Round 4 advisor correction (item 3): selection fitting set must exclude val_b.
         m_val, m_fit = bn == val_b, np.ones_like(bn, bool)
-        sc_n = MinMaxScaler().fit(Xn[m_fit])
+        m_sel = ~m_val
+        sc_n = MinMaxScaler().fit(Xn[m_sel])
         bp0, mu0, sd0, dims, l2, ep0 = fit_pool(
-            sc_n.transform(Xn[m_fit]), yn[m_fit], sc_n.transform(Xn[m_val]), yn[m_val],
+            sc_n.transform(Xn[m_sel]), yn[m_sel], sc_n.transform(Xn[m_val]), yn[m_val],
             seed, bp_max, pat)
         if bp0 is None:
             print(f"seed {seed}: NASA fit diverged - skipped")

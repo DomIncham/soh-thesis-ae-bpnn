@@ -31,12 +31,12 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 4
-- Advisor status: awaiting feedback
-- Current work phase: post-Round-3 maintenance and preparation
-- Current objective: continue verified research/code work without inferring new advisor requirements
-- Current blocker: advisor feedback may change the next scope
-- Thesis drafting: out of current scope until the advisor direction and title are settled
+- Current advisor round: Round 4 — **feedback received (2026-10-09, `Comment Prof and Report/Comment Prof/Round 4 Adviosor Comment.txt`)**
+- Current work phase: Round-4 corrections implementation (items 1–4); report to advisor pending full re-runs
+- Current objective: correct inner LOBO (3-fold), Clean-6T definition, selection disjointness; add structural verification; produce before/after table for the advisor BEFORE any next-round expansion
+- Current blocker: full re-runs (NASA 4 settings + CS2 4 arms) are Dom's long jobs — not yet run; all headline numbers (0.927 / 0.810 / 0.59 etc.) are now OLD-protocol and must be re-measured
+- Thesis drafting: still out of scope (item 6: no next-round experiments or thesis expansion until the before/after table is sent to the advisor); Ch.2 waits
+- Item 5 (AE): nothing to do — matches the existing negative-result decision
 
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
@@ -48,55 +48,54 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 
 ### Completed
 
-- Round 3 C1–C9 complete and documented.
-- Round 3 historical record and round index created.
+- Round 4 advisor comment read (6 items). Items 1–4 implemented in code; item 5 no-op; item 6 gates everything else.
+- `r3common.run_fold`: default `inner="lobo3"`; **found and fixed a real bug** — the old lobo3 branch rotated inner folds over `train_b` (2 batteries: B0007/B0018), never validating B0006. Now rotates over all 3 `remaining` batteries.
+- Clean-6T corrected in all 4 CS2 scripts: FEATS = Clean-8 minus temp = `dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V`; `dis_duration`/`dis_mean_V` (proxy/proxy-equivalent) removed. Advisor was right — the old CS2 Clean-6T list still carried both proxies.
+- Selection disjointness: `phase4_cs2_transfer.py` and `phase4_cs2_adapt1.py` now fit the selection scaler and model on pool-minus-val (`m_sel`); refit still uses the whole pool. `adapt2` was already correct; `within` was already correct.
+- New `round4_structural_verify.py` (advisor item 4): S1 inner-fold count == 3 (spy on fit calls); S2 pre_refit train/val disjoint in all recorded fold CSVs; S3 declared FEATS == columns present in the CSVs; S4 dis_duration/dis_mean_V absent from proxy-audited sets; S5 identical FEATS list across the 4 CS2 scripts. 22/22 PASS, exit 1 on any failure.
 
 ### Evidence
 
-- Detailed phase history and verification: `Autoencoder/round3_phase1/PROJECT_STATE.md`
-- Citation verification: `Autoencoder/round3_phase1/r3c9_citation_verification.md`
+- `Autoencoder/round3_phase1/round4_structural_verify.py` — all checks pass after fixes.
+- Smoke runs (fresh CSVs, seed 42, budget 60/10, CPU, no crash/no NaN guard): within 8 rows, transfer 16 rows, adapt1 8 rows, adapt2 8 rows. Smoke numbers are not interpretable (mini budget).
+- Old lobo3 numbers (TD-All 0.9174, inner_loop_*.csv) came from the 2-fold rotation — superseded.
 
 ### Decisions
 
-- Main direction: proxy-audited, partial-window, unseen-battery SOH estimation.
-- Main pipeline: TD-BPNN.
-- AE: documented negative result unless a later advisor directive changes this.
+- Inner "single" branch kept only for bit-identical Phase 1 reproduction, must be passed explicitly.
+- Headline numbers quoted anywhere are OLD-protocol until the full re-runs land; Ch.4/Ch.5/report text must NOT be patched with new numbers yet.
 
 ### Unresolved
 
-- Round 4 advisor feedback.
-- Final thesis title.
+- Full re-runs (Dom, CPU): NASA 4 settings × 4 folds × 5 seeds + CS2 4 arms with corrected Clean-6T.
+- Before/after table (original / corrected / reason / conclusion changed?) → Round 4 progress report → advisor.
+- Thesis title answer (carried).
 
 ### Files changed
 
-- Update after each session; list only files changed in that session.
+- `Autoencoder/round3_phase1/r3common.py`, `phase4_cs2_within.py`, `phase4_cs2_transfer.py`, `phase4_cs2_adapt1.py`, `phase4_cs2_adapt2.py`, `round4_structural_verify.py` (new), 4 smoke CSVs regenerated.
 
 ### Verification
 
-- Update after each session with the real test, check, or review result.
-
-## 3. Next Session Task
-
-> Replace this section after each session so the next session can start without an additional setup prompt.
+- `round4_structural_verify.py`: 22/22 PASS (run 2026-10-09). Smoke: 4 scripts run end-to-end clean.
 
 ### Objective
 
-- Read the current state above and continue the smallest useful action.
+- Dom runs the full corrected jobs, then Capi builds the before/after table and the Round 4 progress report.
 
 ### First action
 
-- Check the advisor source folder and then inspect only the files required for the current task.
+- Run `round4_structural_verify.py` to confirm the corrected code is still consistent, then check whether Dom's full-run CSVs have landed.
 
 ### Required files
 
-- `advisor_directives.md`
-- `active_experiment.md`
-- Task-specific source, summary, script, or verification file only
+- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round4_structural_verify.py`, plus the run script being executed.
 
 ### Stop conditions
 
 - Stop before a major experiment, protocol change, feature-policy change, or thesis-direction change unless a PAEV plan has been approved.
 - Stop if a result cannot be tied to its row set, unit, protocol, feature set, and source artifact.
+- Advisor item 6: no next-round experiments (charge-side features, domain-shift) until the before/after table is sent to the advisor.
 
 ## 4. Where we are
 

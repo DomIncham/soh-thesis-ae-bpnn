@@ -1,7 +1,8 @@
 # Phase 4 item 6.3 (R3-C6): cross-dataset transfer - NASA-trained Clean-6T tested on CALCE CS2.
-# Feature set: Clean-6T = Clean-8 minus the two temperature features (CS2_33-38 xlsx logs have no
-# temperature channel): dis_duration, dis_mean_V, dis_V_slope, cc_dur, cv_dur, cv_I_slope,
-# t_40_41, ic_peak_V.
+# Feature set: Clean-6T (Round 4 advisor correction) = Clean-8 minus the two temperature features
+# unavailable in CS2_33-38 xlsx logs. Proxy-audited set: dis_duration and dis_mean_V are EXCLUDED
+# (both are proxy / proxy-equivalent per the R3-C3 audit) and MUST NOT re-enter this list.
+FEATS = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "t_40_41", "ic_peak_V"]
 # Freeze protocol: for each seed, select the config on the NASA pool (1 val battery + fit batteries,
 # same nested machinery as Phase 1/4), refit on all fit batteries, then score every CS2 cell with
 # that frozen model. Two NASA training pools are reported:
@@ -17,8 +18,6 @@ import pandas as pd
 import r3common as rc
 from sklearn.preprocessing import MinMaxScaler
 
-FEATS = ["dis_duration", "dis_mean_V", "dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope",
-         "t_40_41", "ic_peak_V"]
 ROOM = ["B0005", "B0006", "B0007", "B0018"]
 SEEDS = [42, 123, 2024, 7, 99]
 
@@ -104,11 +103,14 @@ def main():
                 continue
             r = np.random.RandomState(seed)
             val_b = int(r.choice(uniq))
-            fit_b = uniq  # refit on the whole pool (Phase 1 refit stage)
-            m_val, m_fit = bn == val_b, np.isin(bn, fit_b)
-            sc = MinMaxScaler().fit(Xn[m_fit])
+            # Round 4 advisor correction (item 3): during model selection the training set must
+            # exclude the validation battery; the refit then uses the WHOLE pool (incl. val_b).
+            m_val = bn == val_b
+            m_fit = np.ones_like(bn, dtype=bool)
+            m_sel = ~m_val  # selection fitting set = pool minus the validation battery
+            sc = MinMaxScaler().fit(Xn[m_sel])
             bp, mu, sd, dims, l2, ep, degraded = select_and_fit(
-                sc.transform(Xn[m_fit]), yn[m_fit], sc.transform(Xn[m_val]), yn[m_val],
+                sc.transform(Xn[m_sel]), yn[m_sel], sc.transform(Xn[m_val]), yn[m_val],
                 seed, bp_max, pat)
             for cell in sorted(set(cells_c)):
                 m_c = cells_c == cell

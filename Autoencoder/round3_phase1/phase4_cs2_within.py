@@ -12,8 +12,9 @@ import pandas as pd
 import r3common as rc
 from sklearn.preprocessing import MinMaxScaler
 
-FEATS = ["dis_duration", "dis_mean_V", "dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope",
-         "t_40_41", "ic_peak_V"]
+# Clean-6T (Round 4 advisor correction) = Clean-8 minus the two temperature features unavailable
+# in CS2 logs; dis_duration and dis_mean_V are proxy/proxy-equivalent and MUST NOT be present.
+FEATS = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "t_40_41", "ic_peak_V"]
 SEEDS = [42, 123, 2024, 7, 99]
 
 

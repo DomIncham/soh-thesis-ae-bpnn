@@ -153,9 +153,12 @@ def extras(y, yh, qref_ah):
                 test_RMSE_Ah=float(rmse) / 100.0 * float(qref_ah))
 
 
-def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting, inner="single"):
+def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting, inner="lobo3"):
     """One outer fold, both stages.
-    Stage A (pre_refit): inner validation on 1 battery selects the config - Round 2 protocol.
+    Stage A (pre_refit): inner validation selects the config - Round 4 advisor correction:
+    the inner loop is a 3-fold LOBO over the three outer-training batteries (inner="lobo3").
+    inner="single" is kept only for bit-identical reproduction of the committed Phase 1
+    artifacts and must be passed explicitly; it is NOT the default any more.
     Stage B (refit_on_3): the selected config is re-fitted on ALL 3 remaining batteries for the
     selected epoch budget (advisor R3-C1), then evaluated on the untouched outer test battery.
     Scaling and target standardization are fitted on the fitting batteries only; the test battery
@@ -179,7 +182,11 @@ def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting, i
     tr_s, va_s = sc.transform(X[m_tr]), sc.transform(X[m_va])
     mu, sd = soh[m_tr].mean(), soh[m_tr].std()
     if inner == "lobo3":
-        inner_folds = [(np.isin(bids, [b for b in train_b if b != v]), bids == v) for v in train_b]
+        # Round 4 advisor item 1: the inner loop is a 3-fold LOBO over ALL three
+        # outer-training batteries (each battery is the inner validation exactly once),
+        # NOT a rotation over the outer-train subset remaining[1:].
+        inner_folds = [(np.isin(bids, [b for b in remaining if b != v]), bids == v)
+                       for v in remaining]
         cands = []
         for dims, l2 in itertools.product(ARCHS, L2S):
             vs, eps = [], []
@@ -203,7 +210,7 @@ def run_fold(X, bids, soh, cyc, test_b, seed, bp_max, pat, qref, rng, setting, i
             print(f"  [guard] inner-lobo3: no candidate converged; using {dims}/l2={l2} "
                   f"{RETRAIN_EP}ep")
         v, dims, l2, ep, _ = min(ok, key=lambda c: c[0])
-        # the pre_refit stage needs one model: train it on the 2-battery outer-train for ep epochs
+        # the pre_refit stage needs one model: train it on the outer-train (2 batteries) for ep
         bp_sel, _ = fit_bpnn_ep([n_in] + dims, l2, tr_s, (soh[m_tr] - mu) / sd,
                                 None, None, seed, bp_max, pat, epochs=ep)
     else:
