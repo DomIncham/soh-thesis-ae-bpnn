@@ -21,7 +21,7 @@ Raw datasets, large external archives, generated tensors, and model checkpoints 
 ## Main Folders
 
 ```text
-Autoencoder/                       # Stage-1 AE, BPNN, preprocessing, metrics, figures
+Autoencoder/                       # Research workspace; see Autoencoder/README.md for round map
 Comment Prof and Report/           # Separated advisor comments and Dom's reports
 Journal Discovery/literature review by dom/ # Dom-authored literature review materials to keep in Git
 advisor_rounds/                    # Historical advisor-round records
