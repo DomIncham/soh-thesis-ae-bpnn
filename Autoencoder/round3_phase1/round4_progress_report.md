@@ -8,8 +8,8 @@ This report answers the six points in your Round 4 comment. All re-runs use CPU,
 data files as Round 3, and the committed seed sets. A structural verification suite now
 guards the protocol (Section 4); it passes 25/25 at the time of writing.
 
-All files referenced below are linked to the repository at the current head
-(`70d7a7b`): https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/
+All files referenced below are linked to the repository on the `main` branch:
+https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/
 
 Abbreviated paths in this report are relative to `Autoencoder/round3_phase1/`.
 
@@ -92,14 +92,13 @@ definition, Clean-8 without the two temperature features unavailable in CALCE, i
 features: dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V.
 
 All four scripts now use this list, and the structural check S4 fails with a non-zero exit if
-either proxy feature re-enters. Corrected results (test R², 5 seeds; the transfer rows report
-the median because the per-cell scores are skewed, the within row reports mean and
-median):
+either proxy feature re-enters. Corrected results (test R², 5 seeds; each transfer row states
+its statistic, the within row reports mean and median):
 
 | Experiment | Before (with the two proxy features) | After (corrected Clean-6T) | Conclusion unchanged? |
 |---|---|---|---|
-| Frozen NASA → CALCE (room pool) | median −37 | median −2.8 | No: consistent with domain shift (the target ranges do not overlap) rather than proxy leakage; the direction is the same (transfer does not work) |
-| Frozen NASA → CALCE (all-13 pool) | −48 | −92 | No |
+| Frozen NASA → CALCE (room pool) | median −37.1 | median −2.8 | No: consistent with domain shift (the target ranges do not overlap) rather than proxy leakage; the direction is the same (transfer does not work) |
+| Frozen NASA → CALCE (all-13 pool) | mean −48.3 | mean −92.3 | No |
 | One-cell scratch training | median −68 | median −52 | No: adaptation does not recover transfer |
 | One-cell warm adaptation | median −31 | median −0.9 | No |
 | Within-CALCE LOCO control | mean 0.235 | mean 0.158, median 0.573 | No: removing the two features changes the median from 0.589 to 0.573 |
