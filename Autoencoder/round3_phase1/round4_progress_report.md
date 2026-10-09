@@ -66,9 +66,9 @@ that this is a property of the data, not an implementation error:
 1. The inner-validation RMSE ranks Clean-8 best (3.69 vs 4.55 for Clean-7 on the B0006 fold,
    mean over seeds), while its outer-test R² on the same fold is the worst (0.44 vs 0.63). The
    feature helps predict the training batteries but not the held-out one.
-2. The drop concentrates on B0006 (Clean-8 minus Clean-7 spans −0.03 to −0.36 across the five
-   seeds); on the other three batteries the mean difference is small and positive (0.006 to
-   0.043).
+2. The drop concentrates on B0006 (Clean-8 minus Clean-7 spans −0.008 to −0.36 across the five
+   seeds, negative in all five); on the other three batteries the mean difference is small and
+   positive (0.006 to 0.043).
 3. A selection-free ridge probe on the same rows and folds shows the same direction: adding
    t_40_41 lowers held-out R² on every battery by a small margin (for example B0018 0.66 → 0.60).
    The probe script is `r4_ridge_probe.py`.
@@ -122,7 +122,7 @@ is now identical in all five run scripts:
 
 | Script | Selection fitting set | Refit set | Test |
 |---|---|---|---|
-| NASA nested LOBO (r3common.run_fold) | 2 batteries (inner folds rotate over all 3) | 3 batteries | outer battery |
+| NASA nested LOBO (r3common.run_fold) | 2 batteries per inner fold (the inner validation rotates over all 3 training batteries) | 3 batteries | outer battery |
 | Frozen NASA → CALCE (transfer) | pool minus 1 validation battery | full pool | each CS2 cell |
 | One-cell scratch (adapt1) | pool minus 1 validation battery | full pool, then fine-tune on 1 CS2 cell | other 7 cells |
 | One-cell warm (adapt2) | pool minus 1 validation battery | full pool, then warm-start on 1 CS2 cell | other 7 cells |
@@ -164,10 +164,10 @@ Per your instruction I have not started any of the four candidate directions. Th
 results and the before/after table above are ready for your review. Two points that may affect
 the choice:
 
-1. Clean-6 (0.60) sits below the proxy-free reference (0.874), so the gap between proxy-audited
-   and proxy-laden features is now measured under a stricter protocol. (Note: that 0.874
-   reference, TD-Proxy-Free, contains dis_mean_V, which our R3-C3 audit classifies as
-   proxy-equivalent, so it is proxy-free only by the Round 2 definition.)
+1. Clean-6 (0.60) sits below the 7-feature reference (0.874), so the cost of removing the last
+   proxy-equivalent feature is now measured under a stricter protocol. The two sets differ by
+   exactly one feature: TD-Proxy-Free still contains dis_mean_V, which our R3-C3 audit
+   classifies as proxy-equivalent, so it is proxy-free only by the Round 2 definition.
 2. The NASA→CALCE gap is a range problem as much as a feature problem (SOH 57–101% vs 87–113%,
    measured from the two feature files). This is an observation, not a tested cause; if the
    domain-shift direction is chosen, a range-alignment step would be the first thing to test.
