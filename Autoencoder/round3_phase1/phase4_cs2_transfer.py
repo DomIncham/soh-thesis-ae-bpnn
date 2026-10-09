@@ -103,6 +103,7 @@ def main():
                 continue
             r = np.random.RandomState(seed)
             val_b = int(r.choice(uniq))
+            val_name = nd.battery[bn == val_b].iloc[0]  # name of the val battery
             # Round 4 advisor correction (item 3): during model selection the training set must
             # exclude the validation battery; the refit then uses the WHOLE pool (incl. val_b).
             m_val = bn == val_b
@@ -116,12 +117,14 @@ def main():
                 m_c = cells_c == cell
                 if bp is None:  # diverged even on the fallback config: record honestly, keep going
                     rows.append(dict(pool=pool, seed=seed, test_battery=cell,
+                                     val_battery=val_name,
                                      n_cycles=int(m_c.sum()), cfg=f"{dims}/l2={l2}",
                                      sel_epochs=ep, MAE=np.nan, RMSE=np.nan, R2=np.nan))
                     continue
                 p = rc.predict(bp, sc.transform(Xc[m_c]), mu, sd)
                 mae, rmse, r2 = rc.reg_metrics(yc[m_c], p)
-                rows.append(dict(pool=pool, seed=seed, test_battery=cell, n_cycles=int(m_c.sum()),
+                rows.append(dict(pool=pool, seed=seed, test_battery=cell, val_battery=val_name,
+                                 n_cycles=int(m_c.sum()),
                                  cfg=f"{dims}/l2={l2}", sel_epochs=ep,
                                  MAE=round(float(mae), 3), RMSE=round(float(rmse), 3),
                                  R2=round(float(r2), 3)))

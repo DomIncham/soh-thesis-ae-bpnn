@@ -86,6 +86,7 @@ def main():
     for seed in seeds:
         r = np.random.RandomState(seed)
         val_b = int(r.choice(uniq))
+        val_name = nd.battery[bn == val_b].iloc[0]  # name of the val battery
         # Round 4 advisor correction (item 3): selection fitting set must exclude val_b.
         m_val, m_fit = bn == val_b, np.ones_like(bn, bool)
         m_sel = ~m_val
@@ -113,7 +114,8 @@ def main():
                 print(f"  [guard] adapt fit diverged ({type(e).__name__}); NaN row recorded")
                 p = np.full(m_te.sum(), np.nan)
             mae, rmse, r2 = rc.reg_metrics(yc[m_te], p)
-            rows.append(dict(seed=seed, adapt_cell=adapt_cell, test_cells=sorted(set(cells_c[m_te])),
+            rows.append(dict(seed=seed, adapt_cell=adapt_cell, val_battery=val_name,
+                             test_cells=sorted(set(cells_c[m_te])),
                              n_cycles=int(m_te.sum()), cfg=f"{dims}/l2={l2}", adapt_epochs=ADAPT_EP,
                              MAE=round(float(mae), 3), RMSE=round(float(rmse), 3),
                              R2=round(float(r2), 3)))

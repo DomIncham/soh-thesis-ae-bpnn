@@ -58,6 +58,7 @@ def nasa_frozen(seed, bp_max, pat):
     uniq = np.unique(bn)
     r = np.random.RandomState(seed)
     val_b = int(r.choice(uniq))
+    val_name = nd.battery[bn == val_b].iloc[0]  # name of the val battery (recorded in the CSV)
     sc = MinMaxScaler().fit(Xn)  # refit-stage scaler: the whole room pool
     mu, sd = yn.mean(), yn.std()
     m_val, m_fit = bn == val_b, np.ones_like(bn, bool)
@@ -82,7 +83,7 @@ def nasa_frozen(seed, bp_max, pat):
         _, dims, l2, ep = min(ok, key=lambda c: c[0])
     bp0, _ = rc.fit_bpnn_ep([len(FEATS)] + dims, l2, sc.transform(Xn[m_fit]), (yn - mu) / sd,
                             None, None, seed, bp_max, pat, epochs=ep)
-    return bp0, sc, mu, sd, dims, l2
+    return bp0, sc, mu, sd, dims, l2, val_name
 
 
 def main():
@@ -111,7 +112,7 @@ def main():
     for seed in seeds:
         if all((seed, c) in done for c in cells):
             continue
-        bp0, sc_n, mu_n, sd_n, dims, l2 = nasa_frozen(seed, bp_max, pat)
+        bp0, sc_n, mu_n, sd_n, dims, l2, val_name = nasa_frozen(seed, bp_max, pat)
         if bp0 is None:
             print(f"seed {seed}: NASA fit diverged - skipped")
             continue
@@ -128,7 +129,8 @@ def main():
                 print(f"  [guard] warm diverged ({type(e).__name__}); NaN row recorded")
                 p = np.full(int(m_te.sum()), np.nan)
             mae, rmse, r2 = rc.reg_metrics(yc[m_te], p)
-            rows.append(dict(seed=seed, adapt_cell=adapt_cell, n_cycles=int(m_te.sum()),
+            rows.append(dict(seed=seed, adapt_cell=adapt_cell, val_battery=val_name,
+                             n_cycles=int(m_te.sum()),
                              cfg=f"{dims}/l2={l2}", adapt_epochs=ADAPT_EP,
                              MAE=round(float(mae), 3), RMSE=round(float(rmse), 3),
                              R2=round(float(r2), 3)))

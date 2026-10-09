@@ -99,6 +99,20 @@ check("S4 r3common CLEAN6 proxy-free", not any(b in clean6 for b in BANNED), f"{
 check("S4 TD-All documents its proxies", all(b in rc.FEATS_ALL for b in BANNED),
       "TD-All keeps them by definition; Clean sets must exclude")
 
+# ---- S2b: CS2 within — selection train/val disjoint, val battery recorded -------------------
+if os.path.exists("phase4_cs2_within_full.csv"):
+    w = pd.read_csv("phase4_cs2_within_full.csv")
+    if "val_battery" in w.columns:
+        dupes = w.duplicated(subset=["seed", "test_battery"]).sum()
+        check("S2b within: no duplicate (seed, cell) rows", dupes == 0, f"{dupes} duplicates")
+        check("S2b within: val != test in every fold",
+              bool((w.val_battery != w.test_battery).all()),
+              f"{int((w.val_battery == w.test_battery).sum())} violations")
+        check("S2b within: complete 5 seeds x 8 cells", len(w) == 40, f"{len(w)} rows")
+    else:
+        check("S2b within: val_battery column", False,
+              "column missing - rerun with the val_battery patch")
+
 print()
 if FAILS:
     print(f"STRUCTURAL VERIFICATION FAILED: {len(FAILS)} check(s): {FAILS}")

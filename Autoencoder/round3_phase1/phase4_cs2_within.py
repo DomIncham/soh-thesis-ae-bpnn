@@ -82,13 +82,15 @@ def main():
                 p = np.full(int(m_te.sum()), np.nan)
             mae, rmse, r2 = rc.reg_metrics(y[m_te], p)
             rows.append(dict(seed=seed, test_battery=cells[list(u).index(test_i)],
+                             val_battery=cells[list(u).index(val_b)],
                              n_cycles=int(m_te.sum()), cfg=f"{dims}/l2={l2}", sel_epochs=ep,
                              MAE=round(float(mae), 3), RMSE=round(float(rmse), 3),
                              R2=round(float(r2), 3)))
             print(f"seed {seed} test {cells[list(u).index(test_i)]}: R2={r2:.3f}")
             pd.DataFrame(rows).to_csv(out_name, index=False)
-    out = pd.DataFrame(rows)
-    print(f"\nsaved {out_name}: {len(out)} rows")
+    out = pd.DataFrame(rows).drop_duplicates(subset=["seed", "test_battery"], keep="last")
+    out.to_csv(out_name, index=False)
+    print(f"\nsaved {out_name}: {len(out)} rows (deduplicated)")
     if not args.smoke and len(out):
         print("\nWithin-CS2 LOCO per test cell:")
         print(out.groupby("test_battery").agg(R2=("R2", "mean"), R2min=("R2", "min"),

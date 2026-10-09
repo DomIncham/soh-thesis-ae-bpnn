@@ -18,7 +18,9 @@ from r3common import (BATT, SETTINGS, PROXY_FEATS, FEATS_PROXY_FREE,
 def run(args):
     smoke = args.smoke
     R.set_device(args.device)
-    seeds = [42] if smoke else [42, 7, 123]
+    # Round 4: five seeds to match the committed Phase 1/2 and td_clean baselines
+    # (was [42, 7, 123]; the 2026-10-09 rerun under true inner-lobo3 used 5 seeds).
+    seeds = [42] if smoke else [42, 7, 123, 2024, 11]
     folds = [1] if smoke else [1, 2, 3, 4]
     bp_max, pat = (100, 10) if smoke else (500, 30)
 
