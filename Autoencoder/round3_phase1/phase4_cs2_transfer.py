@@ -113,6 +113,20 @@ def main():
             bp, mu, sd, dims, l2, ep, degraded = select_and_fit(
                 sc.transform(Xn[m_sel]), yn[m_sel], sc.transform(Xn[m_val]), yn[m_val],
                 seed, bp_max, pat)
+            # Advisor sequence (item 3): after selection, REFIT on the WHOLE pool (val battery
+            # folded back in) with its own scaler/target stats, then test on CS2 — the same
+            # pattern as within.py and r3common.run_fold. mu/sd of the refit scale are reused.
+            if bp is not None:
+                sc2 = MinMaxScaler().fit(Xn[m_fit])
+                mu2, sd2 = yn[m_fit].mean(), yn[m_fit].std()
+                try:
+                    bp_rf, _ = rc.fit_bpnn_ep([Xn.shape[1]] + dims, l2, sc2.transform(Xn[m_fit]),
+                                              (yn[m_fit] - mu2) / sd2, None, None, seed,
+                                              bp_max, pat, epochs=ep)
+                    bp, mu, sd, sc = bp_rf, mu2, sd2, sc2
+                except (TypeError, RuntimeError):
+                    print(f"  [guard] pool refit diverged (pool={pool}, seed={seed}); "
+                          f"keeping the selection-scale model")
             for cell in sorted(set(cells_c)):
                 m_c = cells_c == cell
                 if bp is None:  # diverged even on the fallback config: record honestly, keep going

@@ -94,6 +94,18 @@ def main():
         bp0, mu0, sd0, dims, l2, ep0 = fit_pool(
             sc_n.transform(Xn[m_sel]), yn[m_sel], sc_n.transform(Xn[m_val]), yn[m_val],
             seed, bp_max, pat)
+        # Advisor sequence (item 3): after selection, refit the frozen start on the WHOLE NASA
+        # pool (val folded back in) with its own scaler — the same pattern as transfer.py.
+        if bp0 is not None:
+            sc_n2 = MinMaxScaler().fit(Xn[m_fit])
+            mu_n2, sd_n2 = yn[m_fit].mean(), yn[m_fit].std()
+            try:
+                bp0_rf, _ = rc.fit_bpnn_ep([len(FEATS)] + dims, l2, sc_n2.transform(Xn[m_fit]),
+                                           (yn[m_fit] - mu_n2) / sd_n2, None, None, seed,
+                                           bp_max, pat, epochs=ep0)
+                bp0, sc_n, mu0, sd0 = bp0_rf, sc_n2, mu_n2, sd_n2
+            except (TypeError, RuntimeError):
+                print(f"  [guard] pool refit diverged (seed={seed}); keeping the selection model")
         if bp0 is None:
             print(f"seed {seed}: NASA fit diverged - skipped")
             continue
