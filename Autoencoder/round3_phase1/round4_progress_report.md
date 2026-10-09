@@ -69,9 +69,9 @@ that this is a property of the data, not an implementation error:
 2. The drop concentrates on B0006 (Clean-8 minus Clean-7 spans −0.008 to −0.36 across the five
    seeds, negative in all five); on the other three batteries the mean difference is small and
    positive (0.006 to 0.043).
-3. A selection-free ridge probe on the same rows and folds shows the same direction: adding
-   t_40_41 lowers held-out R² on every battery by a small margin (for example B0018 0.66 → 0.60).
-   The probe script is `r4_ridge_probe.py`.
+3. A selection-free ridge probe on the same rows and folds does not show the gain either:
+   adding t_40_41 lowers held-out R² on B0006 (0.66 → 0.65) and B0018 (0.63 → 0.60) and leaves
+   the other two batteries near flat. The probe script is `r4_ridge_probe.py`.
 
 I therefore treat the earlier Clean-8 gain as a selection-variant effect and report Clean-7 as
 the strongest proxy-audited feature set. Figure 2 shows the B0006 fold.
@@ -108,9 +108,9 @@ The main change is in the explanation rather than the direction. After the corre
 within-CALCE performance stays close to the 8-feature median (0.573 vs 0.589), so the two
 removed features were not carrying most of the accuracy. For transfer, the model does not cross the datasets because
 the target ranges do not overlap: NASA training SOH spans 57–101% while CALCE CS2 spans
-87–113%, and five of the six features fall outside the NASA min–max range on most CS2 cycles
-(for example cc_dur exceeds the NASA maximum on 93% of CS2 rows; ic_peak_V and cv_dur sit
-below the NASA minimum on 41% and 62% of rows). Under the
+87–113%, and five of the six features fall outside the NASA min–max range on a large share
+of CS2 cycles (cc_dur exceeds the NASA maximum on 93% of CS2 rows; cv_dur sits below the NASA
+minimum on 62%; ic_peak_V below it on 41%; t_40_41 above the maximum on 37%). Under the
 corrected feature set this is the plain statement: NASA→CALCE transfer is not viable without
 target-range alignment or domain adaptation.
 
