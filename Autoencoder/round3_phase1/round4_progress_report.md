@@ -15,10 +15,7 @@ Abbreviated paths in this report are relative to `Autoencoder/round3_phase1/`.
 
 ## 1. Nested LOBO implementation
 
-I checked the inner loop against your example line by line and found it did not match, in two
-ways. Both are fixed.
-
-Two mismatches with your example, both fixed. First, the inner loop rotated over only two
+I checked the inner loop against your example line by line and found two mismatches. First, the inner loop rotated over only two
 batteries. With B0005 as the outer test battery, the inner folds validated on B0007 and B0018
 only. B0006, the third training battery, was never used as inner validation. The rotation now
 covers all three training batteries, so for outer B0005 the folds are as you specified:
@@ -38,7 +35,9 @@ no candidate converges, the best candidate is retrained for a fixed 200 epochs a
 marked `sel_degenerate` in the result files. I kept this rule because it prevents a known
 failure mode; it is documented per fold in every results CSV.
 
-Corrected results (test R², refit stage, mean over 5 seeds, inner 3-fold LOBO):
+Corrected results (test R², refit stage, mean over 5 seeds, inner 3-fold LOBO). The Before
+column is the committed Round 2/3 value (TD-All, Proxy-Free, Oracle: 3 seeds; Clean sets:
+5 seeds; single inner validation):
 
 | Feature set | Before (Round 2 protocol, single inner validation) | After (corrected) | Change |
 |---|---|---|---|
@@ -52,8 +51,8 @@ Corrected results (test R², refit stage, mean over 5 seeds, inner 3-fold LOBO):
 
 ![Corrected Clean-6/7/8 per outer fold](r4_fig_clean_sets.png)
 
-Figure 1. Test R² of the three proxy-audited feature sets on each outer battery under the
-corrected protocol (mean of 5 seeds). Plotted from
+Figure 1. Test R² of Clean-6*, Clean-7 and Clean-8 (631-row set) on each outer battery under
+the corrected protocol (mean of 5 seeds). Plotted from
 [`phase3_charge_r4_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_charge_r4_results.csv)
 (the 2026-10-10 corrected-protocol run, refit stage). Clean-6 gains the most from the
 correction; on B0006 the Clean-8 result drops below Clean-7, which Section 1.1 explains.
@@ -93,19 +92,21 @@ definition, Clean-8 without the two temperature features unavailable in CALCE, i
 features: dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V.
 
 All four scripts now use this list, and the structural check S4 fails with a non-zero exit if
-either proxy feature re-enters. Corrected results (test R², mean over 5 seeds):
+either proxy feature re-enters. Corrected results (test R², 5 seeds; the transfer rows report
+the median because the per-cell scores are skewed, the within row reports mean and
+median):
 
 | Experiment | Before (with the two proxy features) | After (corrected Clean-6T) | Conclusion unchanged? |
 |---|---|---|---|
-| Frozen NASA → CALCE (room pool) | median −37 | median −2.8 | No: failure is now attributable to domain shift, not proxy leakage, but the direction is the same (transfer does not work) |
+| Frozen NASA → CALCE (room pool) | median −37 | median −2.8 | No: consistent with domain shift (the target ranges do not overlap) rather than proxy leakage; the direction is the same (transfer does not work) |
 | Frozen NASA → CALCE (all-13 pool) | −48 | −92 | No |
 | One-cell scratch training | median −68 | median −52 | No: adaptation does not recover transfer |
 | One-cell warm adaptation | median −31 | median −0.9 | No |
-| Within-CALCE LOCO control | mean 0.235 | mean 0.158, median 0.573 | No: removing the two features costs little; the median moves little |
+| Within-CALCE LOCO control | mean 0.235 | mean 0.158, median 0.573 | No: removing the two features changes the median from 0.589 to 0.573 |
 
 The main change is in the explanation rather than the direction. After the correction,
-within-CALCE performance stays close to its earlier median, so the two removed features were
-not carrying most of the accuracy. For transfer, the model cannot work across datasets because
+within-CALCE performance stays close to the 8-feature median (0.573 vs 0.589), so the two
+removed features were not carrying most of the accuracy. For transfer, the model does not cross the datasets because
 the target ranges do not overlap: NASA training SOH spans 57–101% while CALCE CS2 spans
 87–113%, and five of the six features fall outside the NASA min–max range on most CS2 cycles
 (for example cc_dur exceeds the NASA maximum on 93% of CS2 rows; ic_peak_V and cv_dur sit
