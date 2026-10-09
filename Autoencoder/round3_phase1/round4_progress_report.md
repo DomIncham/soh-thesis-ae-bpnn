@@ -8,6 +8,11 @@ This report answers the six points in your Round 4 comment. All re-runs use CPU,
 data files as Round 3, and the committed seed sets. A structural verification suite now
 guards the protocol (Section 4); it passes 25/25 at the time of writing.
 
+All files referenced below are linked to the repository at the current head
+(`70d7a7b`): https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/
+
+Abbreviated paths in this report are relative to `Autoencoder/round3_phase1/`.
+
 ## 1. Nested LOBO implementation
 
 I checked the inner loop against your example line by line and found it did not match, in two
@@ -48,8 +53,10 @@ Corrected results (test R², refit stage, mean over 5 seeds, inner 3-fold LOBO):
 ![Corrected Clean-6/7/8 per outer fold](r4_fig_clean_sets.png)
 
 Figure 1. Test R² of the three proxy-audited feature sets on each outer battery under the
-corrected protocol (mean of 5 seeds). Clean-6 gains the most from the correction; on B0006 the
-Clean-8 result drops below Clean-7, which Section 1.1 explains.
+corrected protocol (mean of 5 seeds). Plotted from
+[`phase3_charge_r4_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_charge_r4_results.csv)
+(the 2026-10-10 corrected-protocol run, refit stage). Clean-6 gains the most from the
+correction; on B0006 the Clean-8 result drops below Clean-7, which Section 1.1 explains.
 
 ### 1.1 New finding: the Clean-8 gain does not survive the correction
 
@@ -72,6 +79,9 @@ the strongest proxy-audited feature set. Figure 2 shows the B0006 fold.
 
 Figure 2. B0006 outer fold (seed 42). The Clean-8 model (red) follows the measured curve less
 well than Clean-7 (blue) after cycle 300, although it scored better in inner validation.
+Plotted from the per-cycle predictions in
+[`phase3_charge_r4_preds.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_charge_r4_preds.csv)
+(same run as Figure 1, refit stage).
 
 ## 2. CALCE Clean-6T feature definition
 
@@ -156,10 +166,28 @@ the choice:
 
 ## Summary of files changed
 
-- `r3common.py`: inner LOBO correction (3-fold rotation), default switched to `lobo3`
-- `phase4_cs2_transfer.py`, `phase4_cs2_adapt1.py`, `phase4_cs2_adapt2.py`, `phase4_cs2_within.py`:
+All at `Autoencoder/round3_phase1/` on `main`:
+
+- [`r3common.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r3common.py):
+  inner LOBO correction (3-fold rotation), default switched to `lobo3`
+- [`phase4_cs2_transfer.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_transfer.py),
+  [`phase4_cs2_adapt1.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_adapt1.py),
+  [`phase4_cs2_adapt2.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_adapt2.py),
+  [`phase4_cs2_within.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_within.py):
   corrected Clean-6T feature list, disjoint selection, full-pool refit, validation battery recorded
-- `td_proxy_audit.py`: five seeds to match the committed baseline
-- `round4_structural_verify.py`: new structural suite
-- Corrected result files: `td_clean_cpu_results.csv`, `td_proxy_audit_r4full5_results.csv`,
-  `phase3_charge_r4_results.csv`, `phase4_cs2_{within,transfer,adapt1,adapt2}_full.csv`
+- [`td_proxy_audit.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/td_proxy_audit.py):
+  five seeds to match the committed baseline
+- [`round4_structural_verify.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/round4_structural_verify.py):
+  new structural suite
+- Corrected result files:
+  [`td_clean_cpu_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/td_clean_cpu_results.csv),
+  [`td_proxy_audit_r4full5_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/td_proxy_audit_r4full5_results.csv),
+  [`phase3_charge_r4_results.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase3_charge_r4_results.csv),
+  [`phase4_cs2_within_full.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_within_full.csv),
+  [`phase4_cs2_transfer_full.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_transfer_full.csv),
+  [`phase4_cs2_adapt1_full.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_adapt1_full.csv),
+  [`phase4_cs2_adapt2_full.csv`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase4_cs2_adapt2_full.csv)
+- Figures in this report:
+  [`r4_fig_clean_sets.png`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r4_fig_clean_sets.png),
+  [`r4_fig_b0006_c7_c8.png`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/r4_fig_b0006_c7_c8.png)
+- Commits of this round: [`aea8cf4..817ea88`](https://github.com/DomIncham/soh-thesis-ae-bpnn/commits/main)
