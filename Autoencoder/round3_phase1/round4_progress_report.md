@@ -159,10 +159,13 @@ Per your instruction I have not started any of the four candidate directions. Th
 results and the before/after table above are ready for your review. Two points that may affect
 the choice:
 
-1. The Clean-6 ceiling (0.60) sits below the proxy-free reference (0.874), so the gap between
-   proxy-audited and proxy-laden features is now measured under a stricter protocol.
-2. The NASA→CALCE gap is a range problem as much as a feature problem (SOH 57–101% vs 87–113%),
-   which suggests target-range handling would need to be part of any domain-shift work.
+1. Clean-6 (0.60) sits below the proxy-free reference (0.874), so the gap between proxy-audited
+   and proxy-laden features is now measured under a stricter protocol. (Note: that 0.874
+   reference, TD-Proxy-Free, contains dis_mean_V, which our R3-C3 audit classifies as
+   proxy-equivalent, so it is proxy-free only by the Round 2 definition.)
+2. The NASA→CALCE gap is a range problem as much as a feature problem (SOH 57–101% vs 87–113%,
+   measured from the two feature files). This is an observation, not a tested cause; if the
+   domain-shift direction is chosen, a range-alignment step would be the first thing to test.
 
 ## Summary of files changed
 
