@@ -31,12 +31,12 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 4 — **feedback received (2026-10-09, `Comment Prof and Report/Comment Prof/Round 4 Adviosor Comment.txt`)**
-- Current work phase: Round-4 corrections implementation (items 1–4); report to advisor pending full re-runs
-- Current objective: correct inner LOBO (3-fold), Clean-6T definition, selection disjointness; add structural verification; produce before/after table for the advisor BEFORE any next-round expansion
-- Current blocker: full re-runs (NASA 4 settings + CS2 4 arms) are Dom's long jobs — not yet run; all headline numbers (0.927 / 0.810 / 0.59 etc.) are now OLD-protocol and must be re-measured
-- Thesis drafting: still out of scope (item 6: no next-round experiments or thesis expansion until the before/after table is sent to the advisor); Ch.2 waits
-- Item 5 (AE): nothing to do — matches the existing negative-result decision
+- Current advisor round: Round 4 — **all 6 items answered and verified (2026-10-10); progress report drafted and committed (`round4_progress_report.md`), awaiting Dom's PDF conversion + email to advisor**
+- Current work phase: Round-4 corrections COMPLETE (code + full runs + structural suite + report draft); waiting on advisor's Round 5 reply
+- Current objective: send the Round 4 progress report to the advisor, then start Round 5 per the advisor's chosen direction (charge-side features vs domain-shift)
+- Current blocker: the report draft awaits Dom's read-through + Antigravity PDF conversion + advisor email; one open interpretation question sits in the report for the advisor (CS2 inner rotation)
+- Thesis drafting: still out of scope (advisor item 6 gates it); Ch.2 waits on the title answer
+- Item 5 (AE): nothing to do — matches the existing negative-result decision (untouched, git-verified)
 
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
@@ -48,54 +48,63 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 
 ### Completed
 
-- Round 4 advisor comment read (6 items). Items 1–4 implemented in code; item 5 no-op; item 6 gates everything else.
-- `r3common.run_fold`: default `inner="lobo3"`; **found and fixed a real bug** — the old lobo3 branch rotated inner folds over `train_b` (2 batteries: B0007/B0018), never validating B0006. Now rotates over all 3 `remaining` batteries.
-- Clean-6T corrected in all 4 CS2 scripts: FEATS = Clean-8 minus temp = `dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V`; `dis_duration`/`dis_mean_V` (proxy/proxy-equivalent) removed. Advisor was right — the old CS2 Clean-6T list still carried both proxies.
-- Selection disjointness: `phase4_cs2_transfer.py` and `phase4_cs2_adapt1.py` now fit the selection scaler and model on pool-minus-val (`m_sel`); refit still uses the whole pool. `adapt2` was already correct; `within` was already correct.
-- New `round4_structural_verify.py` (advisor item 4): S1 inner-fold count == 3 (spy on fit calls); S2 pre_refit train/val disjoint in all recorded fold CSVs; S3 declared FEATS == columns present in the CSVs; S4 dis_duration/dis_mean_V absent from proxy-audited sets; S5 identical FEATS list across the 4 CS2 scripts. 22/22 PASS, exit 1 on any failure.
+- **All 6 advisor items closed and verified (2026-10-10, commits `aea8cf4..e2ea3a9` + report `70d7a7b..db47f1d`).**
+- Item 1 (nested LOBO): two real bugs fixed in `r3common.run_fold` — the lobo3 branch rotated inner folds over only 2 batteries (B0006 never validated) and selection was not aggregated over 3 folds. Now: 3-fold rotation, mean-val-RMSE selection, refit on 3, tested on outer. Empirically enumerated for all 4 outer folds; S1 spy check = 3.
+- Item 2 (Clean-6T): advisor was right — all 4 CS2 scripts still carried `dis_duration`+`dis_mean_V`. Corrected to 6 features (`dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V`); S4 structural check guards it.
+- Item 3 (selection disjoint): transfer + adapt1 refit on the FULL pool after disjoint selection (matching within/adapt2/run_fold); `val_battery` recorded in all CS2 CSVs; within dedupes on save.
+- Item 4 (structural suite): `round4_structural_verify.py` — 25/25 PASS (S1 3-fold count, S2 disjoint, S2b within completeness + val≠test, S3 declared==fed, S4 proxy ban, S5 identical lists), exits 1 on drift.
+- Item 5 (AE): untouched (git-verified). Item 6: before/after table produced; no next-round experiments started.
+- Full corrected re-runs completed (Dom, CPU, ~3.5 h): NASA proxy_audit 5 seeds, charge (Clean-6*/7/8), CS2 4 arms; all fresh files committed.
+- Round 4 progress report drafted, humanized (4 audit passes: overclaim=0, -ly adverbs stripped, causal wording hedged), every number tied to a committed CSV, 19 GitHub links verified against the git tree.
 
 ### Evidence
 
-- `Autoencoder/round3_phase1/round4_structural_verify.py` — all checks pass after fixes.
-- Smoke runs (fresh CSVs, seed 42, budget 60/10, CPU, no crash/no NaN guard): within 8 rows, transfer 16 rows, adapt1 8 rows, adapt2 8 rows. Smoke numbers are not interpretable (mini budget).
-- Old lobo3 numbers (TD-All 0.9174, inner_loop_*.csv) came from the 2-fold rotation — superseded.
+- Report: `Autoencoder/round3_phase1/round4_progress_report.md` (+ `r4_fig_clean_sets.png`, `r4_fig_b0006_c7_c8.png`, `r4_ridge_probe.py`)
+- Corrected results (all committed): `td_proxy_audit_r4full5_results.csv` (TD-All 0.923, ProxyFree 0.874, Oracle 0.655), `td_clean_cpu_results.csv` (Clean-4 −0.349, Clean-6 0.601), `phase3_charge_r4_results.csv` (C6* 0.735, C7 0.807, C8 0.776), `phase4_cs2_{within,transfer,adapt1,adapt2}_full.csv` (within 0.158/med 0.573; transfer room −14.3/all13 −92.3; adapt1 −437/adapt2 −3.49)
+- Old-protocol "before" numbers preserved at commits `c5ddbd4` (CS2 arms) and `af1d278` (NASA Clean sets, proxy_audit 3 seeds)
+- Suite: `round4_structural_verify.py` — 25/25 PASS (2026-10-10)
 
 ### Decisions
 
-- Inner "single" branch kept only for bit-identical Phase 1 reproduction, must be passed explicitly.
-- Headline numbers quoted anywhere are OLD-protocol until the full re-runs land; Ch.4/Ch.5/report text must NOT be patched with new numbers yet.
+- **New finding (verified, not a bug):** Clean-8 0.776 < Clean-7 0.807 under the corrected protocol — the old 0.810 > 0.772 gain from `t_40_41` does not survive 3-fold rotation. Evidence: inner-val RMSE ranks C8 best while its test R² on B0006 is worst (0.44 vs 0.63); drop is B0006-specific (all 5 seeds negative); ridge probe (no selection) shows no gain. Clean-7 is now the strongest proxy-audited set.
+- Inner "single" branch kept only for bit-identical Phase 1 reproduction (explicit arg).
+- CS2 selection uses one seed-drawn validation battery (NOT rotated) — flagged to the advisor in the report §3 as an open interpretation question (rerun cost ~1 h if the advisor wants rotation).
+- adapt1 (scratch) vs adapt2 (warm) use different adaptation scales — kept as designed, per-arm definitions.
+- Seeds: NASA {42,7,123,2024,11}; CS2 {42,7,99,123,2024} — each family matches its own committed baseline.
 
 ### Unresolved
 
-- Full re-runs (Dom, CPU): NASA 4 settings × 4 folds × 5 seeds + CS2 4 arms with corrected Clean-6T.
-- Before/after table (original / corrected / reason / conclusion changed?) → Round 4 progress report → advisor.
-- Thesis title answer (carried).
+- Dom: read the report draft, convert to PDF in Antigravity, email the advisor.
+- Advisor: Round 5 reply (direction choice + CS2 rotation answer + title).
+- Title answer (carried); Ch.2 waits.
 
 ### Files changed
 
-- `Autoencoder/round3_phase1/r3common.py`, `phase4_cs2_within.py`, `phase4_cs2_transfer.py`, `phase4_cs2_adapt1.py`, `phase4_cs2_adapt2.py`, `round4_structural_verify.py` (new), 4 smoke CSVs regenerated.
+- Code: `r3common.py`, `phase4_cs2_{within,transfer,adapt1,adapt2}.py`, `td_proxy_audit.py`, `round4_structural_verify.py` (new), `r4_ridge_probe.py` (new)
+- Results: `td_clean_cpu_results.csv`, `td_proxy_audit_r4full5_*.csv`, `phase3_charge_r4_*.csv`, `phase4_cs2_*_full.csv` (4 files)
+- Report: `round4_progress_report.md` + 2 figures
 
 ### Verification
 
-- `round4_structural_verify.py`: 22/22 PASS (run 2026-10-09). Smoke: 4 scripts run end-to-end clean.
+- Structural suite 25/25 PASS (exit 0, 2026-10-10). In-process reproduction of one transfer and one adapt1 selection matches the committed CSVs exactly. All report numbers re-derived from CSVs in the final audit.
 
 ### Objective
 
-- Dom runs the full corrected jobs, then Capi builds the before/after table and the Round 4 progress report.
+- Send the Round 4 progress report to the advisor; await Round 5 direction.
 
 ### First action
 
-- Run `round4_structural_verify.py` to confirm the corrected code is still consistent, then check whether Dom's full-run CSVs have landed.
+- Ask Dom whether the advisor email was sent and whether a Round 5 reply exists in `Comment Prof and Report/Comment Prof/`; if yes, read it before anything else.
 
 ### Required files
 
-- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round4_structural_verify.py`, plus the run script being executed.
+- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round4_progress_report.md` (the verified results + before/after table), `round4_structural_verify.py`.
 
 ### Stop conditions
 
 - Stop before a major experiment, protocol change, feature-policy change, or thesis-direction change unless a PAEV plan has been approved.
 - Stop if a result cannot be tied to its row set, unit, protocol, feature set, and source artifact.
-- Advisor item 6: no next-round experiments (charge-side features, domain-shift) until the before/after table is sent to the advisor.
+- Round 4 headline numbers are now the corrected-protocol values in the report; do not quote the pre-correction numbers (0.490 / 0.810 / −0.59 etc.) without the "before" label.
 
 ## 4. Where we are
 
@@ -122,11 +131,26 @@ not our novelty).
 **Protocol axis (TD-All, nested LOBO):** random 0.979 / ours 0.927 / chronological −1.028 per-fold
 (+0.850 pooled). Oracle 0.992 same-battery vs 0.663 LOBO (phase-1, refit_on_3; the phase-2 run gives
 0.671 — different row set, never compared). "Oracle ≈ 1" is protocol-scoped.
+**Round 4 corrected protocol (true 3-fold inner LOBO):** TD-All 0.923 (unchanged), Proxy-Free 0.874,
+Oracle 0.655.
 
-**Proxy axis (nested LOBO):** TD-All 0.927 → Clean-6 0.490 → **Clean-7 0.772** (+`ic_peak_V`,
-supported, 15/20) → **Clean-8 0.810** (+`t_40_41`, within noise, paired 0.664→0.810). No feature above
-0.49 R²(capacity) in Clean-8. Window curve: proxy-free flat 0.842–0.843 across 5–30 min (caveat: W5-PF
-also drops `dis_V_slope` and swaps `dis_mean_T`).
+**Proxy axis (Round 4 corrected protocol — supersedes the numbers below):** TD-All 0.923 → Clean-6
+0.601 (636-row set) / Clean-6* 0.735 (631-row set) → **Clean-7 0.807** (+`ic_peak_V`, still helps) →
+**Clean-8 0.776** (+`t_40_41`, **now below Clean-7** — the old 0.810 gain was selection-variant;
+verified: inner-val ranks C8 best while B0006 test is worst, and a selection-free ridge probe shows
+no gain). Clean-4 −0.349 (too few features).
+Pre-correction values (single inner validation): Clean-6 0.490, Clean-7 0.772, Clean-8 0.810,
+Clean-4 −0.400, Proxy-Free 0.854, Oracle 0.663 — quote only with the "before" label.
+Window curve: proxy-free flat 0.842–0.843 across 5–30 min (caveat: W5-PF also drops `dis_V_slope`
+and swaps `dis_mean_T`).
+
+**Cross-dataset (Round 4 corrected Clean-6T, 6 features — supersedes "within 0.59 / transfer −37"
+below):** within-CS2 LOCO mean 0.158 / median 0.573 (old 8-feature: 0.235/0.589 — the two removed
+proxies carried little); transfer room −14.3 (median −2.8) / all13 −92.3; scratch −437, warm −3.5
+(both medians improved vs old −68/−31 but still non-viable). Root cause: target range mismatch
+(NASA SOH 57–101% vs CS2 87–113%) + 5 of 6 features outside the NASA min–max range on a large share
+of CS2 cycles (cc_dur 93% above, cv_dur 62% below, ic_peak_V 41% below, t_40_41 37% above) —
+transfer is not viable without target-range alignment or domain adaptation.
 
 **Three negatives with mechanisms:** fixed V-window (5/7 window features are proxies; `win_dur`
 0.995 > `dis_duration` 0.972); self-referenced normalisation (0.075; B0018 `cv_I_slope` reference
@@ -198,7 +222,15 @@ per-cell label offset. **R3-C6 closed.**
 
 | path | content |
 |---|---|
-| `round3_phase1/round4_report_to_advisor.md` | **the Round 4 report — ready to send** (25 GitHub links verified HTTP 200) |
+| `round3_phase1/round4_progress_report.md` | **Round 4 progress report (corrected-protocol results, before/after table, 2 figures, humanized) — ready for Dom's PDF + advisor email** |
+| `round3_phase1/round4_structural_verify.py` | structural suite: 25 checks (S1 3-fold count, S2 disjoint, S2b within completeness, S3/S4/S5 feature guards); exit 1 on drift |
+| `round3_phase1/r4_ridge_probe.py` | selection-free ridge probe (Clean-8 finding, Section 1.1 evidence) |
+| `round3_phase1/round4_report_to_advisor.md` | the earlier Round 4 report (protocol description; superseded by `round4_progress_report.md` for the results tables) |
+| `round3_phase1/r4_fig_clean_sets.png`, `r4_fig_b0006_c7_c8.png` | report figures (from `phase3_charge_r4_*.csv`) |
+| `round3_phase1/td_proxy_audit_r4full5_results.csv` | TD-All / Proxy-Free / Oracle, 5 seeds, true lobo3 |
+| `round3_phase1/phase3_charge_r4_results.csv` | Clean-6*(631r) / Clean-7 / Clean-8, 5 seeds, true lobo3 |
+| `round3_phase1/phase4_cs2_{within,transfer,adapt1,adapt2}_full.csv` | corrected Clean-6T 4 arms (with `val_battery` column) |
+| `round3_phase1/td_clean_cpu_results.csv` | Clean-4 / Clean-6 (636-row set), 5 seeds, true lobo3 |
 | `round3_phase1/r3c9_citation_verification.md` | 13 papers × value/unit/protocol/proxy/quartile table |
 | `round3_phase1/PROJECT_STATE.md` | phase map, two axes, 210-check ledger, bug log (Phases 1–3) |
 | `round3_phase1/round3_status_for_advisor.md` | R3-C1…C9 compliance + Phases 1–4 (superseded by the Round 4 report but kept) |
@@ -340,18 +372,26 @@ check the metric before believing it (R² dies when the test range collapses).
 
 | item | status |
 |---|---|
-| Advisor's reply on the thesis title | **the only blocker left** — Ch.2 and the Ch.1 title wait on it |
+| **Send the Round 4 progress report** | Dom: read + Antigravity PDF + advisor email — the immediate next action |
+| Advisor Round 5 reply | direction choice (charge-side vs domain-shift) + CS2 inner-rotation answer |
+| Advisor's reply on the thesis title | the only Ch.1/Ch.2 blocker (carried) |
 | Quartile confirmation (JCR/SJR) | before the final thesis PDF (provisional list in `r3c9_citation_verification.md`) |
 | Per-point EIS frequency | open limitation; ask dataset authors — advisor decision |
-| Transfer learning (Part K) | still gated: needs the advisor to accept the root-cause finding |
-| Ch. 2 Literature Review | ready to draft — table source is `r3c9_citation_verification.md` |
+| Transfer learning (Part K) | superseded by the Round 4 domain-shift finding — now an advisor-direction item |
+| Ch. 2 Literature Review | ready to draft — table source is `r3c9_citation_verification.md`; waits on title |
 | CS2_8 / CS2_21 anomalies | noted in the summary; CALCE's condition table is not machine-readable — low priority |
 
 ---
 
 ## 14. What the next session should do
 
-This section is a mutable legacy transition section. The authoritative next-session handoff is Section 3. Update or remove this section after the first verified post-migration session.
+**Round 5 session (thesis/research).** The authoritative handoff is Section 3. Expected state: the
+advisor has received the Round 4 progress report (`round4_progress_report.md`) and replied. Read the
+Round 5 comment from `Comment Prof and Report/Comment Prof/` first — the next direction is the
+advisor's choice between (a) charge-side features, (b) domain-shift mitigation (start with the
+target-range observation in §5), (c) other models for protocol consistency, or (d) thesis writing.
+Do not start any of these before reading the reply. If no reply exists, the session can only do
+low-risk maintenance (suite re-run, link checks).
 
 ---
 
@@ -436,4 +476,7 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-08 — Session handoff/pruning template updated; Round 3 remains closed and Round 4 is the current pending advisor round. Final report workflow and Antigravity handoff rules added.*
+*Last updated: 2026-10-10 — Round 4 complete: 6 advisor items verified, corrected-protocol re-runs
+committed, structural suite 25/25, progress report drafted and humanized (`round4_progress_report.md`,
+commit `db47f1d`). Next: Dom sends the report; Round 5 = advisor's chosen direction. Headline numbers
+in §5 are the corrected-protocol values.*
