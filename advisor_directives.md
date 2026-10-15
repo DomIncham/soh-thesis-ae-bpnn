@@ -257,3 +257,57 @@ Full table: `Autoencoder/round3_phase1/r3c9_citation_verification.md`. Summary o
 
 **Ch.2 citation table is UNBLOCKED.** Advisor email now has one question left (title phrasing).
 Quartiles: confirm on JCR/SJR before finalising the thesis PDF (approximate list in the file).
+
+---
+
+## Round 5 (Source: `Comment Prof and Report/Comment Prof/Round 5 Advisor Comment.txt`, received 2026-10-15)
+
+**Status:** ⏳ ACTIVE. Advisor's verdict on Round 4: the corrected nested LOBO results are much
+clearer; **Clean-7 replaces Clean-8 as the current strongest proxy-audited feature set** (agreed).
+The domain-shift/range-alignment direction is named as the next research direction — NOT further
+AE optimization or broad model expansion — but only after the two consistency checks below.
+
+### R5-C1: CALCE selection must use rotated battery-wise validation (answers the report §3 question)
+"Yes, please also use rotated battery-wise validation for the CALCE-related selection stages, so
+that the model-selection protocol is consistent throughout the study. The outer test battery/cell
+must remain untouched, and the validation score should be aggregated across the available
+source-training batteries before the final refit."
+→ Change: CALCE selection stages (within / transfer / adapt1 / adapt2) rotate the inner validation
+over the available source-training batteries (like NASA lobo3), aggregate the validation score,
+then refit on the full pool and test on the untouched battery. Rerun all CALCE arms.
+
+### R5-C2: Test Clean-5T (new feature set) vs Clean-6T on cross-dataset transfer
+"Since Clean-7 is now stronger than Clean-8, the corresponding CALCE-compatible feature set should
+also be tested. Please evaluate **Clean-5T = Clean-7 minus the two unavailable temperature
+features** (dis_mean_T, ch_mean_T), and compare it directly with the current Clean-6T. This will
+tell us whether t_40_41, which no longer improves the corrected NASA result, also affects
+cross-dataset transfer."
+→ Clean-5T = {dis_V_slope, cc_dur, cv_dur, cv_I_slope, ic_peak_V} — a NEW 5-feature set
+(Clean-6T minus t_40_41; Clean-6T = Clean-7 − temps + t_40_41). S4 proxy-ban still applies.
+
+### R5-C3: Revise the transfer-failure interpretation
+"The residual transfer failure is consistent with domain/range shift, but it has not yet been
+proven to be caused by domain shift. Also note that removing the two proxy-equivalent features
+greatly improved the transfer result, so they appear to have amplified the cross-domain mismatch
+even though they were not necessary for within-CALCE performance."
+→ Report wording must use "consistent with", not "caused by"; add the proxy-amplification
+observation (transfer median −37 → −2.8 when the two proxies were removed, while within-CALCE
+median stayed 0.589 → 0.573).
+
+### R5-C4: Correct the B0006 inner-fold description in report §1.1
+"When B0006 is the outer test battery, B0006 must not appear in any inner training or validation
+fold." The report §1.1 currently describes the B0006 outer fold with a single inner validation
+battery (B0005) and says B0006 "is one of the three training batteries in the other two inner
+folds" — that is an incorrect description of a rotated inner loop. Verify the implementation and
+the recorded CSV, fix the description, and add a structural check that the outer battery is absent
+from every inner train/val set.
+
+### R5-C5: Deliverable and next direction
+"After these final consistency checks, send me the updated comparison only. If the cross-dataset
+gap remains, the next research direction will focus on domain-shift/range-alignment analysis,
+rather than additional AE optimization or broad model expansion."
+→ Report = updated comparison table only (Clean-5T vs Clean-6T, rotated-selection CALCE results,
+B0006 correction). If the gap remains → domain-shift/range-alignment direction (start with the
+target-range observation, report §6 point 2).
+
+*Last updated: 2026-10-15 — Round 5 appended (2 rerun items + 2 text corrections + deliverable).*
