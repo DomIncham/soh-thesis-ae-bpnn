@@ -7,12 +7,23 @@
 # S4 proxy-ban applies: dis_duration and dis_mean_V must not appear in FEATS.
 # Usage: python phase5_cs2_clean5t.py --smoke   # 1 seed, tiny budget (mechanics check)
 #        python phase5_cs2_clean5t.py           # 5 seeds, full budget (CPU, est ~60-90 min)
-import argparse, itertools, os, sys
+import argparse, itertools, os, sys, time
 import numpy as np
 import pandas as pd
 import torch
 import r3common as rc
 from sklearn.preprocessing import MinMaxScaler
+
+T_START = time.time()
+_FITS_DONE = 0
+
+
+def prog(msg):
+    """Console progress line with elapsed time (printed for every rotation, so the user
+    running in CMD can see the process moving and estimate completion)."""
+    el = time.time() - T_START
+    print(f"[{int(el // 3600):02d}:{int(el % 3600 // 60):02d}:{int(el % 60):02d} elapsed] {msg}",
+          flush=True)
 
 FEATS = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"]  # Clean-5T
 ROOM = ["B0005", "B0006", "B0007", "B0018"]
@@ -57,7 +68,12 @@ def pools():
 
 
 def select_ep(dims, l2, Xf, yf, Xv, yv, seed, bp_max, pat):
-    """One candidate's early-stopping epoch on the validation fold (None = diverged)."""
+    """One candidate's early-stopping epoch on the validation fold (None = diverged).
+    Emits a progress line every 5 fits so the CMD window shows liveness + elapsed time."""
+    global _FITS_DONE
+    _FITS_DONE += 1
+    if _FITS_DONE % 5 == 0:
+        prog(f"fits done: {_FITS_DONE} | {int(_FITS_DONE*3.6/60)} fit-min est")
     mu, sd = yf.mean(), yf.std()
     try:
         bp, ep = rc.fit_bpnn_ep([Xf.shape[1]] + dims, l2, Xf, (yf - mu) / sd, Xv,
@@ -211,6 +227,8 @@ def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag):
                     _, dims, l2, ep, _ = min(ok, key=lambda c: c[0])
                 m_fit = np.isin(bc, pool_cells)
                 m_te = bc == test_i
+                prog(f"[within s{seed}] cell {test_name} selection done "
+                     f"(cfg {dims}/l2={l2}, ep {ep}) -> refit+eval")
                 sc2 = MinMaxScaler().fit(Xc[m_fit])
                 mu2, sd2 = yc[m_fit].mean(), yc[m_fit].std()
                 try:
