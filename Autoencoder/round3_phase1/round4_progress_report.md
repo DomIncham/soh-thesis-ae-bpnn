@@ -65,7 +65,13 @@ that this is a property of the data, not an implementation error:
 
 1. The inner-validation RMSE ranks Clean-8 best (3.69 vs 4.55 for Clean-7 on the B0006 fold,
    mean over seeds), while its outer-test R² on the same fold is the worst (0.44 vs 0.63). The
-   feature helps predict the training batteries but not the held-out one.
+   feature helps predict the training batteries but not the held-out one. Note that the
+   inner-validation RMSE here is computed on the one inner validation fold that is available for
+   B0006 (validation battery B0005, mean over the five seeds): when B0006 is the outer test
+   battery it never appears in any inner training or validation fold, so exactly one of the
+   three inner folds (validate B0005, train B0007+B0018) excludes both B0006 and the held-out
+   cell structure required by the rotated design. A structural check (S6, added this round)
+   now asserts that the outer battery is absent from every inner train/val set.
 2. The drop concentrates on B0006 (Clean-8 minus Clean-7 spans −0.008 to −0.36 across the five
    seeds, negative in all five); on the other three batteries the mean difference is small and
    positive (0.006 to 0.043).
@@ -105,13 +111,18 @@ its statistic, the within row reports mean and median):
 
 The main change is in the explanation rather than the direction. After the correction,
 within-CALCE performance stays close to the 8-feature median (0.573 vs 0.589), so the two
-removed features were not carrying most of the accuracy. For transfer, the model does not cross the datasets because
-the target ranges do not overlap: NASA training SOH spans 57–101% while CALCE CS2 spans
+removed features were not carrying most of the accuracy. For transfer, the failure is
+consistent with domain/range shift, but it has not been proven to be caused by domain shift.
+One new observation does support the shift reading: removing the two proxy-equivalent features
+greatly improved the transfer result (room-pool median −37.1 → −2.8) while within-CALCE
+performance barely moved (median 0.589 → 0.573), so those features appear to have amplified
+the cross-domain mismatch even though they were not necessary for within-CALCE performance.
+The target ranges still do not overlap: NASA training SOH spans 57–101% while CALCE CS2 spans
 87–113%, and five of the six features fall outside the NASA min–max range on a large share
 of CS2 cycles (cc_dur exceeds the NASA maximum on 93% of CS2 rows; cv_dur sits below the NASA
-minimum on 62%; ic_peak_V below it on 41%; t_40_41 above the maximum on 37%). Under the
-corrected feature set this is the plain statement: NASA→CALCE transfer is not viable without
-target-range alignment or domain adaptation.
+minimum on 62%; ic_peak_V below it on 41%; t_40_41 above the maximum on 37%). The plain
+statement stands: NASA→CALCE transfer is not viable without target-range alignment or domain
+adaptation.
 
 ## 3. Source-model validation procedure
 

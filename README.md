@@ -31,9 +31,10 @@ NASA DataSet/                      # Raw datasets, ignored by Git
 ## Important Files
 
 ```text
-advisor_directives.md              # Advisor directives and methodology constraints
+advisor_directives.md              # Advisor directives and methodology constraints (active rounds)
 active_experiment.md               # Current session handoff and state card
-advisor_rounds/                     # Round index and historical advisor records
+advisor_rounds/                     # Round index, per-round records, and the Rounds 1-2 archive
+                                    # (advisor_directives_archive.md lives here, not at the root)
 end_to_end_research_workflow_v2.md # End-to-end research workflow
 E2E Research Workflow.html         # HTML version of workflow
 README.md                          # Repository overview
@@ -88,7 +89,7 @@ After Git is initialized and connected to GitHub:
 
 ```bash
 git status
-git add .
+git add <explicit paths>   # never git add . or git add -A: stage explicit paths only
 git commit -m "Describe the research update"
 git push
 ```

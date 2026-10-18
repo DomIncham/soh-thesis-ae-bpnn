@@ -113,6 +113,27 @@ if os.path.exists("phase4_cs2_within_full.csv"):
         check("S2b within: val_battery column", False,
               "column missing - rerun with the val_battery patch")
 
+# ---- S6 (Round 5, R5-C4): outer battery absent from every inner train/val set ----------------
+# Structural assertion on the recorded fold outputs: in the selection stage the outer test
+# battery must not appear in any fit_batteries list (inner train) or val_battery column.
+import re
+if os.path.exists("phase3_charge_r4_results.csv"):
+    d6 = pd.read_csv("phase3_charge_r4_results.csv")
+    sel = d6[d6.stage == "pre_refit"] if "stage" in d6.columns else d6
+    viol = 0
+    for _, row in sel.iterrows():
+        fb = row.get("fit_batteries")
+        if isinstance(fb, str):
+            names = re.findall(r"B\d{4}", fb)
+            outer = str(row.get("test_battery", "")).strip()
+            if outer and (outer in names or str(row.get("val_battery", "")).strip() == outer):
+                viol += 1
+    check("S6 outer battery absent from inner train/val", viol == 0,
+          f"{len(sel)} selection rows inspected, {viol} violations")
+else:
+    check("S6 outer battery absent from inner train/val", False,
+          "phase3_charge_r4_results.csv not found")
+
 print()
 if FAILS:
     print(f"STRUCTURAL VERIFICATION FAILED: {len(FAILS)} check(s): {FAILS}")

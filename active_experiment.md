@@ -31,12 +31,12 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 5 — R5-C1..C5 transcribed into `advisor_directives.md` (commit `448d03b`)
-- Current work phase: Round-5 execution — steps 1–3 complete (directives, B0006 leak probe, Clean-5T runner); **full run DONE (2026-10-18): all 4 arms complete — transfer 80/80, within 40/40, adapt1 80/80, adapt2 80/80, 5 seeds each, NaN R² = 0**
-- Current objective: remaining step = build the Clean-5T vs Clean-6T comparison table from the CSVs, fix report §1.1 (B0006 fold wording per R5-C4), revise CS2 interpretation (R5-C3: "consistent with, not proven caused by" + proxy-amplification evidence), write round5 comparison report, update handoff, commit+push
-- Current blocker: none — full run finished; the report edits are pending Capi work in the next session
+- Current advisor round: Round 5 — all five items executed; report drafted
+- Current work phase: Round-5 close-out — full run done; report §1.1 (R5-C4) and CS2 interpretation (R5-C3) fixed; S6 check added (suite 26/26); `round5_comparison_report.md` written + humanized; awaiting Dom's PDF conversion + advisor email
+- Current objective: Dom converts `round5_comparison_report.md` to PDF in Antigravity and emails the advisor; next direction = domain-shift/range-alignment analysis (awaiting advisor confirmation, not started)
+- Current blocker: none for Capi; waiting on advisor reply after delivery
 - Thesis drafting: out of scope this round; advisor asked for "the updated comparison only"
-- Key verified result so far (transfer arm, seed-mean R² per CS2 cell): C5T still strongly negative everywhere (e.g. CS2_8 −100.6, CS2_21 −10.9) but **better than C6T on most cells** (C6T: −8.4 to −102.5, mostly worse); within C5T mean 0.208 / median 0.581 vs C6T 0.158 / 0.573 (40-row and 80-row full sets, 5 seeds) — gap remains, consistent with R5-C5 domain-shift direction
+- Key verified result (R5-C2 answer, seed-mean R², 5 seeds): within C5T 0.208/0.581 vs C6T 0.158/0.573 (equal or slightly better); transfer room C5T −32.3 vs C6T −14.3 (worse without t_40_41, 6/8 cells); all13 C5T −65.2 vs C6T −92.3 (better, still non-viable); adapt1 −225 vs −437; adapt2 −13.1 vs −3.5. Gap remains under both sets → consistent with R5-C5 domain-shift direction. t_40_41 helps room-pool transfer — opposite of the anticipated direction; reported as measured.
 
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
@@ -48,7 +48,15 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 
 ### Completed
 
-- **Round 5 progress (2026-10-15/18):**
+- **Round 5 close-out (2026-10-18, this session):**
+  - Report §1.1 B0006 wording fixed (R5-C4): states the outer battery never appears in any inner train/val fold; references the new S6 check.
+  - S6 check added to `round4_structural_verify.py` (outer battery absent from every inner train/val set; first version used a wrong heuristic and false-failed 15/60, fixed to use the recorded `test_battery` column). Suite now **26/26 PASS**.
+  - CS2 interpretation revised (R5-C3): "consistent with, not proven caused by" + proxy-amplification evidence (transfer room median −37.1 → −2.8 with the two proxies removed; within 0.589 → 0.573).
+  - `round5_comparison_report.md` written (comparison-only per R5-C5), numbers re-derived from the four C5T CSVs and the four C6T CSVs; humanize pass clean (no AI-isms); GitHub links point at files committed in this session (verify after push).
+  - Runner verified against R5-C1/R5-C2 line-by-line (rotated selection, 5-feature Clean-5T, S4 proxy-ban assert, untouched outer battery, refit-on-full-pool); CSVs complete (280 rows, 5 seeds, NaN R² = 0).
+  - Housekeeping: duplicate root `advisor_directives_archive.md` removed (identical content; single home is `advisor_rounds/`); `advisor_rounds/round_04_record.md` + `round_05_record.md` created; `advisor_rounds/README.md` index updated; root `README.md` git-workflow line changed from `git add .` to explicit paths.
+  - Selection honesty: degenerate/fallback rates recorded per arm in the report (within 22/40 fallback, transfer all13 16/40, room 0/40, adapt 16/80 each).
+- **Round 5 earlier steps (2026-10-15/18):**
   - R5 comment transcribed into `advisor_directives.md` as R5-C1..C5 (commit `448d03b`); original file untouched.
   - R5-C4 leak probe: dynamic spy proof — the 3 inner fit targets during a real run equal {B0005,B0007,B0018} exactly, B0006 never appears; code correct, so the fix is textual in report §1.1 (commit `271352d`); structural suite 25/25 pass.
   - R5-C2/R5-C1 Clean-5T runner `phase5_cs2_clean5t.py` (Clean-7 minus `t_40_41` = 5 features) with rotated battery-wise selection per R5-C1 for all 4 arms; smoke pass; two bugs fixed pre-run (bc cell-vs-bid id, resume key stability) (commit `d05da4c`, ETA lines `c732a39`).
@@ -57,10 +65,9 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 
 ### Unresolved (Round 5)
 
-- Report §1.1 B0006 wording fix (R5-C4) — text-only, pending.
-- CS2 interpretation revision (R5-C3) — "consistent with, not proven caused by" + proxy-amplification evidence, pending.
-- Clean-5T vs Clean-6T comparison table + `advisor_round_05_final_report.md` + humanize pass, pending.
-- Update these CSV paths into the artifact map; commit+push the 4 result CSVs.
+- Dom: read `round5_comparison_report.md`, convert to PDF in Antigravity, email the advisor.
+- Advisor: Round 6 reply (domain-shift direction confirmation).
+- Do NOT start domain-shift/range-alignment experiments before the advisor confirms.
 
 - **All 6 advisor items closed and verified (2026-10-10, commits `aea8cf4..e2ea3a9` + report `70d7a7b..db47f1d`).**
 - Item 1 (nested LOBO): two real bugs fixed in `r3common.run_fold` — the lobo3 branch rotated inner folds over only 2 batteries (B0006 never validated) and selection was not aggregated over 3 folds. Now: 3-fold rotation, mean-val-RMSE selection, refit on 3, tested on outer. Empirically enumerated for all 4 outer folds; S1 spy check = 3.
@@ -108,7 +115,7 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 
 ### First action
 
-- Ask Dom whether the advisor email was sent and whether a Round 5 reply exists in `Comment Prof and Report/Comment Prof/`; if yes, read it before anything else.
+- Dom: convert `Autoencoder/round3_phase1/round5_comparison_report.md` to PDF in Antigravity and email the advisor. Next session: check for a Round 6 reply in `Comment Prof and Report/Comment Prof/` before anything else.
 
 ### Required files
 
@@ -490,7 +497,7 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-10 — Round 4 complete: 6 advisor items verified, corrected-protocol re-runs
-committed, structural suite 25/25, progress report drafted and humanized (`round4_progress_report.md`,
-commit `db47f1d`). Next: Dom sends the report; Round 5 = advisor's chosen direction. Headline numbers
-in §5 are the corrected-protocol values.*
+*Last updated: 2026-10-18 — Round 5 close-out: full run verified (280 rows), R5-C3/C4 report edits
+done, S6 added (suite 26/26), `round5_comparison_report.md` written + humanized, housekeeping done
+(archive duplicate removed, round records created, READMEs updated). Next: Dom converts to PDF and
+emails the advisor; domain-shift direction awaits Round 6 confirmation.*
