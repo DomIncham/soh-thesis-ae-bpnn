@@ -31,10 +31,12 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 5 — all five items executed; report drafted
-- Current work phase: Round-5 close-out — full run done; report §1.1 (R5-C4) and CS2 interpretation (R5-C3) fixed; S6 check added (suite 26/26); `round5_comparison_report.md` written + humanized; awaiting Dom's PDF conversion + advisor email
-- Current objective: Dom converts `round5_comparison_report.md` to PDF in Antigravity and emails the advisor; next direction = domain-shift/range-alignment analysis (awaiting advisor confirmation, not started)
-- Current blocker: none for Capi; waiting on advisor reply after delivery
+- Current advisor round: Round 5 — CLOSED on our side (report delivered); awaiting advisor's Round 6 reply
+- Current work phase: idle/waiting — PDF is DONE (Antigravity, from `round5_comparison_report.md`); Dom sends the email when ready; no Capi work pending
+- Current objective: send the Round 5 PDF to the advisor; next session = Round 6 (start by checking `Comment Prof and Report/Comment Prof/` for a Round 6 reply)
+- Current blocker: none — waiting on the advisor's reply is the only pending state
+- Thesis drafting: still out of scope until the advisor answers the title question and confirms the next direction
+- Key verified result (unchanged): same-protocol C5T vs C6T-rotated — within 0.208/0.581 vs 0.137/0.576; transfer room medians −8.8/−7.1 with sign-switching seed deltas (no feature direction); adapt2 C6T better on all 8 cells (−9.9 vs −13.1) → t_40_41 helps warm-start; gap stands → domain-shift direction confirmed. Suite 34/34 (S6+S7).
 - Thesis drafting: out of scope this round; advisor asked for "the updated comparison only"
 - Key verified result (R5-C2 answer, SAME-PROTOCOL comparison, seed-mean R², 5 seeds): within C5T 0.208/0.581 vs C6T-rotated 0.137/0.576 (equal or slightly better without t_40_41); transfer room medians close (−8.8 vs −7.1) with per-seed deltas swinging sign (−109…+152) → no direction attributable to the feature; adapt2 the one consistent signal: C6T better on ALL 8 cells (−9.9 vs −13.1 mean) → t_40_41 carries useful signal for warm-start fine-tuning; all pools deeply negative under both sets → gap stands, R5-C5 domain-shift direction confirmed. C6T fully re-run under rotated selection (R5-C1 compliance); suite extended with S7 (8 CSV completeness) → 34/34 PASS.
 
@@ -46,86 +48,63 @@ When a new advisor round starts, update these fields. Never leave a previous rou
 
 Record only the latest session's handoff. Do not paste full logs or historical detail here.
 
-### Completed
+### Completed (Round 5, 2026-10-15 → 2026-10-18 — final)
 
-- **Round 5 close-out (2026-10-18, this session):**
-  - Report §1.1 B0006 wording fixed (R5-C4): states the outer battery never appears in any inner train/val fold; references the new S6 check.
-  - S6 check added to `round4_structural_verify.py` (outer battery absent from every inner train/val set; first version used a wrong heuristic and false-failed 15/60, fixed to use the recorded `test_battery` column). Suite now **26/26 PASS**.
-  - CS2 interpretation revised (R5-C3): "consistent with, not proven caused by" + proxy-amplification evidence (transfer room median −37.1 → −2.8 with the two proxies removed; within 0.589 → 0.573).
-  - `round5_comparison_report.md` written (comparison-only per R5-C5), numbers re-derived from the four C5T CSVs and the four C6T CSVs; humanize pass clean (no AI-isms); GitHub links point at files committed in this session (verify after push).
-  - Runner verified against R5-C1/R5-C2 line-by-line (rotated selection, 5-feature Clean-5T, S4 proxy-ban assert, untouched outer battery, refit-on-full-pool); CSVs complete (280 rows, 5 seeds, NaN R² = 0).
-  - Housekeeping: duplicate root `advisor_directives_archive.md` removed (identical content; single home is `advisor_rounds/`); `advisor_rounds/round_04_record.md` + `round_05_record.md` created; `advisor_rounds/README.md` index updated; root `README.md` git-workflow line changed from `git add .` to explicit paths.
-  - Selection honesty: degenerate/fallback rates recorded per arm in the report (within 22/40 fallback, transfer all13 16/40, room 0/40, adapt 16/80 each).
-- **Round 5 earlier steps (2026-10-15/18):**
-  - R5 comment transcribed into `advisor_directives.md` as R5-C1..C5 (commit `448d03b`); original file untouched.
-  - R5-C4 leak probe: dynamic spy proof — the 3 inner fit targets during a real run equal {B0005,B0007,B0018} exactly, B0006 never appears; code correct, so the fix is textual in report §1.1 (commit `271352d`); structural suite 25/25 pass.
-  - R5-C2/R5-C1 Clean-5T runner `phase5_cs2_clean5t.py` (Clean-7 minus `t_40_41` = 5 features) with rotated battery-wise selection per R5-C1 for all 4 arms; smoke pass; two bugs fixed pre-run (bc cell-vs-bid id, resume key stability) (commit `d05da4c`, ETA lines `c732a39`).
-  - **Full run complete (Dom, CPU, 2026-10-18):** `phase5_cs2_{transfer,within,adapt1,adapt2}_c5t_full.csv` — 80/40/80/80 rows, seeds {42,7,99,123,2024}, NaN R² = 0 in all arms.
-  - Preliminary comparison (seed-mean per cell, full sets): transfer C5T still negative everywhere (CS2_8 −100.6, CS2_21 −10.9) but above C6T on most cells (C6T −8.4…−102.5); within C5T mean 0.208 / median 0.581 vs C6T 0.158 / 0.573. Cross-dataset gap persists → consistent with R5-C5.
-
-### Unresolved (Round 5)
-
-- Dom: read `round5_comparison_report.md`, convert to PDF in Antigravity, email the advisor.
-- Advisor: Round 6 reply (domain-shift direction confirmation).
-- Do NOT start domain-shift/range-alignment experiments before the advisor confirms.
-
-- **All 6 advisor items closed and verified (2026-10-10, commits `aea8cf4..e2ea3a9` + report `70d7a7b..db47f1d`).**
-- Item 1 (nested LOBO): two real bugs fixed in `r3common.run_fold` — the lobo3 branch rotated inner folds over only 2 batteries (B0006 never validated) and selection was not aggregated over 3 folds. Now: 3-fold rotation, mean-val-RMSE selection, refit on 3, tested on outer. Empirically enumerated for all 4 outer folds; S1 spy check = 3.
-- Item 2 (Clean-6T): advisor was right — all 4 CS2 scripts still carried `dis_duration`+`dis_mean_V`. Corrected to 6 features (`dis_V_slope, cc_dur, cv_dur, cv_I_slope, t_40_41, ic_peak_V`); S4 structural check guards it.
-- Item 3 (selection disjoint): transfer + adapt1 refit on the FULL pool after disjoint selection (matching within/adapt2/run_fold); `val_battery` recorded in all CS2 CSVs; within dedupes on save.
-- Item 4 (structural suite): `round4_structural_verify.py` — 25/25 PASS (S1 3-fold count, S2 disjoint, S2b within completeness + val≠test, S3 declared==fed, S4 proxy ban, S5 identical lists), exits 1 on drift.
-- Item 5 (AE): untouched (git-verified). Item 6: before/after table produced; no next-round experiments started.
-- Full corrected re-runs completed (Dom, CPU, ~3.5 h): NASA proxy_audit 5 seeds, charge (Clean-6*/7/8), CS2 4 arms; all fresh files committed.
-- Round 4 progress report drafted, humanized (4 audit passes: overclaim=0, -ly adverbs stripped, causal wording hedged), every number tied to a committed CSV, 19 GitHub links verified against the git tree.
+- R5-C1: rotated battery-wise selection implemented in `phase5_cs2_clean5t.py` and applied to ALL CALCE arms — Clean-5T AND Clean-6T re-run (8 CSVs, 560 rows, seeds {42,7,99,123,2024}, NaN R² = 0). Dom ran both full jobs on CPU.
+- R5-C2: same-protocol comparison in `round5_comparison_report.md` — within C5T 0.208/0.581 vs C6T 0.137/0.576; transfer room medians −8.8/−7.1 with sign-switching per-seed deltas (−109…+152) → no feature direction claimed; adapt2 is the one consistent signal (C6T better on all 8 cells, −9.9 vs −13.1 → t_40_41 helps warm-start); every transfer/adaptation pool stays negative → gap stands.
+- R5-C3: interpretation revised to "consistent with, not proven caused by" + proxy-amplification evidence (Round 4: transfer room median −37.1 → −2.8 with the two proxies removed; within 0.589 → 0.573).
+- R5-C4: report §1.1 B0006 wording fixed; structural check S6 added (outer battery absent from every inner train/val set) — suite extended with S7 (8-CSV completeness) → **34/34 PASS**.
+- R5-C5: `round5_comparison_report.md` = comparison-only deliverable; all 8 result CSVs linked (verified HTTP 200); humanized (final grep: no intensifiers, first person, claims tied to numbers). PDF produced in Antigravity 2026-10-18.
+- Housekeeping: duplicate root `advisor_directives_archive.md` removed (single home = `advisor_rounds/`); `round_04_record.md` + `round_05_record.md` created; `advisor_rounds/README.md` + root `README.md` updated (`git add .` → explicit paths); runner label fixed to print the actual feature-set label.
 
 ### Evidence
 
-- Report: `Autoencoder/round3_phase1/round4_progress_report.md` (+ `r4_fig_clean_sets.png`, `r4_fig_b0006_c7_c8.png`, `r4_ridge_probe.py`)
-- Corrected results (all committed): `td_proxy_audit_r4full5_results.csv` (TD-All 0.923, ProxyFree 0.874, Oracle 0.655), `td_clean_cpu_results.csv` (Clean-4 −0.349, Clean-6 0.601), `phase3_charge_r4_results.csv` (C6* 0.735, C7 0.807, C8 0.776), `phase4_cs2_{within,transfer,adapt1,adapt2}_full.csv` (within 0.158/med 0.573; transfer room −14.3/all13 −92.3; adapt1 −437/adapt2 −3.49)
-- Old-protocol "before" numbers preserved at commits `c5ddbd4` (CS2 arms) and `af1d278` (NASA Clean sets, proxy_audit 3 seeds)
-- Suite: `round4_structural_verify.py` — 25/25 PASS (2026-10-10)
+- Report: `Autoencoder/round3_phase1/round5_comparison_report.md` (head `fac700e`)
+- Results: `phase5_cs2_{within,transfer,adapt1,adapt2}_{c5t,c6t}_full.csv` (8 files, committed `aad8c1d`)
+- Suite: `round4_structural_verify.py` 34/34 PASS (S1–S7, 2026-10-18)
+- Round records: `advisor_rounds/round_04_record.md`, `advisor_rounds/round_05_record.md`
+- Earlier-session detail: git history (`448d03b`, `271352d`, `d05da4c`, `173da58`, `a6e7818`, `d74f38d`, `aad8c1d`)
 
 ### Decisions
 
-- **New finding (verified, not a bug):** Clean-8 0.776 < Clean-7 0.807 under the corrected protocol — the old 0.810 > 0.772 gain from `t_40_41` does not survive 3-fold rotation. Evidence: inner-val RMSE ranks C8 best while its test R² on B0006 is worst (0.44 vs 0.63); drop is B0006-specific (all 5 seeds negative); ridge probe (no selection) shows no gain. Clean-7 is now the strongest proxy-audited set.
-- Inner "single" branch kept only for bit-identical Phase 1 reproduction (explicit arg).
-- CS2 selection uses one seed-drawn validation battery (NOT rotated) — flagged to the advisor in the report §3 as an open interpretation question (rerun cost ~1 h if the advisor wants rotation).
-- adapt1 (scratch) vs adapt2 (warm) use different adaptation scales — kept as designed, per-arm definitions.
-- Seeds: NASA {42,7,123,2024,11}; CS2 {42,7,99,123,2024} — each family matches its own committed baseline.
+- Comparison uses ONLY same-protocol numbers; Round 4 single-val-battery C6T numbers are labelled not comparable and excluded.
+- No transfer direction attributed to t_40_41 (seed deltas sign-switch; medians close) — only the adapt2 (warm-start) direction is claimed, with all-8-cells support.
+- Fallback/degenerate rates disclosed per arm in the report rather than hidden.
 
 ### Unresolved
 
-- Dom: read the report draft, convert to PDF in Antigravity, email the advisor.
-- Advisor: Round 5 reply (direction choice + CS2 rotation answer + title).
+- Dom: email the Round 5 PDF to the advisor (PDF is done).
+- Advisor: Round 6 reply — domain-shift/range-alignment confirmation.
 - Title answer (carried); Ch.2 waits.
+- Do NOT start domain-shift experiments before the advisor confirms.
 
-### Files changed
+### Files changed (this round)
 
-- Code: `r3common.py`, `phase4_cs2_{within,transfer,adapt1,adapt2}.py`, `td_proxy_audit.py`, `round4_structural_verify.py` (new), `r4_ridge_probe.py` (new)
-- Results: `td_clean_cpu_results.csv`, `td_proxy_audit_r4full5_*.csv`, `phase3_charge_r4_*.csv`, `phase4_cs2_*_full.csv` (4 files)
-- Report: `round4_progress_report.md` + 2 figures
+- New: `phase5_cs2_clean5t.py`, 8 result CSVs, `round5_comparison_report.md`, `advisor_rounds/round_04_record.md`, `advisor_rounds/round_05_record.md`
+- Edited: `round4_progress_report.md` (§1.1 + CS2 interpretation), `round4_structural_verify.py` (S6+S7), `advisor_rounds/README.md`, root `README.md`, `active_experiment.md`, `phase5_cs2_clean5t.py` (label fix)
+- Removed: root `advisor_directives_archive.md` (duplicate)
 
 ### Verification
 
-- Structural suite 25/25 PASS (exit 0, 2026-10-10). In-process reproduction of one transfer and one adapt1 selection matches the committed CSVs exactly. All report numbers re-derived from CSVs in the final audit.
+- Structural suite 34/34 PASS (2026-10-18). All report numbers re-derived from the 8 CSVs by script. All 8 CSV GitHub links + report link verified HTTP 200 after push. Humanize grep clean.
 
 ### Objective
 
-- Send the Round 4 progress report to the advisor; await Round 5 direction.
+- Deliver the Round 5 PDF to the advisor; open Round 6 from his reply.
 
-### First action
+### First action (next session = Round 6)
 
-- Dom: convert `Autoencoder/round3_phase1/round5_comparison_report.md` to PDF in Antigravity and email the advisor. Next session: check for a Round 6 reply in `Comment Prof and Report/Comment Prof/` before anything else.
+- Check `Comment Prof and Report/Comment Prof/` for a Round 6 reply BEFORE anything else. If it exists: transcribe into `advisor_directives.md` as R6-C1… (original untouched), then plan under PAEV. Expected direction: domain-shift/range-alignment analysis (start from the target-range observation). If no reply: low-risk maintenance only (suite re-run, link checks).
 
 ### Required files
 
-- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round4_progress_report.md` (the verified results + before/after table), `round4_structural_verify.py`.
+- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round5_comparison_report.md`, `round4_structural_verify.py`.
 
 ### Stop conditions
 
 - Stop before a major experiment, protocol change, feature-policy change, or thesis-direction change unless a PAEV plan has been approved.
 - Stop if a result cannot be tied to its row set, unit, protocol, feature set, and source artifact.
-- Round 4 headline numbers are now the corrected-protocol values in the report; do not quote the pre-correction numbers (0.490 / 0.810 / −0.59 etc.) without the "before" label.
+- Quote same-protocol numbers only; the Round 4 single-val-battery C6T values are "old protocol" and must not be mixed into Round 5 comparisons.
 
 ## 4. Where we are
 
@@ -393,8 +372,8 @@ check the metric before believing it (R² dies when the test range collapses).
 
 | item | status |
 |---|---|
-| **Send the Round 4 progress report** | Dom: read + Antigravity PDF + advisor email — the immediate next action |
-| Advisor Round 5 reply | direction choice (charge-side vs domain-shift) + CS2 inner-rotation answer |
+| **Send the Round 5 comparison report** | PDF done (2026-10-18); Dom emails it — the immediate next action |
+| Advisor Round 6 reply | domain-shift/range-alignment confirmation |
 | Advisor's reply on the thesis title | the only Ch.1/Ch.2 blocker (carried) |
 | Quartile confirmation (JCR/SJR) | before the final thesis PDF (provisional list in `r3c9_citation_verification.md`) |
 | Per-point EIS frequency | open limitation; ask dataset authors — advisor decision |
@@ -406,13 +385,13 @@ check the metric before believing it (R² dies when the test range collapses).
 
 ## 14. What the next session should do
 
-**Round 5 session (thesis/research).** The authoritative handoff is Section 3. Expected state: the
-advisor has received the Round 4 progress report (`round4_progress_report.md`) and replied. Read the
-Round 5 comment from `Comment Prof and Report/Comment Prof/` first — the next direction is the
-advisor's choice between (a) charge-side features, (b) domain-shift mitigation (start with the
-target-range observation in §5), (c) other models for protocol consistency, or (d) thesis writing.
-Do not start any of these before reading the reply. If no reply exists, the session can only do
-low-risk maintenance (suite re-run, link checks).
+**Round 6 session.** The authoritative handoff is Section 2. Expected state: the advisor has
+received the Round 5 comparison report (`round5_comparison_report.md`, PDF done 2026-10-18) and
+replied. Check `Comment Prof and Report/Comment Prof/` for a Round 6 comment FIRST — if it exists,
+transcribe it into `advisor_directives.md` (R6-C1…, original untouched) and plan under PAEV before
+any experiment. The likely direction (pending the advisor's words) is domain-shift/range-alignment
+analysis, starting from the target-range observation. If no reply exists, do low-risk maintenance
+only (suite re-run, link checks, title reminder email).
 
 ---
 
@@ -497,7 +476,7 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-18 — Round 5 close-out: full run verified (280 rows), R5-C3/C4 report edits
-done, S6 added (suite 26/26), `round5_comparison_report.md` written + humanized, housekeeping done
-(archive duplicate removed, round records created, READMEs updated). Next: Dom converts to PDF and
-emails the advisor; domain-shift direction awaits Round 6 confirmation.*
+*Last updated: 2026-10-18 (final) — Round 5 CLOSED on our side: rotated selection on BOTH feature
+sets (8 CSVs), same-protocol comparison in `round5_comparison_report.md`, suite 34/34 (S6+S7), PDF
+done in Antigravity. Next: Dom emails the PDF; Round 6 session starts by checking
+`Comment Prof and Report/Comment Prof/` for the advisor's reply.*
