@@ -134,6 +134,26 @@ else:
     check("S6 outer battery absent from inner train/val", False,
           "phase3_charge_r4_results.csv not found")
 
+# ---- S7 (Round 5): phase5 CSVs complete + correctly labelled feature sets --------------------
+import numpy as _np
+C5T = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"]
+C6T = C5T + ["t_40_41"]
+SEEDS5 = {7, 42, 99, 123, 2024}
+for arm in ["within", "transfer", "adapt1", "adapt2"]:
+    for tag, want_n in [("c5t_full", 5), ("c6t_full", 6)]:
+        f = f"phase5_cs2_{arm}_{tag}.csv"
+        if not os.path.exists(f):
+            check(f"S7 {arm} {tag} exists", False, "file missing")
+            continue
+        d = pd.read_csv(f)
+        n_seed = d.seed.nunique()
+        seeds_ok = set(d.seed.unique()) == SEEDS5
+        expect = 40 if arm == "within" else 80
+        nan_ok = int(d.R2.isna().sum()) == 0
+        check(f"S7 {arm} {tag} complete ({expect} rows, 5 seeds, no NaN)",
+              len(d) == expect and seeds_ok and nan_ok,
+              f"rows={len(d)}, seeds={n_seed}, NaN={int(d.R2.isna().sum())}")
+
 print()
 if FAILS:
     print(f"STRUCTURAL VERIFICATION FAILED: {len(FAILS)} check(s): {FAILS}")

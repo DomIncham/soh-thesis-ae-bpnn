@@ -25,7 +25,9 @@ def prog(msg):
     print(f"[{int(el // 3600):02d}:{int(el % 3600 // 60):02d}:{int(el % 60):02d} elapsed] {msg}",
           flush=True)
 
-FEATS = ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"]  # Clean-5T
+import ast as _ast
+FEATS = _ast.literal_eval(os.environ.get("CLEAN_FEATS",
+    '["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"]'))  # default Clean-5T
 ROOM = ["B0005", "B0006", "B0007", "B0018"]
 SEEDS = [42, 123, 2024, 7, 99]
 ADAPT1_EP, ADAPT2_EP = 40, 30
@@ -258,9 +260,11 @@ def main():
     rc.set_device(args.device)
     seeds = [42] if args.smoke else SEEDS
     bp_max, pat = (60, 10) if args.smoke else (300, 20)
-    tag = "smoke" if args.smoke else "c5t_full"
+    tag = "smoke" if args.smoke else ("c6t_full" if FEATS != ["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"] else "c5t_full")
     nasa, cs2 = pools()
-    print(f"Clean-5T features: {FEATS}")
+    _label = "Clean-6T" if "t_40_41" in FEATS and len(FEATS) == 6 else (
+        "Clean-5T" if len(FEATS) == 5 and "t_40_41" not in FEATS else "CUSTOM feature set")
+    print(f"[_label: {_label}] features: {FEATS}")
     print(f"NASA pool {len(nasa)} rows; CS2 pool {len(cs2)} rows, {cs2.battery.nunique()} cells")
     for arm in args.arms.split(","):
         out = run_arm(arm.strip(), nasa, cs2, seeds, bp_max, pat, tag)
