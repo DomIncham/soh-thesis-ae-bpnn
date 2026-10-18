@@ -14,9 +14,24 @@ I re-ran both feature sets under this protocol (eight result files). The structu
 now also checks result-file completeness (S7) and passes 34/34.
 
 Code: [`phase5_cs2_clean5t.py`](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_clean5t.py)
-(Clean-5T by default; Clean-6T via the `CLEAN_FEATS` environment variable). Results: eight
-CSVs, `{within,transfer,adapt1,adapt2}_c5t_full.csv` and `{...}_c6t_full.csv`, under
-`Autoencoder/round3_phase1/`.
+(Clean-5T by default; Clean-6T via the `CLEAN_FEATS` environment variable).
+
+Result files (each CSV has one row per cell × seed, with cfg, sel_epochs, MAE, RMSE, R²;
+`MAE`/`RMSE` are on the capacity scale):
+
+Clean-5T:
+- [phase5_cs2_within_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_within_c5t_full.csv) (40 rows)
+- [phase5_cs2_transfer_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_transfer_c5t_full.csv) (80 rows: room + all-13 pools)
+- [phase5_cs2_adapt1_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_adapt1_c5t_full.csv) (80 rows)
+- [phase5_cs2_adapt2_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_adapt2_c5t_full.csv) (80 rows)
+
+Clean-6T:
+- [phase5_cs2_within_c6t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_within_c6t_full.csv) (40 rows)
+- [phase5_cs2_transfer_c6t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_transfer_c6t_full.csv) (80 rows: room + all-13 pools)
+- [phase5_cs2_adapt1_c6t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_adapt1_c6t_full.csv) (80 rows)
+- [phase5_cs2_adapt2_c6t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_adapt2_c6t_full.csv) (80 rows)
+
+All eight files live under `Autoencoder/round3_phase1/`.
 
 ## Feature sets (R5-C2)
 
@@ -64,19 +79,19 @@ Per-cell detail (mean R², 5 seeds, same protocol both columns):
 3. Warm adaptation (adapt2) is the one case with a direction on every cell: Clean-6T is
    better on all 8 cells (mean −9.9 vs −13.1). So t_40_41 does carry signal for warm-start
    fine-tuning.
-4. Every transfer and adaptation pool stays deeply negative under both feature sets. The
-   cross-dataset gap stands.
+4. Transfer and adaptation stay negative in every pool under both feature sets (means from
+   −9.9 to −443.7). The cross-dataset gap stands.
 5. The Round 4 interpretation is unchanged: the failure is consistent with domain/range
    shift (the target ranges do not overlap), not proven to be caused by it. Removing the two
    proxy-equivalent features (dis_duration, dis_mean_V) improved transfer while within-CALCE
-   performance stayed at the same level (median 0.589 → 0.573 in Round 4), so those two
-   features amplified the cross-domain mismatch.
+   performance stayed at about the same level (median 0.589 → 0.573 in Round 4), so those
+   two features amplified the cross-domain mismatch.
 
 ## Selection fallback rates
 
-During rotated selection many candidates diverge before the epoch budget; the runner then
-falls back to the best diverged candidate retrained for a fixed 200 epochs. Counts come from
-the per-row columns in the CSVs (Clean-5T / Clean-6T):
+Some candidates diverge before the epoch budget is reached. When that happens the runner
+falls back to the best diverged candidate, retrained for a fixed 200 epochs. Counts below
+come from the per-row columns in the CSVs (Clean-5T / Clean-6T):
 
 | Arm | rows with ≥1 diverged candidate | rows on the fixed-200-epoch fallback |
 |---|---|---|
@@ -85,9 +100,9 @@ the per-row columns in the CSVs (Clean-5T / Clean-6T):
 | transfer all-13 | 40/40 / 40/40 | 16/40 / 16/40 |
 | adapt1, adapt2 | 64/80 each, both sets | 16/80 each, both sets |
 
-Most NASA-pool rows sit on the fallback path. This is recorded per row and is a property of
-fitting BPNNs on the shifted NASA ranges; it does not change the conclusion that transfer
-fails under both feature sets.
+Most NASA-pool rows sit on this fallback path. The counts are recorded per row. The likely
+cause is fitting BPNNs on the shifted NASA ranges; either way it does not change the
+conclusion that transfer fails under both feature sets.
 
 Structural verification covers both result sets (S7: 8 CSVs, row counts, seeds, no NaN);
 the suite passes 34/34.
