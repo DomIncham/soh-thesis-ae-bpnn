@@ -59,16 +59,21 @@ per-cell means averaged over the 8 CS2 cells.
 1. Within-CALCE: Clean-5T is equal or slightly better than Clean-6T (median 0.573 → 0.581),
    so t_40_41 is not needed for within-CALCE accuracy — consistent with the NASA finding
    that it no longer improves the corrected result.
-2. Cross-dataset transfer: removing t_40_41 makes the room-pool transfer clearly worse
-   (per-cell means drop from −7.7…−14.3 to −28.9…−43.5 on six of eight cells) and makes
-   warm adaptation worse (−3.5 → −13.1), while the all-13 pool and scratch adaptation improve
-   somewhat but remain deeply negative. So on the room pool, t_40_41 helps transfer rather
-   than hurting it — the opposite of the direction your question anticipated. The cross-dataset
-   gap remains under both feature sets.
+2. Cross-dataset transfer: the Clean-5T room-pool per-cell means are lower than the Clean-6T
+   values (−28.9…−43.5 vs −7.7…−14.3 on six of eight cells) and warm adaptation is also lower
+   (−13.1 vs −3.5), while the all-13 pool and scratch adaptation improve but remain deeply
+   negative. We flag two comparability caveats before any direction is read into this:
+   (a) the Clean-6T numbers were produced under the previous single-validation-battery
+   selection, so the two columns differ in both feature set and selection protocol;
+   (b) the per-seed difference is not stable (per-seed room-pool mean deltas: −45.4, −33.7,
+   −7.7, −3.8, +0.5), so with five seeds we cannot attribute the room-pool difference to the
+   feature change itself. The cross-dataset gap remains large under both feature sets, which
+   is the conclusion that matters for the next direction.
 3. The Round 4 interpretation stands unchanged: the failure is consistent with domain/range
    shift (target ranges do not overlap), and the two proxy-equivalent features
    (dis_duration, dis_mean_V) are the ones whose removal improved transfer — they appear to
-   have amplified the cross-domain mismatch, while t_40_41 did not.
+   have amplified the cross-domain mismatch. No direction is claimed for t_40_41 (see the
+   comparability caveats above).
 
 ## Selection honesty note
 

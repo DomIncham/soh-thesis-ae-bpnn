@@ -36,7 +36,7 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 - Current objective: Dom converts `round5_comparison_report.md` to PDF in Antigravity and emails the advisor; next direction = domain-shift/range-alignment analysis (awaiting advisor confirmation, not started)
 - Current blocker: none for Capi; waiting on advisor reply after delivery
 - Thesis drafting: out of scope this round; advisor asked for "the updated comparison only"
-- Key verified result (R5-C2 answer, seed-mean R², 5 seeds): within C5T 0.208/0.581 vs C6T 0.158/0.573 (equal or slightly better); transfer room C5T −32.3 vs C6T −14.3 (worse without t_40_41, 6/8 cells); all13 C5T −65.2 vs C6T −92.3 (better, still non-viable); adapt1 −225 vs −437; adapt2 −13.1 vs −3.5. Gap remains under both sets → consistent with R5-C5 domain-shift direction. t_40_41 helps room-pool transfer — opposite of the anticipated direction; reported as measured.
+- Key verified result (R5-C2 answer, seed-mean R², 5 seeds): within C5T 0.208/0.581 vs C6T 0.158/0.573 (equal or slightly better); transfer room C5T −32.3 vs C6T −14.3 (worse without t_40_41, 6/8 cells); all13 C5T −65.2 vs C6T −92.3 (better, still non-viable); adapt1 −225 vs −437; adapt2 −13.1 vs −3.5. Gap remains under both sets → consistent with R5-C5 domain-shift direction. t_40_41 transfer delta is NOT attributable to the feature: (a) C6T numbers came from the OLD single-val-battery selection (protocol confound with R5-C1), (b) per-seed room deltas unstable (−45.4…+0.5). Report now states both caveats; no direction claimed for t_40_41.
 
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
