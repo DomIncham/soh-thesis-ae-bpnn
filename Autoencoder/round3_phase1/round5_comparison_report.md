@@ -50,7 +50,7 @@ battery) are not comparable and I did not use them.
 |---|---|---|---|---|
 | Within-CALCE LOCO (8 cells) | mean / median | 0.137 / 0.576 | 0.208 / 0.581 | Clean-5T equal or better |
 | Frozen NASA → CALCE (room pool) | mean / median | −19.2 / −7.1 | −32.3 / −8.8 | medians close; means not stable |
-| Frozen NASA → CALCE (all-13 pool) | mean / median | −72.7 / −44.3 | −65.2 / −52.1 | both deeply negative |
+| Frozen NASA → CALCE (all-13 pool) | mean / median | −72.7 / −44.3 | −65.2 / −52.1 | negative in both |
 | One-cell scratch (adapt1) | mean / median | −443.7 / −30.9 | −225.2 / −34.5 | both non-viable |
 | One-cell warm (adapt2) | mean / median | −9.9 / −4.2 | −13.1 / −5.9 | Clean-6T better on all 8 cells |
 
