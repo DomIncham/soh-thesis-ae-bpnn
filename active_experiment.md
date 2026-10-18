@@ -31,12 +31,12 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 4 — **all 6 items answered and verified (2026-10-10); progress report drafted and committed (`round4_progress_report.md`), awaiting Dom's PDF conversion + email to advisor**
-- Current work phase: Round-4 corrections COMPLETE (code + full runs + structural suite + report draft); waiting on advisor's Round 5 reply
-- Current objective: send the Round 4 progress report to the advisor, then start Round 5 per the advisor's chosen direction (charge-side features vs domain-shift)
-- Current blocker: the report draft awaits Dom's read-through + Antigravity PDF conversion + advisor email; one open interpretation question sits in the report for the advisor (CS2 inner rotation)
-- Thesis drafting: still out of scope (advisor item 6 gates it); Ch.2 waits on the title answer
-- Item 5 (AE): nothing to do — matches the existing negative-result decision (untouched, git-verified)
+- Current advisor round: Round 5 — R5-C1..C5 transcribed into `advisor_directives.md` (commit `448d03b`)
+- Current work phase: Round-5 execution — steps 1–3 complete (directives, B0006 leak probe, Clean-5T runner); **full run DONE (2026-10-18): all 4 arms complete — transfer 80/80, within 40/40, adapt1 80/80, adapt2 80/80, 5 seeds each, NaN R² = 0**
+- Current objective: remaining step = build the Clean-5T vs Clean-6T comparison table from the CSVs, fix report §1.1 (B0006 fold wording per R5-C4), revise CS2 interpretation (R5-C3: "consistent with, not proven caused by" + proxy-amplification evidence), write round5 comparison report, update handoff, commit+push
+- Current blocker: none — full run finished; the report edits are pending Capi work in the next session
+- Thesis drafting: out of scope this round; advisor asked for "the updated comparison only"
+- Key verified result so far (transfer arm, seed-mean R² per CS2 cell): C5T still strongly negative everywhere (e.g. CS2_8 −100.6, CS2_21 −10.9) but **better than C6T on most cells** (C6T: −8.4 to −102.5, mostly worse); within C5T mean 0.208 / median 0.581 vs C6T 0.158 / 0.573 (40-row and 80-row full sets, 5 seeds) — gap remains, consistent with R5-C5 domain-shift direction
 
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
@@ -47,6 +47,20 @@ When a new advisor round starts, update these fields. Never leave a previous rou
 Record only the latest session's handoff. Do not paste full logs or historical detail here.
 
 ### Completed
+
+- **Round 5 progress (2026-10-15/18):**
+  - R5 comment transcribed into `advisor_directives.md` as R5-C1..C5 (commit `448d03b`); original file untouched.
+  - R5-C4 leak probe: dynamic spy proof — the 3 inner fit targets during a real run equal {B0005,B0007,B0018} exactly, B0006 never appears; code correct, so the fix is textual in report §1.1 (commit `271352d`); structural suite 25/25 pass.
+  - R5-C2/R5-C1 Clean-5T runner `phase5_cs2_clean5t.py` (Clean-7 minus `t_40_41` = 5 features) with rotated battery-wise selection per R5-C1 for all 4 arms; smoke pass; two bugs fixed pre-run (bc cell-vs-bid id, resume key stability) (commit `d05da4c`, ETA lines `c732a39`).
+  - **Full run complete (Dom, CPU, 2026-10-18):** `phase5_cs2_{transfer,within,adapt1,adapt2}_c5t_full.csv` — 80/40/80/80 rows, seeds {42,7,99,123,2024}, NaN R² = 0 in all arms.
+  - Preliminary comparison (seed-mean per cell, full sets): transfer C5T still negative everywhere (CS2_8 −100.6, CS2_21 −10.9) but above C6T on most cells (C6T −8.4…−102.5); within C5T mean 0.208 / median 0.581 vs C6T 0.158 / 0.573. Cross-dataset gap persists → consistent with R5-C5.
+
+### Unresolved (Round 5)
+
+- Report §1.1 B0006 wording fix (R5-C4) — text-only, pending.
+- CS2 interpretation revision (R5-C3) — "consistent with, not proven caused by" + proxy-amplification evidence, pending.
+- Clean-5T vs Clean-6T comparison table + `advisor_round_05_final_report.md` + humanize pass, pending.
+- Update these CSV paths into the artifact map; commit+push the 4 result CSVs.
 
 - **All 6 advisor items closed and verified (2026-10-10, commits `aea8cf4..e2ea3a9` + report `70d7a7b..db47f1d`).**
 - Item 1 (nested LOBO): two real bugs fixed in `r3common.run_fold` — the lobo3 branch rotated inner folds over only 2 batteries (B0006 never validated) and selection was not aggregated over 3 folds. Now: 3-fold rotation, mean-val-RMSE selection, refit on 3, tested on outer. Empirically enumerated for all 4 outer folds; S1 spy check = 3.
