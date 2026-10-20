@@ -1,0 +1,21 @@
+Dear Dom,
+Thank you. The Round 5 comparison is clear, and I think the protocol and feature-set comparison are now sufficiently consistent for us to move to the next research question.
+For the main zero-shot cross-dataset analysis, please use Clean-5T as the primary proxy-audited feature set. Clean-6T can remain as an ablation, especially for adaptation experiments, because t_40_41 still appears to help the warm-adaptation case even though it is not needed for within-CALCE estimation.
+Before proceeding, please correct one wording point in the report. The NASA SOH range (57–101%) and CALCE range (87–113%) are not completely non-overlapping; they partially overlap from approximately 87–101%. Please describe this as a substantial range mismatch with partial overlap, rather than “the target ranges do not overlap.”
+The next stage should be:
+Round 6 — Domain-Shift Diagnosis and Range-Alignment Analysis
+Please first diagnose the source of the NASA→CALCE failure before applying more complex adaptation methods.
+1. Compare the NASA and CALCE distributions of each Clean-5T feature. Report the range overlap, distribution shift, and the percentage of CALCE samples falling outside the NASA training range.
+2. Perform a diagnostic evaluation only on the common SOH range, approximately 87–101%. This is not a final performance result; it is intended to determine how much of the transfer failure comes from SOH-range extrapolation.
+3. Separate CALCE samples into those inside and outside the NASA feature support and compare their prediction errors. This will help determine whether feature-range extrapolation is driving the failure.
+4. Add one simple deterministic baseline, such as Ridge regression, using exactly the same Clean-5T features and protocol. This is only to check whether the transfer failure is specific to BPNN instability or is a broader domain-shift problem. Please do not expand this into a large model-comparison study.
+5. After the diagnosis, test range/domain alignment in increasing levels of target information:
+   - source-only scaling alternatives first;
+   - unsupervised target-domain feature alignment using only target training cells, never the held-out test cell;
+   - simple one-cell output calibration before trying additional neural-network fine-tuning.
+Please keep the current rotated battery-wise validation and outer-test isolation unchanged.
+One additional point: the selection fallback rate is still relatively high, including within-CALCE runs. Therefore, please do not attribute the divergence/fallback behavior only to NASA→CALCE domain shift. Record the fallback rate in the next experiments and keep the estimator configuration as controlled as possible so that model-selection instability does not become a confounding factor.
+For the next report, I would like to see a compact progression:
+raw transfer → common-range diagnosis → feature-support diagnosis → simple baseline → range/domain alignment
+The purpose of Round 6 is to identify why transfer fails and then determine how much of that gap can be recovered with the simplest defensible alignment method.
+Please do not return to AE optimization or broad feature/model expansion at this stage.

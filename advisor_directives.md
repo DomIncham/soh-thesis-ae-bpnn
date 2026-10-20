@@ -310,4 +310,56 @@ rather than additional AE optimization or broad model expansion."
 B0006 correction). If the gap remains → domain-shift/range-alignment direction (start with the
 target-range observation, report §6 point 2).
 
-*Last updated: 2026-10-15 — Round 5 appended (2 rerun items + 2 text corrections + deliverable).*
+*Last updated: 2026-10-15 — Round 5 appended (2 rerun items + 2 text corrections + deliverable).*---
+
+## Round 6 (Source: `Comment Prof and Report/Comment Prof/Round 6 Advisor Comment.txt`, received 2026-10-20)
+
+**Status:** ⏳ ACTIVE. Advisor's verdict on Round 5: the protocol and feature-set comparison are
+sufficiently consistent; move to the next research question. Round 6 = **Domain-Shift Diagnosis
+and Range-Alignment Analysis**.
+
+### R6-C0: Feature-set policy for the zero-shot cross-dataset analysis
+- **Clean-5T = primary proxy-audited feature set** for the main zero-shot cross-dataset analysis.
+- **Clean-6T remains as an ablation**, especially for adaptation experiments — t_40_41 still helps
+  the warm-adaptation case (adapt2: C6T better on all 8 cells) even though it is not needed for
+  within-CALCE estimation.
+
+### R6-C1: Wording correction — range overlap
+The report must NOT say "the target ranges do not overlap." NASA SOH 57–101% and CALCE 87–113%
+**partially overlap at approximately 87–101%**. Correct phrasing: "a substantial range mismatch
+with partial overlap." Applies wherever the range-mismatch claim appears.
+
+### R6-C2: Diagnosis BEFORE adaptation (ordered, the Round 6 core)
+1. **Feature distribution comparison** — NASA vs CALCE per Clean-5T feature: range overlap,
+   distribution shift, and % of CALCE samples outside the NASA training range.
+2. **Common-SOH-range diagnostic** — evaluate only on the ~87–101% overlap band. NOT a final
+   performance result; purpose = how much of the transfer failure is SOH-range extrapolation.
+3. **Feature-support split** — CALCE samples inside vs outside the NASA feature support;
+   compare prediction errors per group → is feature-range extrapolation driving the failure?
+4. **Simple deterministic baseline** — Ridge on exactly the same Clean-5T features and protocol.
+   Only to check whether the failure is BPNN-specific instability or a broader domain-shift
+   problem. **Do not expand into a large model-comparison study.**
+5. **Range/domain alignment in increasing levels of target information:**
+   (a) source-only scaling alternatives first;
+   (b) unsupervised target-domain feature alignment — target TRAINING cells only, never the
+       held-out test cell;
+   (c) simple one-cell output calibration before any additional NN fine-tuning.
+
+### R6-C3: Protocol invariants (unchanged)
+- Rotated battery-wise validation and outer-test isolation stay exactly as in Round 5.
+- Keep the estimator configuration as controlled as possible.
+
+### R6-C4: Fallback-rate disclosure (new standing requirement)
+The selection fallback rate is still relatively high, including within-CALCE runs. Therefore:
+- do NOT attribute divergence/fallback behavior only to NASA→CALCE domain shift;
+- record the fallback rate in every Round 6 experiment;
+- keep selection instability from becoming a confounding factor.
+
+### R6-C5: Report format — compact progression
+raw transfer → common-range diagnosis → feature-support diagnosis → simple baseline →
+range/domain alignment. Purpose: identify WHY transfer fails, then how much of the gap the
+simplest defensible alignment method recovers. Do not return to AE optimization or broad
+feature/model expansion at this stage.
+
+*Last updated: 2026-10-21 — Round 6 appended (R6-C0…C5: Clean-5T primary, overlap wording,
+diagnosis-first sequence, fallback-rate requirement, progression report format).*
