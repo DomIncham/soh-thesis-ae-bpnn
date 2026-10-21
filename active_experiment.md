@@ -430,38 +430,29 @@ Keep the final Markdown source with the research work so it is easy to update al
 Use this unchanged prompt at the start of every new research, coding, experiment, verification, or thesis session:
 
 ```text
-Load the `soh-research` skill first.
-Read these two live files with explicit offset/limit pagination:
-1. `C:\Master Degree\Thesis\advisor_directives.md`
-2. `C:\Master Degree\Thesis\active_experiment.md`
+Be honest in your response: state uncertainty and failures truthfully.
 
-This is a combined reasoning + implementation/coding session. If the current state says thesis writing is active, include thesis drafting; otherwise follow the current scope in `active_experiment.md`.
-Continue from the latest session handoff in `active_experiment.md`.
-Do not assume that any particular advisor round, phase, blocker, or work type is pending, active, or complete; read the current state from the state card and source files.
-Do not infer advisor requirements that are not present in the source files.
+Session = combined reasoning + coding (scope per active_experiment.md §1). Read ONCE at session start, then proceed without re-reading:
+1. `C:\Master Degree\Thesis\advisor_directives.md` — only the current round's section (use offset/limit).
+2. `C:\Master Degree\Thesis\active_experiment.md` — §1–2 (current state + latest handoff).
+Re-read only if the file was modified this session, or context compression dropped content (then read only the needed line window). Do not reload skills/files repeatedly per action.
+Do not assume any round, phase, blocker, or work type is pending/active/complete — take it from the state card. Do not infer advisor requirements not present in the source files.
 
-Before acting:
-1. State the current objective, blocker, and smallest useful next step.
-2. Decide whether the task is reasoning, coding, verification, or a combination.
-3. Load only the specific workflow section, summary, script, data contract, or verification file needed for that step.
-4. If a file is over 200 lines, find headings first and read only the relevant line window.
+Before acting: state objective + blocker + smallest useful next step; load only the specific workflow section, script, data contract, or verification file that step needs; if a file is over 200 lines, find headings first and read only the relevant window.
 
 During work:
-- Keep reasoning and coding in the same session.
 - Follow PAEV: plan → approval when required → execute → verify → ablation log if applicable → commit/push.
-- Do not start a major experiment, change protocol, change feature policy, or change advisor/thesis direction without an explicit plan and approval.
-- Small maintenance, targeted inspection, smoke tests, and verification may proceed directly.
-- Never use `git add -A`; stage explicit paths only.
+- Do not start a major experiment, change protocol, feature policy, or advisor/thesis direction without an explicit approved plan; small maintenance, targeted inspection, smoke tests, and verification may proceed directly.
+- Never `git add -A`; stage explicit paths only.
 - Preserve row-set, unit, protocol, feature set, and proxy labels next to every metric.
 - Never overwrite original advisor comment files.
 
 At the end:
-1. Verify the real output or test result.
-2. Update `active_experiment.md` as the latest handoff: current state, completed work, evidence, decisions, unresolved items, changed files, verification, next action, required files, and stop conditions.
+1. Verify the real output, test result, or research decision.
+2. Update `active_experiment.md` §2 as the latest handoff (current state, completed work, evidence, decisions, unresolved items, changed files, verification, next action, required files, stop conditions) — factual and concise, no full logs.
 3. If a final advisor-round report was completed, verify its GitHub links and complete the humanize check before handing the `.md` to Antigravity.
-4. Keep the handoff factual and concise; do not copy full logs or historical detail.
-5. Commit and push verified work using explicit paths.
-6. Report the next session's smallest useful action.
+4. Commit and push verified work using explicit paths.
+5. Report the next session's smallest useful action.
 ```
 
 ### Loading rules for this mode
@@ -476,6 +467,7 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-21 — Round 6 ACTIVE: comment received 2026-10-20, transcribed into
-`advisor_directives.md` (R6-C0…C5); round record created; PAEV plan P6-0…P6-6 awaiting Dom's
-approval. No Round 6 experiment has run yet.*
+*Last updated: 2026-10-21 — §15 session-start prompt rewritten to the read-once-per-session
+rule (with Dom's approval) to cut token cost and stop repeated reloading. Round 6 ACTIVE: comment
+received 2026-10-20, transcribed into `advisor_directives.md` (R6-C0…C5); round record created;
+PAEV plan P6-0…P6-6 awaiting Dom's approval. No Round 6 experiment has run yet.*
