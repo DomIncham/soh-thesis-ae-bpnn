@@ -32,15 +32,14 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
 - Current advisor round: Round 6 — ACTIVE (comment received 2026-10-20, transcribed into `advisor_directives.md` §Round 6 as R6-C0…C5)
-- Current work phase: Round 6 planning — comment transcribed + round record created + interpretation/plan delivered to Dom; experiments NOT started (PAEV plan awaiting Dom's approval)
+- Current work phase: PAEV plan APPROVED (2026-10-21); P6-H0/P6-0/P6-1 done and pushed; next = P6-2 (`--dump-preds` patch to `phase5_cs2_clean5t.py` + rerun transfer arm)
 - Current objective: Domain-Shift Diagnosis and Range-Alignment Analysis — diagnose WHY NASA→CALCE transfer fails before any adaptation; then recover as much gap as possible with the simplest defensible alignment
-- Current blocker: PAEV plan awaiting Dom's approval before any Round 6 experiment runs
+- Current blocker: P6-2 full rerun needs Dom to launch the transfer-arm training (GPU/CPU, ~10 fold-seed runs)
 - Thesis drafting: still out of scope until the advisor answers the title question
-- Key constraint (R6-C0): Clean-5T = primary set for zero-shot cross-dataset; Clean-6T = ablation, mainly adaptation arms (t_40_41 helps warm-start)
-- Wording fix required (R6-C1): `round5_comparison_report.md` line 85 says "the target ranges do not overlap" — must become "a substantial range mismatch with partial overlap (~87–101%)"; PDF re-export needed in Antigravity
-- Standing requirement (R6-C4): record the selection fallback rate in every Round 6 experiment; do not attribute divergence/fallback only to domain shift
+- Key constraint (R6-C0): Clean-5T = primary for all diagnosis/ladder steps; Clean-6T = ablation arm only at ladder step (c)/fine-tune (P6-5b, optional, last)
+- Wording fix (R6-C1): DONE — fixed in `round5_comparison_report.md` line 85 AND the same phrase found+fixed in `round4_progress_report.md` lines 106/120; grep "do not overlap" now clean; Dom still owes PDF re-export in Antigravity
+- Standing requirement (R6-C4): record the selection fallback rate in every Round 6 experiment (column `sel_degenerate` exists in Round 5 CSVs; new R6 CSVs carry explicit fallback columns)
 - Report format (R6-C5): compact progression raw transfer → common-range diagnosis → feature-support diagnosis → simple baseline → range/domain alignment
-
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
 ## 2. Previous Session Handoff
@@ -49,59 +48,64 @@ When a new advisor round starts, update these fields. Never leave a previous rou
 
 Record only the latest session's handoff. Do not paste full logs or historical detail here.
 
-### Completed (Round 6 opening, 2026-10-21)
+### Completed (Round 6 execution day 1, 2026-10-21)
 
-- Round 6 comment found in `Comment Prof and Report/Comment Prof/Round 6 Advisor Comment.txt` (received 2026-10-20; original file untouched).
-- Transcribed into `advisor_directives.md` as §Round 6 (R6-C0 feature-set policy, R6-C1 overlap wording, R6-C2 diagnosis-first sequence 1–5, R6-C3 protocol invariants, R6-C4 fallback-rate requirement, R6-C5 progression report format) with updated Last-updated line.
-- Created `advisor_rounds/round_06_record.md` (item-by-item status, all NOT STARTED).
-- Full interpretation + PAEV plan (P6-0…P6-6) delivered to Dom in chat; awaiting approval.
-- Located the exact R6-C1 violation: `Autoencoder/round3_phase1/round5_comparison_report.md` line 85 ("the target ranges do not overlap").
+- Approved PAEV plan P6-H0...P6-6 (two revisions: Clean-6T placed as optional P6-5b ablation at ladder step (c)/fine-tune; P6-2 redefined from "filter old CSVs" to "rerun transfer arm with per-cycle prediction dump" after the Round 5 CSVs proved aggregate-only).
+- P6-H0: restored 8 accidentally deleted PDFs/TXT under `Comment Prof and Report/`; staged Round 5 logs/smoke CSVs + `generate_round5_pdf.py`.
+- P6-0 (R6-C1): wording fixed in `round5_comparison_report.md` line 85 AND the same violation found and fixed in `round4_progress_report.md` lines 106 + 120. Repo-wide grep "do not overlap"/"non-overlap": clean. Committed + pushed.
+- P6-1 (R6-C2.1): `phase6_feature_shift.py` run (CPU). Outputs: `phase6_feature_shift.csv`, `phase6_feature_hist.png` (visually checked), `phase6_feature_shift_summary.md`. Committed + pushed.
 
 ### Evidence
 
-- `advisor_directives.md` §Round 6 (366 lines total)
-- `advisor_rounds/round_06_record.md` (new)
-- Source: `Comment Prof and Report/Comment Prof/Round 6 Advisor Comment.txt` (21 lines)
-- Round 5 state (unchanged): report `round5_comparison_report.md` (head `fac700e`), 8 CSVs (`aad8c1d`), suite 34/34
+- Feature-shift results (NASA = phase4_features.csv include_cell dropna, 14 cells, 1,046 rows; CALCE = phase4_cs2_features.csv include_cell & cap_ok dropna, 8 cells, 4,947 rows; Clean-5T features; raw units from the Phase 4 extractors):
+  - `cc_dur`: 93.4% of CALCE above NASA max (KS 0.934, Wasserstein/range 0.87) — largest shift
+  - `cv_I_slope`: 99.8% outside (37.5% below + 62.3% above; KS 0.623)
+  - `cv_dur`: 84.6% below NASA min (CALCE median CV much shorter); KS 0.845
+  - `ic_peak_V`: 41.6% below NASA min; `dis_V_slope`: 0.08% outside but KS 0.588 (shift within range)
+  - All KS p < 1e-239. Conclusion: severe feature-range extrapolation, consistent with the R6 hypothesis; distribution evidence only — error attribution waits for P6-3.
+- Round 5 CSVs are aggregate (1 row per battery: MAE/RMSE/R2/sel_degenerate) — no per-cycle predictions, hence the P6-2 rerun decision.
 
 ### Decisions
 
-- No experiment started: R6-C2 sequence and the fallback-rate instrumentation need Dom's PAEV approval first.
-- P6-2 (common-range diagnostic) planned to REUSE Round 5 CSV rows (filter to SOH 87–101%) instead of retraining — to be confirmed in the sub-plan.
-- "Inside/outside feature support" definition (per-feature min–max vs multivariate) to be fixed in a sub-plan before P6-3 runs.
+- Clean-6T enters only as P6-5b (optional ablation arm at ladder (c)+fine-tune, compared directly against Round 5 adapt2_C6T); all diagnosis/ladder steps use Clean-5T only.
+- P6-2 method: patch `phase5_cs2_clean5t.py` with `--dump-preds` (per-cycle y_true/y_pred for the transfer arm), smoke, then Dom reruns `--full` transfer arm (2 pools x 5 seeds); verify gate = aggregate MAE/RMSE/sel_degenerate/sel_epochs must match `phase5_cs2_transfer_c5t_full.csv` exactly, else stop.
+- Fallback rate for Round 5 = derived from the existing `sel_degenerate` column; new R6 scripts emit explicit fallback columns from the start (R6-C4).
+- P6-3 support definition (pre-fixed, confirm at sub-plan): primary = per-feature strict min-max (inside = within NASA range on ALL 5 features); secondary = fraction-of-features-outside continuity.
 
 ### Unresolved
 
-- Dom: approve the P6-0…P6-6 plan (or modify); then P6-1 diagnosis script is the first run.
-- Dom: re-export the Round 5 PDF after the P6-0 wording fix (or fold the fix into the Round 6 report cycle).
+- Dom: re-export the Round 5 PDF in Antigravity (wording fix already committed).
+- Dom: launch the P6-2 transfer rerun (`--full`) after smoke passes.
 - Title answer (carried); Ch.2 waits.
-- Fallback-rate columns must be added to every Round 6 CSV (R6-C4) before the first experiment.
 
 ### Files changed (this session)
 
-- Edited: `advisor_directives.md` (appended §Round 6)
-- New: `advisor_rounds/round_06_record.md`, `active_experiment.md` (this handoff)
+- `Autoencoder/round3_phase1/round5_comparison_report.md` (R6-C1 fix), `round4_progress_report.md` (2 more R6-C1 fixes)
+- New: `phase6_feature_shift.py`, `phase6_feature_shift.csv`, `phase6_feature_hist.png`, `phase6_feature_shift_summary.md`
+- Restored: 8 report PDFs/TXT under `Comment Prof and Report/`; added Round 5 run logs + smoke CSVs + `generate_round5_pdf.py`
+- Commits: `0aee5e1`, `888d1eb`, `eca3737` (all pushed to main)
 
 ### Verification
 
-- Round 6 comment read in full (21 lines); transcription checked against the original line by line; no inferred directives beyond the source text.
-- R6-C1 violation confirmed present at report line 85 via search.
+- Repo-wide grep "do not overlap"/"does not overlap"/"non-overlap": clean outside this state card.
+- Histogram figure visually inspected: NASA min/max guides consistent with reported % outside.
+- Row sets stated next to every P6-1 metric.
 
 ### Objective
 
-- Execute Round 6: diagnose the NASA→CALCE transfer failure (range vs feature-support vs estimator instability), then apply the simplest defensible alignment ladder; deliver the R6-C5 progression report.
+- Execute Round 6: diagnose the NASA-to-CALCE transfer failure (range vs feature-support vs estimator instability), then apply the simplest defensible alignment ladder; deliver the R6-C5 progression report.
 
 ### First action (next session)
 
-- On approval: P6-0 wording fix (1 line) + P6-1 per-feature NASA/CALCE distribution comparison script (`phase6_feature_shift.py`, Clean-5T, % out-of-range + shift statistic + histogram figure). Sub-plan with the support-definition choice comes with it.
+- P6-2: patch `phase5_cs2_clean5t.py` with `--dump-preds` -> smoke -> Dom launches the transfer-arm `--full` rerun -> verify aggregate parity vs `phase5_cs2_transfer_c5t_full.csv` -> filter CALCE rows to SOH 87-101% for the common-range diagnostic.
 
 ### Required files
 
-- `advisor_directives.md`, `active_experiment.md`, `Autoencoder/round3_phase1/round5_comparison_report.md`, `phase5_cs2_*.csv` (8 files), `r3common.py`, `phase4_cs2_features.py` / `.csv`.
+- `phase5_cs2_clean5t.py`, `r3common.py`, `phase4_features.csv`, `phase4_cs2_features.csv`, `phase5_cs2_transfer_c5t_full.csv` (parity target).
 
 ### Stop conditions
 
-- Stop before any Round 6 experiment without an approved PAEV plan.
+- Stop if the P6-2 rerun aggregates do not match Round 5 CSVs exactly (drift check before any diagnostic use).
 - Stop if a result cannot be tied to its row set, unit, protocol, feature set, and source artifact.
 - Never attribute fallback/divergence to domain shift alone (R6-C4); never quote the common-range diagnostic as a final transfer result (R6-C2.2).
 - No AE optimization, no broad feature/model expansion (R6-C5).
@@ -467,7 +471,7 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-21 — §15 session-start prompt rewritten to the read-once-per-session
-rule (with Dom's approval) to cut token cost and stop repeated reloading. Round 6 ACTIVE: comment
-received 2026-10-20, transcribed into `advisor_directives.md` (R6-C0…C5); round record created;
-PAEV plan P6-0…P6-6 awaiting Dom's approval. No Round 6 experiment has run yet.*
+*Last updated: 2026-10-21 (execution day 1) — PAEV plan approved; P6-H0/P6-0/P6-1 done and
+pushed (commits 0aee5e1, 888d1eb, eca3737). R6-C1 wording fixed in both reports. P6-1 feature-shift
+results: cc_dur 93.4% / cv_I_slope 99.8% / cv_dur 84.6% / ic_peak_V 41.6% of CALCE outside the NASA
+range. Next: P6-2 dump-preds patch + transfer rerun.*
