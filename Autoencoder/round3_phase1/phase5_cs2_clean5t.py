@@ -26,6 +26,17 @@ def prog(msg):
           flush=True)
 
 import ast as _ast
+
+PRED_PATH = None
+
+
+def _dump(path, seed, arm, pool, cell, y, yhat):
+    """P6-2 diagnostic: append per-cycle predictions (soh in %, matching the source CSVs)."""
+    pd.DataFrame(dict(seed=seed, arm=arm, pool=pool, cell=cell,
+                      cycle=np.arange(1, len(y) + 1),
+                      y=np.round(np.asarray(y, float), 4),
+                      yhat=np.round(np.asarray(yhat, float), 4))
+                 ).to_csv(path, mode="a", header=not os.path.exists(path), index=False)
 FEATS = _ast.literal_eval(os.environ.get("CLEAN_FEATS",
     '["dis_V_slope", "cc_dur", "cv_dur", "cv_I_slope", "ic_peak_V"]'))  # default Clean-5T
 ROOM = ["B0005", "B0006", "B0007", "B0018"]
@@ -86,7 +97,7 @@ def select_ep(dims, l2, Xf, yf, Xv, yv, seed, bp_max, pat):
     return v, ep
 
 
-def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag):
+def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag, dump_path=None):
     """One CALCE arm under the Clean-5T feature set. Selection protocol per arm:
       transfer: rotate the single-val-battery selection over the source pool (seed draw kept
                 per seed), aggregate = mean of the per-battery selection RMSEs (one battery
@@ -152,6 +163,8 @@ def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag):
                         for c_ in cells:
                             m_c = cs2.battery.values == c_
                             p = rc.predict(bp_rf, sc2.transform(Xc[m_c]), mu2, sd2)
+                            if dump_path:
+                                _dump(dump_path, seed, arm, pool, c_, yc[m_c], p)
                             mae, rmse, r2 = rc.reg_metrics(yc[m_c], p)
                             rows.append(dict(arm=arm, pool=pool, seed=seed, test_battery=c_,
                                              n_cycles=int(m_c.sum()), cfg=f"{dims}/l2={l2}",
@@ -183,6 +196,8 @@ def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag):
                                 p = rc.predict(bp_ft, sc2.transform(Xc[m_te]), mu2, sd2)
                             except (TypeError, RuntimeError):
                                 print("  [guard] adapt2 diverged"); p = np.full(m_te.sum(), np.nan)
+                        if dump_path:
+                            _dump(dump_path, seed, arm, pool, adapt_cell, yc[m_te], p)
                         mae, rmse, r2 = rc.reg_metrics(yc[m_te], p)
                         rows.append(dict(arm=arm, pool=pool, seed=seed, adapt_cell=adapt_cell,
                                          n_cycles=int(m_te.sum()), cfg=f"{dims}/l2={l2}",
@@ -240,6 +255,8 @@ def run_arm(arm, nasa, cs2, seeds, bp_max, pat, tag):
                     p = rc.predict(bp_rf, sc2.transform(Xc[m_te]), mu2, sd2)
                 except (TypeError, RuntimeError):
                     print("  [guard] within refit diverged"); p = np.full(m_te.sum(), np.nan)
+                if dump_path:
+                    _dump(dump_path, seed, "within", "cs2", test_name, yc[m_te], p)
                 mae, rmse, r2 = rc.reg_metrics(yc[m_te], p)
                 rows.append(dict(arm="within", seed=seed, test_battery=test_name,
                                  n_cycles=int(m_te.sum()), cfg=f"{dims}/l2={l2}", sel_epochs=ep,
@@ -256,7 +273,13 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--arms", default="transfer,within,adapt1,adapt2")
+    ap.add_argument("--dump-preds", metavar="PATH",
+                    help="P6-2 diagnostic: append one row per prediction to PATH "
+                         "(seed, arm, pool, adapt/test cell, y, yhat). Does not change any "
+                         "model, seed, or CSV produced by the base run.")
     args = ap.parse_args()
+    global PRED_PATH
+    PRED_PATH = args.dump_preds
     rc.set_device(args.device)
     seeds = [42] if args.smoke else SEEDS
     bp_max, pat = (60, 10) if args.smoke else (300, 20)
@@ -267,7 +290,7 @@ def main():
     print(f"[_label: {_label}] features: {FEATS}")
     print(f"NASA pool {len(nasa)} rows; CS2 pool {len(cs2)} rows, {cs2.battery.nunique()} cells")
     for arm in args.arms.split(","):
-        out = run_arm(arm.strip(), nasa, cs2, seeds, bp_max, pat, tag)
+        out = run_arm(arm.strip(), nasa, cs2, seeds, bp_max, pat, tag, PRED_PATH)
         df = pd.read_csv(out)
         print(f"\n== {out}: {len(df)} rows ==")
         if not args.smoke and len(df):
