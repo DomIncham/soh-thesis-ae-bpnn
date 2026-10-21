@@ -103,7 +103,7 @@ its statistic, the within row reports mean and median):
 
 | Experiment | Before (with the two proxy features) | After (corrected Clean-6T) | Conclusion unchanged? |
 |---|---|---|---|
-| Frozen NASA → CALCE (room pool) | median −37.1 | median −2.8 | No: consistent with domain shift (the target ranges do not overlap) rather than proxy leakage; the direction is the same (transfer does not work) |
+| Frozen NASA → CALCE (room pool) | median −37.1 | median −2.8 | No: consistent with domain shift (a substantial range mismatch with partial overlap, ~87–101%) rather than proxy leakage; the direction is the same (transfer does not work) |
 | Frozen NASA → CALCE (all-13 pool) | mean −48.3 | mean −92.3 | No |
 | One-cell scratch training | median −68 | median −52 | No: adaptation does not recover transfer |
 | One-cell warm adaptation | median −31 | median −0.9 | No |
@@ -117,7 +117,7 @@ One new observation does support the shift reading: removing the two proxy-equiv
 greatly improved the transfer result (room-pool median −37.1 → −2.8) while within-CALCE
 performance barely moved (median 0.589 → 0.573), so those features appear to have amplified
 the cross-domain mismatch even though they were not necessary for within-CALCE performance.
-The target ranges still do not overlap: NASA training SOH spans 57–101% while CALCE CS2 spans
+The two target ranges partially overlap (~87–101%), but with a substantial range mismatch: NASA training SOH spans 57–101% while CALCE CS2 spans
 87–113%, and five of the six features fall outside the NASA min–max range on a large share
 of CS2 cycles (cc_dur exceeds the NASA maximum on 93% of CS2 rows; cv_dur sits below the NASA
 minimum on 62%; ic_peak_V below it on 41%; t_40_41 above the maximum on 37%). The plain
