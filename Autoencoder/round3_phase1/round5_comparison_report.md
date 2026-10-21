@@ -82,7 +82,8 @@ Per-cell detail (mean R², 5 seeds, same protocol both columns):
 4. Transfer and adaptation stay negative in every pool under both feature sets (means from
    −9.9 to −443.7). The cross-dataset gap stands.
 5. The Round 4 interpretation is unchanged: the failure is consistent with domain/range
-   shift (the target ranges do not overlap), not proven to be caused by it. Removing the two
+   shift (a substantial range mismatch with partial overlap, ~87-101%), not proven
+   to be caused by it. Removing the two
    proxy-equivalent features (dis_duration, dis_mean_V) improved transfer while within-CALCE
    performance stayed at about the same level (median 0.589 → 0.573 in Round 4), so those
    two features amplified the cross-domain mismatch.

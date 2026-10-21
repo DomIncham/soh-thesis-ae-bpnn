@@ -1,0 +1,94 @@
+[device] cpu | threads=8
+Clean-5T features: ['dis_V_slope', 'cc_dur', 'cv_dur', 'cv_I_slope', 't_40_41', 'ic_peak_V']
+NASA pool 1033 rows; CS2 pool 4922 rows, 8 cells
+[resume] 2 rows in phase5_cs2_within_smoke.csv
+[00:00:41 elapsed] fits done: 5 | 0 fit-min est
+[00:01:18 elapsed] fits done: 10 | 0 fit-min est
+[00:01:47 elapsed] fits done: 15 | 0 fit-min est
+[00:02:23 elapsed] fits done: 20 | 1 fit-min est
+[00:02:51 elapsed] fits done: 25 | 1 fit-min est
+[00:03:13 elapsed] fits done: 30 | 1 fit-min est
+[00:03:44 elapsed] fits done: 35 | 2 fit-min est
+[00:04:06 elapsed] fits done: 40 | 2 fit-min est
+[00:04:19 elapsed] [within s42] cell CS2_34 selection done (cfg [8]/l2=0.0001, ep 45) -> refit+eval
+[within s42] test=CS2_34 R2=0.356
+[00:04:30 elapsed] fits done: 45 | 2 fit-min est
+[00:04:46 elapsed] fits done: 50 | 3 fit-min est
+[00:05:03 elapsed] fits done: 55 | 3 fit-min est
+[00:05:14 elapsed] fits done: 60 | 3 fit-min est
+[00:05:28 elapsed] fits done: 65 | 3 fit-min est
+[00:05:38 elapsed] fits done: 70 | 4 fit-min est
+[00:05:53 elapsed] fits done: 75 | 4 fit-min est
+[00:06:09 elapsed] fits done: 80 | 4 fit-min est
+[00:06:29 elapsed] [within s42] cell CS2_35 selection done (cfg [8]/l2=0.0001, ep 33) -> refit+eval
+[within s42] test=CS2_35 R2=0.612
+[00:06:31 elapsed] fits done: 85 | 5 fit-min est
+[00:06:49 elapsed] fits done: 90 | 5 fit-min est
+[00:07:07 elapsed] fits done: 95 | 5 fit-min est
+[00:07:26 elapsed] fits done: 100 | 6 fit-min est
+[00:07:31 elapsed] fits done: 105 | 6 fit-min est
+[00:07:38 elapsed] fits done: 110 | 6 fit-min est
+[00:07:48 elapsed] fits done: 115 | 6 fit-min est
+[00:08:07 elapsed] fits done: 120 | 7 fit-min est
+[00:08:25 elapsed] fits done: 125 | 7 fit-min est
+[00:08:32 elapsed] [within s42] cell CS2_36 selection done (cfg [8]/l2=0.0, ep 43) -> refit+eval
+[within s42] test=CS2_36 R2=0.624
+[00:08:45 elapsed] fits done: 130 | 7 fit-min est
+[00:09:01 elapsed] fits done: 135 | 8 fit-min est
+[00:09:19 elapsed] fits done: 140 | 8 fit-min est
+[00:09:31 elapsed] fits done: 145 | 8 fit-min est
+[00:09:42 elapsed] fits done: 150 | 9 fit-min est
+[00:09:52 elapsed] fits done: 155 | 9 fit-min est
+[00:10:12 elapsed] fits done: 160 | 9 fit-min est
+[00:10:55 elapsed] fits done: 165 | 9 fit-min est
+[00:11:32 elapsed] [within s42] cell CS2_37 selection done (cfg [8]/l2=0.0001, ep 38) -> refit+eval
+[within s42] test=CS2_37 R2=0.572
+[00:11:48 elapsed] fits done: 170 | 10 fit-min est
+[00:12:24 elapsed] fits done: 175 | 10 fit-min est
+[00:12:41 elapsed] fits done: 180 | 10 fit-min est
+[00:13:01 elapsed] fits done: 185 | 11 fit-min est
+[00:13:11 elapsed] fits done: 190 | 11 fit-min est
+[00:13:30 elapsed] fits done: 195 | 11 fit-min est
+[00:13:59 elapsed] fits done: 200 | 12 fit-min est
+[00:14:45 elapsed] fits done: 205 | 12 fit-min est
+[00:15:08 elapsed] fits done: 210 | 12 fit-min est
+[00:15:11 elapsed] [within s42] cell CS2_38 selection done (cfg [8]/l2=0.0001, ep 40) -> refit+eval
+[within s42] test=CS2_38 R2=0.190
+[00:15:23 elapsed] fits done: 215 | 12 fit-min est
+[00:15:35 elapsed] fits done: 220 | 13 fit-min est
+[00:15:50 elapsed] fits done: 225 | 13 fit-min est
+[00:15:59 elapsed] fits done: 230 | 13 fit-min est
+[00:16:08 elapsed] fits done: 235 | 14 fit-min est
+[00:16:18 elapsed] fits done: 240 | 14 fit-min est
+[00:16:38 elapsed] fits done: 245 | 14 fit-min est
+[00:16:53 elapsed] fits done: 250 | 15 fit-min est
+[00:17:05 elapsed] [within s42] cell CS2_8 selection done (cfg [8, 4]/l2=0.0001, ep 37) -> refit+eval
+[within s42] test=CS2_8 R2=-5.686
+
+== phase5_cs2_within_smoke.csv: 8 rows ==
+[00:17:09 elapsed] fits done: 255 | 15 fit-min est
+[00:17:11 elapsed] fits done: 260 | 15 fit-min est
+[00:17:13 elapsed] fits done: 265 | 15 fit-min est
+[00:17:16 elapsed] fits done: 270 | 16 fit-min est
+[00:17:18 elapsed] fits done: 275 | 16 fit-min est
+[transfer room s42] cfg [8, 4]/l2=0.0001 ep 200 DEG
+[00:17:24 elapsed] fits done: 280 | 16 fit-min est
+[00:17:29 elapsed] fits done: 285 | 17 fit-min est
+[00:17:31 elapsed] fits done: 290 | 17 fit-min est
+[00:17:35 elapsed] fits done: 295 | 17 fit-min est
+[00:17:40 elapsed] fits done: 300 | 18 fit-min est
+[00:17:44 elapsed] fits done: 305 | 18 fit-min est
+[00:17:48 elapsed] fits done: 310 | 18 fit-min est
+[00:17:51 elapsed] fits done: 315 | 18 fit-min est
+[00:17:54 elapsed] fits done: 320 | 19 fit-min est
+[00:17:57 elapsed] fits done: 325 | 19 fit-min est
+[00:17:59 elapsed] fits done: 330 | 19 fit-min est
+[00:18:04 elapsed] fits done: 335 | 20 fit-min est
+[00:18:08 elapsed] fits done: 340 | 20 fit-min est
+[00:18:12 elapsed] fits done: 345 | 20 fit-min est
+[00:18:18 elapsed] fits done: 350 | 21 fit-min est
+[00:18:20 elapsed] fits done: 355 | 21 fit-min est
+[00:18:29 elapsed] fits done: 360 | 21 fit-min est
+[transfer all13 s42] cfg [8, 4]/l2=0.0001 ep 200 DEG
+
+== phase5_cs2_transfer_smoke.csv: 16 rows ==

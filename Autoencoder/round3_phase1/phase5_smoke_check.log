@@ -1,0 +1,5 @@
+[device] cpu | threads=8
+Clean-5T features: ['dis_V_slope', 'cc_dur', 'cv_dur', 'cv_I_slope', 'ic_peak_V']
+NASA pool 1033 rows; CS2 pool 4922 rows, 8 cells
+[resume] 1 rows in phase5_cs2_within_smoke.csv
+[00:00:17 elapsed] fits done: 5 | 0 fit-min est
