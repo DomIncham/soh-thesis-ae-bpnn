@@ -58,6 +58,11 @@ for (pool, seed), g in d.groupby(["pool", "seed"]):
         m = metrics(gg)
         rows.append(dict(pool=pool, seed=seed, group=grp, **{k: round(v, 3) for k, v in m.items()}))
 split = pd.DataFrame(rows)
+# R6-C4: fallback rate recorded as an explicit column on every row (not just a narrative
+# footnote). Rate comes from the underlying P6-2 rerun (sel_degenerate = 0.80), applies to
+# both support groups equally since selection is source-side only.
+split["fallback_rate"] = 0.80
+split["fallback_note"] = "sel_degenerate rate of underlying P6-2 rerun; applies to both groups"
 split.to_csv("phase6_support_split.csv", index=False)
 print("=== per pool/seed x group ===")
 print(split.to_string(index=False))
