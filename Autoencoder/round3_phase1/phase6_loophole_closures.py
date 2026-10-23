@@ -81,6 +81,14 @@ med_c, p90_c = common.err.median(), common.err.quantile(0.9)
 rows_out.append(dict(closure="C4", item="common-range (87-101%) diagnostic",
                      metric="n/MedAE/P90err", value=f"n={len(common)}/MedAE={med_c:.2f}/P90={p90_c:.2f}",
                      note="diagnostic only, NOT a final transfer result (R6-C2.2)"))
+# R6-C4: common-range table also carries the fallback rate explicitly
+crd = pd.read_csv("phase6_common_range_diag.csv")
+crd["fallback_rate"] = 0.80
+crd["fallback_note"] = "sel_degenerate rate of underlying rerun; identical across (pool,seed)"
+crd.to_csv("phase6_common_range_diag.csv", index=False)
+rows_out.append(dict(closure="C2b", item="common_range_diag.csv fallback column (R6-C4)",
+                     metric="fallback_rate", value=0.80,
+                     note="added to every row of the common-range table"))
 findings.append(("C4", f"common-range n={len(common)} rows; MedAE {med_c:.2f}, P90 {p90_c:.2f} "
                        f"now reported next to MAE/RMSE/R2"))
 
