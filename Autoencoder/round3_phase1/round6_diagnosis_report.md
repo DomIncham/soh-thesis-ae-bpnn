@@ -1,5 +1,9 @@
 # Round 6 diagnosis report: why NASA to CALCE transfer fails, and what a simple alignment recovers
 
+Date: 2026-10-23
+Author: Padipat Aincham (M11452803)
+Repository: github.com/DomIncham/soh-thesis-ae-bpnn (branch `main`)
+
 ## 1. Purpose, data, and protocol
 
 The Round 6 comment asks for a diagnosis of the NASA to CALCE transfer failure before any
@@ -221,3 +225,29 @@ plan places after calibration.
    study, so the model-class claim rests on convergent evidence and shared failing cycles.
 8. The n_out = 0 group holds 50 rows. Claims about that group carry low weight in this
    report.
+
+## 10. Code and evidence files
+
+Code:
+
+- [phase5_cs2_clean5t.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_clean5t.py) (transfer rerun with per-cycle dump, R6-C3 parity check)
+- [phase6_feature_shift.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_feature_shift.py) (step 1)
+- [phase6_support_split.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_support_split.py) (step 3)
+- [phase6_ridge_baseline.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ridge_baseline.py), [phase6_ridge_within.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ridge_within.py) (step 4)
+- [phase6_alignment_ladder.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_alignment_ladder.py) (step 5)
+- [phase6_loophole_closures.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_loophole_closures.py) (pre-report audit, self-checked)
+
+Evidence:
+
+- [phase6_feature_shift.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_feature_shift.csv) (5 rows, step 1)
+- [phase6_common_range_diag.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_common_range_diag.csv) (10 rows, step 2)
+- [phase6_support_split.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_support_split.csv) (20 rows, step 3)
+- [phase6_dump_with_support.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_dump_with_support.csv) (49,220 rows, step 3)
+- [phase6_ridge_transfer.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ridge_transfer.csv) (80 rows), [phase6_ridge_within.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ridge_within.csv) (40 rows), step 4
+- [phase6_ladder_La.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ladder_La.csv) (320 rows), [phase6_ladder_Lb.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ladder_Lb.csv) (160 rows), [phase6_ladder_Lc.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ladder_Lc.csv) (80 rows), step 5
+- [phase6_preds_transfer_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_preds_transfer_full.csv) (49,220 per-cycle rows, L0 reference)
+- [phase6_final_audit.md](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_final_audit.md) (advisor-comment coverage matrix), [phase6_loophole_audit.md](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_loophole_audit.md) (closure audit)
+
+Figures: phase6_feature_hist.png (Figure 1), phase6_support_gradient.png (Figure 2),
+phase6_ladder_progress.png (Figure 3); drawing code in
+[phase6_figures.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_figures.py).
