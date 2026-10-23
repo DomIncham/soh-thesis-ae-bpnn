@@ -1,0 +1,9 @@
+closure,item,metric,value,note
+C1,La-quantile vs constant-predictor floor,MAE,6.762,constant-predictor MAE on same rows = 4.057
+C2,support_split.csv fallback column (R6-C4),fallback_rate,0.8,added to every row; applies to both groups equally
+C3,support split [STRICT(any-outside)] group=inside,MedAE/P90err/n,13.26/20.90/n=50,multivariate-support definition; univariate-range = P6-1 table
+C3,support split [STRICT(any-outside)] group=outside,MedAE/P90err/n,19.52/48.33/n=49170,multivariate-support definition; univariate-range = P6-1 table
+C3,support split [MAJORITY(>=3-of-5)] group=inside-or-mild,MedAE/P90err/n,4.45/25.67/n=7690,multivariate-support definition; univariate-range = P6-1 table
+C3,support split [MAJORITY(>=3-of-5)] group=outside-majority,MedAE/P90err/n,22.54/49.30/n=41530,multivariate-support definition; univariate-range = P6-1 table
+C4,common-range (87-101%) diagnostic,n/MedAE/P90err,n=39870/MedAE=19.33/P90=48.74,"diagnostic only, NOT a final transfer result (R6-C2.2)"
+C5,Lc calibration sanity,median MAE,all=12.18 | non-degenerate=9.24 (35/80 rows) | degenerate=14.57 (45/80 rows),degenerate = slope<=0 or |slope-1|>=1

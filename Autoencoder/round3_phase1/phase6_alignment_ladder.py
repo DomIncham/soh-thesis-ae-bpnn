@@ -35,8 +35,9 @@ def prog(msg):
 
 
 def make_scaler(variant):
+    base = variant.replace("_varrestored", "")
     return {"robust": RobustScaler, "standard": StandardScaler,
-            "quantile": lambda: QuantileTransformer(n_quantiles=min(100, 4 * 4 * 4), output_distribution="uniform")}[variant]
+            "quantile": lambda: QuantileTransformer(n_quantiles=min(100, 4 * 4 * 4), output_distribution="uniform")}[base]
 
 
 def pools():
@@ -117,15 +118,31 @@ def run_La(nasa, cs2, seeds, bp_max, pat, dump):
         Xn_, yn_, bn_ = nd[FEATS].values, nd.soh.values, nd.bid.values
         for seed in seeds:
             dims, l2, ep, deg = select_config(seed, Xn_, yn_, bn_, bp_max, pat)
-            for variant in ["robust", "standard", "quantile"]:
+            for variant in ["robust", "standard", "quantile", "quantile_varrestored"]:
                 Sc = make_scaler(variant)()
                 Xtr = Sc.fit_transform(Xn_)
                 mu, sd = yn_.mean(), yn_.std()
+                # P6-5 interventional flag test (La-quantile degenerate-alignment closure):
+                # after quantile, restore per-feature std to the source's transformed-space std
+                # so the model sees UNsaturated (rescaled) target features. If MedAE returns to
+                # ~L0 levels, the original quantile gain was a mean-predictor artifact.
+                if variant == "quantile_varrestored":
+                    Xte_all = Sc.transform(Xc)  # transform target once
+                    for j in range(Xtr.shape[1]):
+                        s_src = Xtr[:, j].std()
+                        s_tgt = Xte_all[:, j].std()
+                        if s_tgt > 1e-12:
+                            Xte_all[:, j] *= s_src / s_tgt
+                    Sc_transform_orig = Sc.transform  # keep for reference
                 try:
                     bp = fit_backbone(Xtr, yn_, dims, l2, ep, seed, bp_max, pat)
                     for c_ in cells:
                         m_c = cs2.battery.values == c_
-                        p = predict_scaled(bp, Sc.transform(Xc[m_c]), mu, sd)
+                        if variant == "quantile_varrestored":
+                            sel = np.where(m_c)[0]
+                            p = predict_scaled(bp, Xte_all[sel], mu, sd)
+                        else:
+                            p = predict_scaled(bp, Sc.transform(Xc[m_c]), mu, sd)
                         _dump(dump, seed, "La", variant, pool, c_, yc[m_c], p)
                         mae, rmse, r2 = reg(yc[m_c], p)
                         rows.append(dict(rung="La", variant=variant, pool=pool, seed=seed,
