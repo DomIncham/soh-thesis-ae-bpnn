@@ -1,6 +1,6 @@
 # Round 7 Work Plan — Detailed Step-by-Step (written 2026-11-13)
 
-> Source: `Round 7 Advisor Comment.txt` (two letters) + `Round7_Dom_Research_Roadmap_After_Round6.pdf`.
+> Source: `Round 6B Advisor Comment.txt` (two letters) + `Round 6B _Dom_Research_Roadmap_After_Round6.pdf`.
 > Transcription verified in `advisor_directives.md` §Round 7 (R7-C0…C4).
 > **Hard gate (R7-C4):** Round 7 proper (Stage 2) does NOT start until the Round 6B comparison
 > is submitted and the advisor reviews it. So this plan = Stage 1 in full execution detail,

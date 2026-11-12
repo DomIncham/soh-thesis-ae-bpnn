@@ -363,8 +363,8 @@ feature/model expansion at this stage.
 
 *Last updated: 2026-10-21 — Round 6 appended (R6-C0…C5: Clean-5T primary, overlap wording,
 diagnosis-first sequence, fallback-rate requirement, progression report format).*
-## Round 7 (Source: `Comment Prof and Report/Comment Prof/Round 7 Advisor Comment.txt` +
-`Round7_Dom_Research_Roadmap_After_Round6.pdf`, received 2026-11-13)
+## Round 7 (Source: `Comment Prof and Report/Comment Prof/Round 6B Advisor Comment.txt` +
+`Round 6B _Dom_Research_Roadmap_After_Round6.pdf`, received 2026-11-13)
 
 **Status:** ⏳ ACTIVE. Advisor's verdict on the Round 6 report: diagnosis clear — feature-space
 domain shift is the leading explanation for NASA→CALCE transfer failure (common-SOH-range test,
@@ -449,8 +449,8 @@ calibration closure, R7-C1: reporting corrections, R7-C2: Stage 1–5 roadmap, R
 R7-C4: immediate instruction).*
 
 **Source verification (2026-11-13):** both originals read and checked against this section —
-`Comment Prof/Round 7 Advisor Comment.txt` (two letters: calibration closure + roadmap
-instruction) and `Comment Prof/Round7_Dom_Research_Roadmap_After_Round6.pdf` (Stages 1-5,
+`Comment Prof/Round 6B Advisor Comment.txt` (two letters: calibration closure + roadmap
+instruction) and `Comment Prof/Round 6B _Dom_Research_Roadmap_After_Round6.pdf` (Stages 1-5,
 decision points, research rules). Transcription R7-C0...C4 verified complete. Extra roadmap
 detail folded in: Stage 1 must retain L0 zero-shot and the unlabeled affine alignment as
 references; each method in the Stage 1 table states whether target labels are used and
