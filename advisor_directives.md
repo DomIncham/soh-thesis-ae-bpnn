@@ -363,3 +363,96 @@ feature/model expansion at this stage.
 
 *Last updated: 2026-10-21 — Round 6 appended (R6-C0…C5: Clean-5T primary, overlap wording,
 diagnosis-first sequence, fallback-rate requirement, progression report format).*
+## Round 7 (Source: `Comment Prof and Report/Comment Prof/Round 7 Advisor Comment.txt` +
+`Round7_Dom_Research_Roadmap_After_Round6.pdf`, received 2026-11-13)
+
+**Status:** ⏳ ACTIVE. Advisor's verdict on the Round 6 report: diagnosis clear — feature-space
+domain shift is the leading explanation for NASA→CALCE transfer failure (common-SOH-range test,
+feature-support analysis, Ridge baseline, unsupervised affine alignment are coherent). One issue
+must be CLOSED before the next stage: the current Lc is not a pure one-cell output calibration.
+**Round 6B = calibration closure** (Stage 1 of the roadmap). Round 7 proper = Stage 2
+(target-data-efficient transfer learning) — NOT started until Round 6B is submitted and reviewed.
+
+### R7-C0: Lc = warm fine-tuning + output calibration, not calibration-only
+- Current Lc: BPNN is warm-fine-tuned on the labeled CALCE cell first, then affine output
+  calibration is fitted on the SAME cell. The reported Lc improvement cannot be attributed to
+  output calibration alone.
+- Required 3-way comparison using the SAME labeled target cell:
+  1. **Calibration only** — NASA-trained BPNN completely frozen; fit y = a·ŷ + b on one labeled
+     CALCE cell; apply to the other seven cells.
+  2. **Warm fine-tuning only** — the existing Adapt2 result.
+  3. **Warm fine-tuning + calibration** — keep the current Lc result, but rename it accordingly.
+- Compare on exactly matched test cells and seeds. Answer: does the remaining improvement come
+  mainly from a simple output-scale correction or from changing the network weights?
+
+### R7-C1: Reporting corrections
+- **"gap recovered" definition**: if the current percentage is relative MAE reduction from L0,
+  call it **"MAE reduction relative to matched L0"**. If reporting actual transfer-gap recovery,
+  use within-CALCE performance as the reference floor and compute recovery on matched row sets.
+- **Unique cycles vs prediction instances**: 49,220 and 39,870 are prediction rows accumulated
+  across pool/seed runs, NOT unique battery cycles. Distinguish them in the report. For statistical
+  evidence, emphasize run-level consistency (e.g. 10/10 runs, paired run-level test) rather than
+  treating repeated prediction rows as independent observations.
+- **La-quantile**: remains documented as a degenerate alignment; do NOT treat as successful recovery.
+
+### R7-C2: Round 6 closure condition + roadmap after Round 6 (Stages 1–5)
+- After the corrections + calibration-only experiment, Round 6 can be considered COMPLETE.
+- Do NOT start a more complex domain-adaptation model yet. First see whether simple output
+  calibration alone explains most of the remaining benefit.
+- **Stage 1 (Round 6B)** — Calibration closure (R7-C0). Immediate priority.
+- **Stage 2 (Round 7)** — Target-data-efficient transfer learning: levels 0/1/2/3 labeled target
+  cells + full target-domain training reference; per level compare zero-shot, output calibration,
+  warm fine-tuning, training from scratch where applicable; held-out test cells completely excluded
+  from model selection/alignment/calibration/fine-tuning; repeat target-cell selection across
+  multiple splits; track accuracy AND data cost (cells, labeled cycles, training time, inference
+  cost). Expected: target-data learning curve (labeled cells vs MAE/RMSE); transfer vs full
+  retraining; minimum target-data level to reach ~80–90% of full-retraining performance.
+- **Stage 3 (Round 8)** — Frequency-domain SOH branch: no broad AE optimization; simple
+  interpretable representations first (raw EIS, PCA-reduced EIS, compact physically meaningful
+  impedance features); fit PCA/scalers/selection only inside training folds; same unseen-battery
+  validation discipline as time-domain branch; compare frequency-only vs current time-domain
+  estimator with matched cells and metrics. A documented negative result is acceptable.
+- **Stage 4 (Round 9)** — Time–frequency fusion: current proxy-audited time-domain feature set as
+  the time branch; only the best validated frequency representation from Round 8; early fusion first
+  (concatenate under the same nested validation protocol); simple late-fusion only if early fusion
+  shows credible benefit or clear complementary error pattern; strict ablation time-only /
+  frequency-only / time-plus-frequency; avoid complex attention/transformer/new AE architectures
+  unless simple fusion evidence clearly motivates them. Keep fused model only if the gain is
+  consistent and not driven by one cell or one seed; otherwise retain the simpler time-domain model
+  and document the fusion result honestly.
+- **Stage 5 (Round 10)** — Final generalization benchmark: freeze the method; same-dataset
+  unseen-battery, cross-condition, NASA→CALCE zero-shot, selected unlabeled alignment, selected
+  few-shot adaptation with minimum defensible target data; identical reporting conventions across
+  settings (MAE, RMSE, R², per-cell values, variation across repetitions, failure/fallback rates).
+  After this benchmark, STOP method expansion — remaining weaknesses become limitations or future
+  work, not another model-development cycle.
+
+### R7-C3: Research rules for all remaining stages
+- No random cycle-wise split may be used as the main performance claim.
+- All scaling, PCA, feature selection, alignment, and calibration parameters must be fitted without
+  using the held-out test battery or cell.
+- All method comparisons must use matched cells, seeds, and row sets whenever a quantitative
+  improvement is claimed.
+- Report mean and median results together when outliers or unstable folds are present.
+- Separate diagnostic analyses from final performance results.
+- Preserve negative results when they answer a research question; do not hide them or force a more
+  complex model to obtain a positive result.
+- Do not return to autoencoder optimization unless a new, specific hypothesis is supported by evidence.
+
+### R7-C4: Immediate instruction
+- Start ONLY with Stage 1 (Round 6B calibration closure). Submit the matched calibration-only,
+  fine-tuning-only, and combined comparison before beginning the target-data-efficiency study.
+  Send updated results to the advisor for review before starting Round 7.
+
+*Last updated: 2026-11-13 — Round 6 appended (R6-C0…C5) + Round 7 appended (R7-C0: Round 6B
+calibration closure, R7-C1: reporting corrections, R7-C2: Stage 1–5 roadmap, R7-C3: research rules,
+R7-C4: immediate instruction).*
+
+**Source verification (2026-11-13):** both originals read and checked against this section —
+`Comment Prof/Round 7 Advisor Comment.txt` (two letters: calibration closure + roadmap
+instruction) and `Comment Prof/Round7_Dom_Research_Roadmap_After_Round6.pdf` (Stages 1-5,
+decision points, research rules). Transcription R7-C0...C4 verified complete. Extra roadmap
+detail folded in: Stage 1 must retain L0 zero-shot and the unlabeled affine alignment as
+references; each method in the Stage 1 table states whether target labels are used and
+whether NN weights are updated; the matched table carries MAE, RMSE, R2, labeled-cell count,
+and weights-updated flag. Decision-point wording (Stages 2-5) matches the PDF.
