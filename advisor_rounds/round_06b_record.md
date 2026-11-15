@@ -4,7 +4,7 @@
 - **Status:** Executed, report written — awaiting submission (PDF) and advisor review
 - **Original source:** `Comment Prof and Report/Comment Prof/` (files renamed by Dom from "Round 7 ..." on 2026-11-13)
 - **Work plan:** `Autoencoder/round3_phase1/round6B_work_plan.md`
-- **Report:** `Autoencoder/round3_phase1/round6b_closure.md` (42 -> 57 asserted numbers, grep checklist clean)
+- **Report:** `Autoencoder/round3_phase1/round6b_closure.md` (61 asserted numbers, grep checklist clean)
 - **Round 7 (Stage 2) gate:** not started until the advisor reviews this round (R7-C4)
 
 ## Advisor's Main Direction
@@ -22,7 +22,7 @@ defines Stages 1-5 after that; no broad model expansion and no return to autoenc
 | FT-only = existing Adapt2 reused | Letter 1 item 2 | Done | `phase5_cs2_adapt2_c5t_full.csv` (C5T, 80 runs) |
 | FT+Cal = former Lc, renamed | Letter 1 item 3 | Done | `phase6_ladder_Lc.csv`, renamed in the report |
 | Exactly matched cells and seeds | Letter 1 | Done | keys (pool, seed, adapt_cell) identical across arms, verified 1:1; backbone tolerance 0.0219 %SOH disclosed |
-| L0 + La retained as references | Roadmap Stage 1 | Done | L0 in the main table; La kept as documented degenerate alignment |
+| L0 + Lb-affine + La retained as references | Roadmap Stage 1 | Done (Lb added in final audit) | L0 in the main table; Lb-affine median 11.53 with a protocol note (single-cell rows, not pooled); La kept as documented degenerate alignment |
 | Table states labels used / weights updated | Roadmap Stage 1 | Done | report section 2 table columns |
 | Table contains MAE, RMSE, R2 | Roadmap Stage 1 | Done (added in final audit) | report section 2 + `phase6b_matched_3way.csv` |
 | "gap recovered" clarified | Letter 1 item 4 | Done | both definitions reported with labels: (a) MAE reduction relative to matched L0; (b) transfer-gap recovery with per-run matched within floor |

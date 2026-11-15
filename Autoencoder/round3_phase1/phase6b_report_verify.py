@@ -86,6 +86,13 @@ chk("RMSE mean FTCal 19.22", r2(mm.RMSE_ftcal.mean()) == 19.22)
 chk("RMSE mean L0 25.82", r2(mm.RMSE_L0.mean()) == 25.82)
 chk("report has RMSE/R2 table", "RMSE median" in doc and "R2 median" in doc)
 chk("report has decision point", "simplest defensible adaptation method" in doc)
+# Lb-affine reference retained (roadmap Stage 1 requirement)
+lb = pd.read_csv("phase6_ladder_Lb.csv")
+lba = lb[lb.variant == "affine"]
+chk("Lb-affine 80 runs", len(lba) == 80)
+chk("Lb-affine median 11.53", r2(lba.MAE.median()) == 11.53)
+chk("Lb-affine mean 12.47", r2(lba.MAE.mean()) == 12.47)
+chk("report includes Lb-affine reference", "Lb-affine" in doc and "11.53" in doc and "12.47" in doc)
 # slope values used in degenerate criterion
 lc["slope"] = lc.variant.str.replace("slope=", "").astype(float)
 chk("Lc slope criterion replicates 45",

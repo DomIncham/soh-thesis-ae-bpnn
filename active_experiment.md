@@ -31,15 +31,15 @@ long `--full` jobs on the RTX 3050; Capi delivers `.md` only and Dom converts to
 
 > This section is mutable. Update it whenever the advisor round, work phase, objective, blocker, scope, or thesis-writing status changes.
 
-- Current advisor round: Round 6 — ACTIVE (comment received 2026-10-20, transcribed into `advisor_directives.md` §Round 6 as R6-C0…C5)
-- Current work phase: PAEV plan APPROVED (2026-10-21); P6-H0/P6-0/P6-1 done and pushed; next = P6-2 (`--dump-preds` patch to `phase5_cs2_clean5t.py` + rerun transfer arm)
-- Current objective: Domain-Shift Diagnosis and Range-Alignment Analysis — diagnose WHY NASA→CALCE transfer fails before any adaptation; then recover as much gap as possible with the simplest defensible alignment
-- Current blocker: P6-2 full rerun needs Dom to launch the transfer-arm training (GPU/CPU, ~10 fold-seed runs)
+- Current advisor round: Round 6B (Stage 1 of the R7-C2 roadmap) — comment received 2026-11-13, transcribed into `advisor_directives.md` §Round 7 as R7-C0…C4 (source files renamed by Dom: `Round 6B Advisor Comment.txt`, `Round 6B _Dom_Research_Roadmap_After_Round6.pdf`)
+- Current work phase: Round 6B EXECUTED and verified (P6B-1…P6B-4 complete, 2026-11-13); report `round6b_closure.md` ready — awaiting Dom's PDF conversion and advisor submission
+- Current objective: submission and advisor review of the calibration-closure addendum; after review passes, Round 6 is COMPLETE (R7-C2) and Stage 2 (Round 7 target-data-efficiency) may be planned
+- Current blocker: none on our side — Dom converts `Autoencoder/round3_phase1/round6b_closure.md` to PDF in Antigravity and sends it to the advisor
 - Thesis drafting: still out of scope until the advisor answers the title question
-- Key constraint (R6-C0): Clean-5T = primary for all diagnosis/ladder steps; Clean-6T = ablation arm only at ladder step (c)/fine-tune (P6-5b, optional, last)
-- Wording fix (R6-C1): DONE — fixed in `round5_comparison_report.md` line 85 AND the same phrase found+fixed in `round4_progress_report.md` lines 106/120; grep "do not overlap" now clean; Dom still owes PDF re-export in Antigravity
-- Standing requirement (R6-C4): record the selection fallback rate in every Round 6 experiment (column `sel_degenerate` exists in Round 5 CSVs; new R6 CSVs carry explicit fallback columns)
-- Report format (R6-C5): compact progression raw transfer → common-range diagnosis → feature-support diagnosis → simple baseline → range/domain alignment
+- Key constraint (R7-C0): calibration-only = BPNN completely frozen, fit y=a·ŷ+b on ONE labeled CALCE cell, apply to the other seven cells; warm fine-tuning only = existing Adapt2; warm fine-tuning + calibration = current Lc renamed. Matched cells and seeds.
+- Roadmap after Round 6 (R7-C2): Stage 1 Round 6B → Stage 2 Round 7 target-data-efficiency → Stage 3 Round 8 frequency-domain → Stage 4 Round 9 time-frequency fusion → Stage 5 Round 10 final generalization benchmark. One stage at a time; do NOT start Round 7 (Stage 2) until Round 6B results are submitted and reviewed
+- Standing requirement (R6-C4): fallback-rate disclosure continues in every Round 6B experiment
+- Reporting corrections (R7-C1): "gap recovered" renamed to "MAE reduction relative to matched L0"; distinguish unique cycles vs prediction instances; emphasize run-level consistency (10/10 runs, paired run-level test) over repeated prediction rows
 When a new advisor round starts, update these fields. Never leave a previous round's waiting status as a permanent instruction.
 
 ## 2. Previous Session Handoff
@@ -48,33 +48,34 @@ When a new advisor round starts, update these fields. Never leave a previous rou
 
 Record only the latest session's handoff. Do not paste full logs or historical detail here.
 
-### Completed (Round 6 full execution, 2026-10-21/23)
+### Completed (Round 6B calibration closure, 2026-11-13)
 
-- P6-2 (R6-C2.2): transfer rerun with per-cycle dump; parity EXACT vs Round 5 (80/80 rows); common-range diagnostic n=39,870 MedAE 19.33 P90 48.74 - error inside the overlap band is close to the all-rows error, so SOH-range extrapolation is a small part of the failure.
-- P6-3 (R6-C2.3): support split (strict + majority definitions agree); n_out gradient Wilcoxon p=0.002 in 10/10 runs; magnitude mechanism verified; guards doc closes the fallback confound and the n_out=1-2 negative control.
-- P6-4 (R6-C2.4): Ridge 2x2 closed (Ridge-within 2.68 vs BPNN 2.54; Ridge-transfer 51.14) - domain shift, not model class; shared-row analysis 96.9% of jointly-failed rows in n_out>=3.
-- P6-5 (R6-C2.5): alignment ladder rung results; La-quantile MAE 6.76 is DEGENERATE (worse than constant predictor 4.06, per-cell var ratio 0.063; interventionally closed via quantile_varrestored 37.27); Lb-affine genuine (matched recovery 49%); Lc non-degenerate 9.24 (45/80 degenerate separated; matched recovery 58%). P6-5b (Clean-6T ablation) DEFERRED per advisor permission.
-- Pre-report audits: phase6_loophole_audit.md (ALL CLOSURES VERIFIED), phase6_final_audit.md (R6-C0..C5 coverage matrix + 6 mandatory disclosures); fallback_rate column on all 7 result tables; all loops committed.
-- P6-6 (R6-C5): round6_diagnosis_report.md written (humanized B1-B2, no -ly adverbs, dump-based numbers, 3 figures incl. 2 new, GitHub evidence links verified HTTP 200, matched recovery headline: Lb-affine 49% / Lc 58% of the gap; remaining half needs labeled data/fine-tuning). Commits: 8a9c889..be8b942 all pushed.
+- R7-C0 3-way matched comparison DONE: Cal-only (new, frozen BPNN, 0 NN fits — backbone = P6-2 L0 dump `phase6_preds_transfer_full.csv`, 49,220 rows) / FT-only (Adapt2 C5T reused) / FT+Cal (Lc renamed). Matched keys: 2 pools × 5 seeds × 8 adapt cells = 80 runs, verified 1:1 across arms; backbone tolerance 0.0219 %SOH (retrain check committed).
+- Result: FT-only best (median MAE 11.95 vs Cal 13.66 / FT+Cal 12.18 / L0 23.75; FT vs Cal p=0.0024); adding calibration on top of FT shows no further benefit we could detect (p=0.43). Cal-only degenerate 50/80 (identity fallback exact vs L0 50/50); Lc degenerate 45/80 replicates Round 6. Diagnostic (n=25 joint non-deg): Cal-only 9.00 vs FT+Cal 12.25, p=0.96 — labeled diagnostic, not a performance claim. Decision point answered: warm fine-tuning alone is the simplest defensible method.
+- R7-C1 corrections applied in the report: recovery under BOTH definitions with labels ((a) MAE reduction relative to matched L0: 0.0/42.8/37.1% median; (b) transfer-gap recovery with per-run matched within floor 2.809: 0.0/50.1/42.7%); unique cycles (4,922) vs prediction instances (49,220 L0 / 344,540 cal-only); statistics run-level only (Wilcoxon n=80); La-quantile kept degenerate.
+- Roadmap Stage-1 evidence complete: matched table with MAE/RMSE/R² + labels-used/weights-updated columns; L0, Lb-affine (median 11.53, protocol note: single-cell rows) and La retained as references; decision-point statement in §5.
+- Audits: two analysis bugs caught and fixed before reporting (L0 reference pooled 8 cells instead of matched 7 — identity-fallback structural check 50/50 exact; smoke/full output contamination prevented by file separation). Independent recomputation (scipy linregress) matches all 80 Cal-only runs; Lc summary re-verified vs raw ladder dump 80/80; Adapt2 row sets match the L0 dump.
+- Verification: `phase6b_report_verify.py` — 61/61 report numbers asserted against source CSVs; grep checklist clean (prove/confirm/successfully, em dash, **, curly quotes, -ly adverbs all 0; identifier whitelist for Cal-only/FT-only/filenames).
+- `advisor_rounds/round_06b_record.md` written; pointer added to `advisor_directives.md` §Round 7.
 
 ### Unresolved
 
-- Dom: convert round6_diagnosis_report.md to PDF in Antigravity (figures are relative paths in the same folder) and send to the advisor.
-- Next round (after advisor reply): Lc+fine-tune warm-start (the ladder step the advisor places after calibration) is the natural Round 7 direction; Clean-6T ablation can ride along there.
+- Dom: convert `round6b_closure.md` to PDF in Antigravity (table-only addendum, no figures) and send to the advisor; on review pass, Round 6 is COMPLETE.
+- After advisor review: Stage 2 (Round 7) target-data-efficiency PAEV plan — NOT started (R7-C4 gate).
+- active_experiment.md pruning: Dom to confirm section 5 headline numbers refresh at next pruning (this card §5 still shows Round-4-era cross-dataset numbers).
 
-### Files changed (this session, later half)
+### Files changed (this session)
 
-- round6_diagnosis_report.md, phase6_figures.py, phase6_support_gradient.png, phase6_ladder_progress.png, phase6_loophole_closures.py/.csv/.md, phase6_final_audit.md, phase6_fallback_columns.py, phase6_ladder_La.csv (+La2.log), phase6_ladder_preds.csv, phase6_support_split.py/.csv, phase6_common_range_diag.csv, phase6_alignment_ladder.py, ladder/ridge CSVs (fallback columns), smoke CSVs.
+- `phase6b_calibration_only.py` (+_smoke CSVs, `phase6b_cal_only.csv` 80 runs, `phase6b_cal_only_preds.csv` 344,540 rows), `phase6b_analysis.py`, `phase6b_matched_3way.csv` (80 rows, MAE/RMSE/R² per arm), `phase6b_backbone_equivalence_check.py`, `round6B_work_plan.md`, `round6b_closure.md`, `phase6b_report_verify.py`, `advisor_rounds/round_06b_record.md`, `advisor_directives.md` (Round 7 + source verification + record pointer).
 
 ### Verification
 
-- Report numbers programmatically asserted against source CSVs (ALL REPORT NUMBERS VERIFIED).
-- Pre-send grep checklist: prove/confirm/successfully=0, em dash=0, **=0, curly quotes=0, -ly adverbs=0 (early-stopping = technical term).
-- GitHub evidence links spot-checked HTTP 200 (5/5).
+- All numbers in `round6b_closure.md` programmatically asserted (61/61); grep checklist clean.
+- Commit chain this session: c2d51bb → 4be2596 → fabec02 → 060833b → (P6B-2/3 commits) → e81d55f → final; all pushed to main.
 
 ### First action (next session)
 
-- After advisor reply to Round 6: transcribe the comment into advisor_directives.md as Round 7, then plan (PAEV) the Lc+fine-tune warm-start rung (and optionally the Clean-6T ablation) as the next experiment.
+- If the advisor's Round 6B review has arrived: transcribe it, confirm Round 6 COMPLETE, then draft the Stage 2 (Round 7) PAEV plan under R7-C2/C3 (levels 0/1/2/3 labeled cells + full-retraining reference; cost tracking; multi-split target-cell selection). If not arrived: low-risk maintenance only.
 
 ## 4. Where we are
 
@@ -437,7 +438,6 @@ At the end:
 
 ---
 
-*Last updated: 2026-10-21 (execution day 1) — PAEV plan approved; P6-H0/P6-0/P6-1 done and
-pushed (commits 0aee5e1, 888d1eb, eca3737). R6-C1 wording fixed in both reports. P6-1 feature-shift
-results: cc_dur 93.4% / cv_I_slope 99.8% / cv_dur 84.6% / ic_peak_V 41.6% of CALCE outside the NASA
-range. Next: P6-2 dump-preds patch + transfer rerun.*
+*Last updated: 2026-11-13 — Round 6B (Stage 1) executed and verified end-to-end; report
+`Autoencoder/round3_phase1/round6b_closure.md` ready for PDF + advisor submission; Stage 2 gated on
+advisor review (R7-C4).*

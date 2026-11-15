@@ -16,6 +16,7 @@ labeled target cell, so that the contribution of each part is measured:
 | FT-only (Adapt2) | 1 cell | updated | Round 5 result, reused |
 | FT+Cal (former "Lc") | 1 cell | updated | Round 6 result, renamed |
 | L0 (reference) | none | frozen | Round 6 result, reused |
+| Lb-affine (reference) | none | frozen | Round 6 result, reused; unsupervised affine feature alignment |
 | La-quantile (reference) | none | frozen | Round 6 result, kept as a documented degenerate alignment |
 
 All four informative arms share the same matched keys: 2 pools (room, all13) x 5 seeds x 8
@@ -27,6 +28,12 @@ Verification of the shared backbone: a retrained pool backbone (room, seed 42, s
 configuration and seed) reproduces the L0 dump predictions to within 0.0219 %SOH. This is a
 noise-level tolerance, two orders below the reported error scale; it is disclosed here as a
 tolerance, not as an exact-identity claim (`phase6b_backbone_equivalence_check.py`).
+
+The Lb-affine reference row needs one protocol note: its alignment is fitted on the target
+training cells' features with no labels, and it is evaluated on the held-out adapt cell
+(single-cell rows, 468 to 1,119 cycles), so its MAE is not pooled over the same rows as the
+other arms, and the two kinds of number are not comparable. Its median MAE is 11.53 (mean 12.47, 80 runs),
+retained here as the unlabeled-alignment reference the advisor asked to keep.
 
 ## 2. Main result (MAE in %SOH, run level, n = 80)
 
