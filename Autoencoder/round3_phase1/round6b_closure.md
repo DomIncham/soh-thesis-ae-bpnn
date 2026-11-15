@@ -130,3 +130,10 @@ all arms reuse the same per-pool selection.
 - `phase6b_backbone_equivalence_check.py` (backbone tolerance check)
 - Inputs reused: `phase6_preds_transfer_full.csv` (L0), `phase5_cs2_adapt2_c5t_full.csv` (FT-only),
   `phase6_ladder_Lc.csv` (FT+Cal), `phase5_cs2_within_c5t_full.csv` (floor)
+
+All files live at `Autoencoder/round3_phase1/` on `main`. Commit chain for this addendum
+(`github.com/DomIncham/soh-thesis-ae-bpnn`): c2d51bb (transcription + work plan), fabec02 and
+060833b (calibration-only script, hardening, smoke), 97ef9fc (full run), b3e3799 and 0360a47
+(analysis, audit fixes), e7cb6e4 (backbone tolerance check), e81d55f, 5aac2b5, and 1e527d8
+(report, evidence additions, record). Each commit message states what changed and the checks
+that passed.
