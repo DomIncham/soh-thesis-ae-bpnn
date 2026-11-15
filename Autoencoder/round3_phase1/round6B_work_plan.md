@@ -13,11 +13,11 @@
 | # | Advisor's comment (source) | Why our plan answers it this way |
 |---|---|---|
 | 1 | **"The current Lc is not a pure one-cell output calibration"** — the BPNN is warm-fine-tuned first, then calibration fitted on the SAME cell; the Lc gain "cannot be attributed to output calibration alone" (Letter 1 ¶3; PDF Stage 1 purpose) | The confound is structural: Lc changed weights AND output scale at once. The only clean fix is to add the missing ablation arm (calibration-only, weights frozen) while reusing the existing Adapt2 and Lc arms unchanged. Re-running Lc differently would break matched comparability with the Round 6 report. |
-| 2 | **3-way comparison on the same labeled target cell** (Letter 1 ¶2; PDF: "exactly matched cells and seeds") | All three arms share: same 8 CALCE pools, same 10 seeds, same adapt cell per pool, same test row set per held-out cell. No new fitting protocol is invented — we reuse the Round 6 loop scaffolding so cells/seeds/rows are identical by construction. |
+| 2 | **3-way comparison on the same labeled target cell** (Letter 1 ¶2; PDF: "exactly matched cells and seeds") | All three arms share the same matched keys: 2 pools (room/all13) × 5 seeds × 8 adapt cells = 80 runs, same test row set per held-out cell (verified against the CSVs: Lc 80, Adapt2-C5T 80, L0 dump 49,220 rows). No new fitting protocol is invented — we reuse the Round 6 loop scaffolding so cells/seeds/rows are identical by construction. |
 | 3 | **"Retain L0 zero-shot transfer and the unlabeled affine feature alignment as references"** (PDF Stage 1) | L0 and La already exist as dumped predictions from Round 6 (P6-5). We include them in the same table rather than recomputing — they anchor "how much of the gap remains after the cheapest interventions." |
 | 4 | **Report whether labels are used and whether NN weights are updated, per method** (PDF Stage 1) | The 5-row comparison table carries two explicit columns: `labels_used` (0 / 1 cell's labels) and `weights_updated` (no / yes). This makes the attribution question un-answerable-by-ambiguity. |
 | 5 | **"Clarify the definition of gap recovered"** (Letter 1 ¶5) — if it is relative MAE reduction from L0, rename to **"MAE reduction relative to matched L0"**; true gap recovery = within-CALCE as reference floor, computed on matched row sets | We report BOTH numbers, each with its own name and definition, so no single ambiguous "recovered %" appears anywhere in the report. |
-| 6 | **Unique cycles vs prediction instances** (Letter 1 ¶6) — 49,220 / 39,870 are accumulated prediction rows, not unique cycles; emphasize run-level consistency (10/10, paired run-level test) | Every table/figure caption states the unit explicitly. Statistics move from row-level to run-level: n = 80 runs (8 pools × 10 seeds), paired run-level Wilcoxon for arm differences, 10/10 directional counts. No row-level p-values anywhere. |
+| 6 | **Unique cycles vs prediction instances** (Letter 1 ¶6) — 49,220 / 39,870 are accumulated prediction rows, not unique cycles; emphasize run-level consistency (10/10, paired run-level test) | Every table/figure caption states the unit explicitly. Statistics move from row-level to run-level: n = 80 runs (2 pools × 5 seeds × 8 adapt cells), paired run-level Wilcoxon for arm differences, 10/10 directional counts. No row-level p-values anywhere. |
 | 7 | **La-quantile stays documented as degenerate** (Letter 1 ¶7) | No change: La keeps its "degenerate alignment" label with the interventionally-verified closure (quantile_varrestored 37.27). It appears in the table as a reference row, never counted as recovery. |
 | 8 | **Research rules (R7-C3):** no random cycle-wise split; no fitting on the held-out test cell; matched cells/seeds/row sets for any quantitative claim; mean AND median when unstable; diagnostics separated from performance; keep negative results; no AE return | The Stage 1 design satisfies all six by construction: fitting a,b uses only the adapt cell; held-out cells touch nothing; fallback rate column (R6-C4) stays on every table; degenerate runs are separated, not dropped. |
 
@@ -34,8 +34,10 @@ from output-scale correction (a, b) or from changing the network weights.
 
 ### P6B-1 — Calibration-only script (Capi, CPU)
 
-1. **Read the loading path once:** `phase6_alignment_ladder.py` — how L0 predictions, adapt-cell
-   labels, and pool/seed loops are set up; reuse the same IO and the same row-set definitions.
+1. **Read the loading path once (DONE):** `phase6_alignment_ladder.py`; located the L0 per-cycle
+   dump `phase6_preds_transfer_full.csv` (49,220 rows = the frozen NASA backbone's predictions on all
+   8 CALCE cells) — so calibration-only needs ZERO NN fits, and Adapt2-C5T (`phase5_cs2_adapt2_c5t_full.csv`,
+   80 runs) completes the matched 3-way on identical keys.
 2. **Write `phase6b_calibration_only.py`:**
    - Load the frozen NASA-trained BPNN backbone predictions on ALL 8 CALCE cells per pool × seed
      (no forward passes needed if Round 6 dumps already contain them — check `phase6_ladder_preds.csv`
@@ -49,13 +51,15 @@ from output-scale correction (a, b) or from changing the network weights.
      joins.
    - Degenerate fallback: if a calibration is degenerate, record it and fall back to identity (a=1, b=0)
      — SAME treatment Lc already receives, so arms stay comparable; the fallback column discloses it (R6-C4).
-3. **Smoke test (1 pool × 2 seeds, CPU):** assert (i) adapt cell rows never enter fitting for other
+3. **Smoke test (1 pool × 2 seeds, CPU — EXECUTED 2026-11-13):** 16/16 runs, 9/16 degenerate (56%),
+   manual least-squares recheck exact, run-level pooled-MAE recheck exact, leak check passed. Script:
+   `phase6b_calibration_only.py`; outputs `phase6b_cal_only.csv` + `phase6b_cal_only_preds.csv`. assert (i) adapt cell rows never enter fitting for other
    cells, (ii) row counts match L0 dump exactly, (iii) a degenerate run is flagged and falls back.
 4. **Commit** script + smoke CSV with explicit paths.
 
 ### P6B-2 — Full run (Dom, CPU/GPU; ~minutes — no NN fits)
 
-5. Launch full 8 pools × 10 seeds. Verify: 80/80 runs present, row-set parity vs L0 dump
+5. Launch full 2 pools × 5 seeds × 8 adapt cells. Verify: 80/80 runs present, row-set parity vs L0 dump
    (exact same (pool, seed, cell, cycle) keys), fallback column populated, degenerate counts reported.
 
 ### P6B-3 — Matched 3-way analysis (Capi)
