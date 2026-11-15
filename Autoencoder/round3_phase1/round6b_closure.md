@@ -30,12 +30,17 @@ tolerance, not as an exact-identity claim (`phase6b_backbone_equivalence_check.p
 
 ## 2. Main result (MAE in %SOH, run level, n = 80)
 
-| Arm | mean | median | degenerate calibrations |
-|---|---|---|---|
-| Cal-only | 17.34 | 13.66 | 50 of 80 |
-| FT-only | 13.74 | 11.95 | n/a (no calibration) |
-| FT+Cal | 13.20 | 12.18 | 45 of 80 |
-| L0 | 23.54 | 23.75 | n/a |
+| Arm | MAE mean | MAE median | RMSE median | R2 median | labeled cells | weights updated | degenerate calibrations |
+|---|---|---|---|---|---|---|---|
+| Cal-only | 17.34 | 13.66 | 18.80 | -12.76 | 1 | no | 50 of 80 |
+| FT-only | 13.74 | 11.95 | 13.08 | -5.92 | 1 | yes | n/a (no calibration) |
+| FT+Cal | 13.20 | 12.18 | 17.31 | -11.22 | 1 | yes | 45 of 80 |
+| L0 | 23.54 | 23.75 | 25.51 | -25.76 | 0 | no | n/a |
+
+Mean RMSE: Cal-only 21.07, FT-only 16.34, FT+Cal 19.22, L0 25.82. Mean R2: -21.76, -13.14,
+-17.87, -32.39. The R2 values are negative for every arm because each run pools 7 cells whose
+SOH ranges are narrow under a domain shift; they are reported for completeness, and their
+ranking agrees with the MAE ranking.
 
 Run-level paired tests (Wilcoxon, n = 80): FT-only reaches the lower MAE against Cal-only in
 53 of 80 runs (p = 0.0024). FT+Cal against FT-only: no difference we could detect (p = 0.43);
@@ -91,7 +96,9 @@ could detect (median 12.18, p = 0.43). In the 25 runs where both calibrations we
 non-degenerate, calibration alone gave a comparable median (9.00 vs 12.25); because its fitted
 line was degenerate in 50 of 80 runs, this comparison is a diagnostic observation, not a
 performance claim. The former Lc result is interpreted as warm fine-tuning plus calibration,
-and the gain it reported is attributed in greater part to the weight update.
+and the gain it reported is attributed in greater part to the weight update. For the Stage 1 decision point, the simplest defensible adaptation method on this
+evidence is warm fine-tuning alone; calibration serves as a cheap diagnostic whose result is
+usable when its fitted line is non-degenerate.
 
 ## 6. Units and counting (R7-C1 correction)
 
@@ -112,7 +119,7 @@ all arms reuse the same per-pool selection.
 ## 8. Files and evidence
 
 - `phase6b_calibration_only.py`, `phase6b_cal_only.csv`, `phase6b_cal_only_preds.csv` (full run)
-- `phase6b_analysis.py`, `phase6b_matched_3way.csv` (matched 3-way join, 80 rows)
+- `phase6b_analysis.py`, `phase6b_matched_3way.csv` (matched 3-way join, 80 rows, MAE/RMSE/R2 per arm)
 - `phase6b_backbone_equivalence_check.py` (backbone tolerance check)
 - Inputs reused: `phase6_preds_transfer_full.csv` (L0), `phase5_cs2_adapt2_c5t_full.csv` (FT-only),
   `phase6_ladder_Lc.csv` (FT+Cal), `phase5_cs2_within_c5t_full.csv` (floor)

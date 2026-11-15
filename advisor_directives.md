@@ -444,6 +444,10 @@ must be CLOSED before the next stage: the current Lc is not a pure one-cell outp
   fine-tuning-only, and combined comparison before beginning the target-data-efficiency study.
   Send updated results to the advisor for review before starting Round 7.
 
+**Round 6B execution record:** `advisor_rounds/round_06b_record.md` (calibration closure
+executed 2026-11-13; report `Autoencoder/round3_phase1/round6b_closure.md`, 57 asserted numbers;
+awaiting submission and advisor review before Stage 2).
+
 *Last updated: 2026-11-13 — Round 6 appended (R6-C0…C5) + Round 7 appended (R7-C0: Round 6B
 calibration closure, R7-C1: reporting corrections, R7-C2: Stage 1–5 roadmap, R7-C3: research rules,
 R7-C4: immediate instruction).*
