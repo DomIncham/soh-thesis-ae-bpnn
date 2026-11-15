@@ -1,0 +1,17 @@
+rung,pool,seed,adapt_cell,n_cycles,cal_slope,cal_intercept,cal_degenerate,fallback_used,MAE,RMSE,R2
+cal_only,room,7,CS2_21,4186,0.0778,85.1671,False,False,4.419,5.672,-0.376
+cal_only,room,7,CS2_33,4454,1.8579,-108.8058,False,False,10.907,13.883,-6.854
+cal_only,room,7,CS2_34,4451,1.3736,-53.135,False,False,6.807,9.511,-2.478
+cal_only,room,7,CS2_35,4400,1.8367,-102.3167,False,False,8.424,12.237,-4.68
+cal_only,room,7,CS2_36,4439,2.0012,-120.2013,True,True,10.904,12.746,-5.414
+cal_only,room,7,CS2_37,4370,2.0633,-123.9065,True,True,11.132,12.952,-5.708
+cal_only,room,7,CS2_38,4351,2.1833,-135.6461,True,True,11.238,13.012,-5.901
+cal_only,room,7,CS2_8,3803,-0.2111,115.9451,True,True,9.785,10.953,-3.332
+cal_only,room,42,CS2_21,4186,0.2817,65.8339,False,False,4.885,6.049,-0.565
+cal_only,room,42,CS2_33,4454,2.031,-102.1121,True,True,4.495,6.315,-0.625
+cal_only,room,42,CS2_34,4451,1.3003,-27.7896,False,False,4.916,7.357,-1.081
+cal_only,room,42,CS2_35,4400,1.9525,-89.1032,False,False,6.442,9.957,-2.76
+cal_only,room,42,CS2_36,4439,2.175,-110.2621,True,True,4.422,6.283,-0.559
+cal_only,room,42,CS2_37,4370,2.2425,-113.8087,True,True,4.339,6.221,-0.547
+cal_only,room,42,CS2_38,4351,2.2182,-110.1867,True,True,4.246,6.104,-0.518
+cal_only,room,42,CS2_8,3803,-0.3267,126.1641,True,True,3.261,4.568,0.247
