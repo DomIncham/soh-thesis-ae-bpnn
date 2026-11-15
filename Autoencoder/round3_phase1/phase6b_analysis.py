@@ -21,18 +21,32 @@ d = pd.read_csv("phase6_preds_transfer_full.csv", low_memory=False)
 lc["slope"] = lc.variant.str.replace("slope=", "").astype(float)
 lc["cal_degenerate"] = (lc.slope <= 0) | ((lc.slope - 1).abs() >= 1)
 
-# L0 run-level MAE, pooled over the 7 non-adapt cells (same definition as cal_only)
-l0 = d.groupby(["pool", "seed"]).apply(lambda x: np.abs(x.yhat - x.y).mean(),
-                                       include_groups=False)
-base = pd.DataFrame({"MAE_L0": cal.apply(lambda r: l0[(r.pool, r.seed)], axis=1).values})
+# L0 run-level MAE, pooled over the SAME 7 non-adapt cells (audit fix: the earlier
+# version pooled all 8 cells — not matched; identity-fallback runs exposed it)
+pc = d.groupby(["pool", "seed", "cell"]).apply(
+    lambda x: pd.Series({"mae": np.abs(x.yhat - x.y).mean(), "n": len(x)}),
+    include_groups=False)
+def l0_run(r):
+    cells = [c for c in sorted(d[d.pool == r.pool].cell.unique()) if c != r.adapt_cell]
+    sub = pc.loc[[(r.pool, r.seed, c) for c in cells]]
+    return (sub.n * sub.mae).sum() / sub.n.sum()
+base = pd.DataFrame({"MAE_L0": cal.apply(l0_run, axis=1).values})
 m = cal[K + ["MAE", "cal_slope", "cal_degenerate"]].rename(
     columns={"MAE": "MAE_cal", "cal_degenerate": "deg_cal"})
 m = m.merge(ft[K + ["MAE"]].rename(columns={"MAE": "MAE_ft"}), on=K, how="inner", validate="1:1")
 m = m.merge(lc[K + ["MAE", "slope", "cal_degenerate"]].rename(
     columns={"MAE": "MAE_ftcal", "cal_degenerate": "deg_lc"}), on=K, how="inner", validate="1:1")
 m = m.join(base)
-floor = w.MAE.median()
-print(f"within-CALCE median MAE (floor): {floor:.3f} (n={len(w)} runs)\n")
+# per-run matched floor (R7-C1 "on matched row sets"): weighted within-LOCO MAE over
+# the same 7 test cells and seed as each run, not one global median
+wk = w.set_index(["seed", "test_battery"])[["MAE", "n_cycles"]]
+def floor_run(r):
+    cells = [c for c in sorted(d[d.pool == r.pool].cell.unique()) if c != r.adapt_cell]
+    rows = wk.loc[[(r.seed, c) for c in cells]]
+    return (rows.n_cycles * rows.MAE).sum() / rows.n_cycles.sum()
+m["floor_matched"] = cal.apply(floor_run, axis=1).values
+print(f"within-CALCE: per-run matched floor median {m.floor_matched.median():.3f} "
+      f"(global median {w.MAE.median():.3f}, n={len(w)} runs)\n")
 assert len(m) == 80, len(m)
 assert m.notna().all().all()
 
@@ -52,9 +66,9 @@ print("\n== recovery, definition (a): MAE reduction relative to matched L0 ==")
 for arm, col in [("Cal-only", "MAE_cal"), ("FT-only", "MAE_ft"), ("FT+Cal", "MAE_ftcal")]:
     red = (m.MAE_L0 - m[col]) / m.MAE_L0
     print(f"{arm}: median {red.median():.1%}, mean {red.mean():.1%}")
-print("\n== recovery, definition (b): transfer-gap recovery (within floor) ==")
+print("\n== recovery, definition (b): transfer-gap recovery (per-run matched within floor) ==")
 for arm, col in [("Cal-only", "MAE_cal"), ("FT-only", "MAE_ft"), ("FT+Cal", "MAE_ftcal")]:
-    rec = (m.MAE_L0 - m[col]) / (m.MAE_L0 - floor)
+    rec = (m.MAE_L0 - m[col]) / (m.MAE_L0 - m.floor_matched)
     print(f"{arm}: median {rec.median():.1%}, mean {rec.mean():.1%}")
 
 print("\n== non-degenerate subset (Lc criterion applied to its own arm) ==")
@@ -64,6 +78,9 @@ for arm, col in [("Cal-only", "MAE_cal"), ("FT+Cal", "MAE_ftcal")]:
     print(f"{arm}: median {nd[col].median():.2f} (L0 {nd.MAE_L0.median():.2f})")
 p = wilcoxon(nd.MAE_cal, nd.MAE_ftcal).pvalue
 print(f"Cal-only vs FT+Cal (non-degenerate): Cal better {int((nd.MAE_cal < nd.MAE_ftcal).sum())}/{len(nd)}, p = {p:.4f}")
+ndc = m[~m.deg_cal]
+print(f"Cal-only OWN non-degenerate subset n={len(ndc)}: median {ndc.MAE_cal.median():.2f} "
+      f"(L0 {ndc.MAE_L0.median():.2f})")
 
 print("\n== degeneracy / fallback disclosure (R6-C4) ==")
 print(f"Cal-only degenerate: {int(m.deg_cal.sum())}/80 | Lc degenerate: {int(m.deg_lc.sum())}/80")
