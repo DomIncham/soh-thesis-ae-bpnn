@@ -123,13 +123,23 @@ correction. FT+Cal: 45 of 80 degenerate, same treatment as in Round 6. Selection
 rates are carried in the source CSVs (`sel_degenerate`) and do not differ across arms, since
 all arms reuse the same per-pool selection.
 
-## 8. Files and evidence
+## 8. Files and evidence (GitHub)
 
-- `phase6b_calibration_only.py`, `phase6b_cal_only.csv`, `phase6b_cal_only_preds.csv` (full run)
-- `phase6b_analysis.py`, `phase6b_matched_3way.csv` (matched 3-way join, 80 rows, MAE/RMSE/R2 per arm)
-- `phase6b_backbone_equivalence_check.py` (backbone tolerance check)
-- Inputs reused: `phase6_preds_transfer_full.csv` (L0), `phase5_cs2_adapt2_c5t_full.csv` (FT-only),
-  `phase6_ladder_Lc.csv` (FT+Cal), `phase5_cs2_within_c5t_full.csv` (floor)
+Base path: `Autoencoder/round3_phase1/` on `main`
+(`https://github.com/DomIncham/soh-thesis-ae-bpnn`).
+
+- [phase6b_calibration_only.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_calibration_only.py) (calibration-only script),
+  [phase6b_cal_only.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_cal_only.csv) (80 runs),
+  [phase6b_cal_only_preds.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_cal_only_preds.csv) (344,540 rows)
+- [phase6b_analysis.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_analysis.py),
+  [phase6b_matched_3way.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_matched_3way.csv) (matched 3-way join, 80 rows, MAE/RMSE/R2 per arm)
+- [phase6b_backbone_equivalence_check.py](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6b_backbone_equivalence_check.py) (backbone tolerance check)
+- [round6B_work_plan.md](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/round6B_work_plan.md) (PAEV plan),
+  [../advisor_rounds/round_06b_record.md](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/advisor_rounds/round_06b_record.md) (round record)
+- Inputs reused: [phase6_preds_transfer_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_preds_transfer_full.csv) (L0),
+  [phase5_cs2_adapt2_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_adapt2_c5t_full.csv) (FT-only),
+  [phase6_ladder_Lc.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase6_ladder_Lc.csv) (FT+Cal),
+  [phase5_cs2_within_c5t_full.csv](https://github.com/DomIncham/soh-thesis-ae-bpnn/blob/main/Autoencoder/round3_phase1/phase5_cs2_within_c5t_full.csv) (floor)
 
 All files live at `Autoencoder/round3_phase1/` on `main`. Commit chain for this addendum
 (`github.com/DomIncham/soh-thesis-ae-bpnn`): c2d51bb (transcription + work plan), fabec02 and
