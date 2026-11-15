@@ -57,6 +57,7 @@ Record only the latest session's handoff. Do not paste full logs or historical d
 - Audits: two analysis bugs caught and fixed before reporting (L0 reference pooled 8 cells instead of matched 7 — identity-fallback structural check 50/50 exact; smoke/full output contamination prevented by file separation). Independent recomputation (scipy linregress) matches all 80 Cal-only runs; Lc summary re-verified vs raw ladder dump 80/80; Adapt2 row sets match the L0 dump.
 - Verification: `phase6b_report_verify.py` — 61/61 report numbers asserted against source CSVs; grep checklist clean (prove/confirm/successfully, em dash, **, curly quotes, -ly adverbs all 0; identifier whitelist for Cal-only/FT-only/filenames).
 - `advisor_rounds/round_06b_record.md` written; pointer added to `advisor_directives.md` §Round 7.
+- GitHub links added to the report (§8): 12 blob links all HTTP 200; raw content hash-verified against repo HEAD 13/13 (the earlier mismatch was CRLF in the working copy + a sha256sum backslash-prefix artifact — both diagnosed, not real differences).
 
 ### Unresolved
 
